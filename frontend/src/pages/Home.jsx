@@ -1,6 +1,7 @@
 import { daniel, emily, michael, omar, priya, sarah } from "../assets";
-import { CallToAction, Contact, Container, Hero, FAQ, Testimonial } from "../components";
+import { CallToAction, Contact, Container, Hero, FAQ, Testimonial, Stat, ServiceCard } from "../components";
 import Marquee from "react-fast-marquee";
+import AboutUs from "../components/AboutUs";
 
 const faqs = [
     {
@@ -60,22 +61,81 @@ const testimonials = [
     }
 ];
 
+const stats = [
+    {
+        name:'Students Helped',
+        data:'500+'
+    },
+    {
+        name:'Acceptance Rate',
+        data:'100%'
+    },
+    {
+        name:'Schools Repesented',
+        data:'100+'
+    }
+];
+
+const services = [
+    {
+        title:'Personal Statement Review',
+        description:'Comprehensive 1-on-1 sessions to refine your personal statement, ensuring it effectively communicates your unique story and qualifications.',
+        offers:['Structural and content analysis', 'Grammar and style improvements', 'Strategic positioning for non-T14 schools'],
+        price:100,
+        process:'Submit your draft, Independent review, and 1-hour video consultation to refine your statement.'
+    }
+];
 
 function Home() {
     return (
         <div className="min-h-[70vh]">
             <Hero />
 
+            {/* Stats section */}
+            <section className="mt-12">
+                <Container>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 text-center">
+                        {
+                            stats.map(stat => (
+                                <Stat key={stat.name} name={stat.name} data={stat.data} />
+                            ))
+                        }
+                    </div>
+                </Container>
+            </section>
+
+            {/* Services section */}
+            <section className="mt-12">
+                <Container>
+                    <div>
+
+                        <h2 className="text-3xl font-bold text-blue-950">Our Specialized Services</h2>
+                        <p className="md:text-lg text-blue-950 my-3">Tailored support to make your law school application stand out.</p>
+
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 sm:gap-8">
+                            {
+                                Array(5).fill('').map(service => (
+                                    <ServiceCard key={services[0].title} title={services[0].title} description={services[0].description} offers={services[0].offers} price={services[0].price} process={services[0].process} />
+                                ))
+                            }
+                        </div>
+                    </div>
+                </Container>
+            </section>
+
+            {/* About us */}
+            <AboutUs />
+
             {/* Testimonials section */}
-            <section className="my-12">
+            <section className="mt-12">
                 <Container>
                     <div>
 
                         <h2 className="text-3xl font-bold text-blue-950">Success Stories</h2>
-                        <p className="text-sm md:text-lg text-blue-950 my-3">Hear from students who achieved their law school dreams</p>
+                        <p className="md:text-lg text-blue-950 my-3">Hear from students who achieved their law school dreams</p>
 
                         <div>
-                            <Marquee speed={40} pauseOnHover={true} className="flex items-stretch py-5">
+                            <Marquee speed={40} pauseOnHover={true} className="flex items-stretch py-1">
                                 {
                                     testimonials.map(testimonial => (
                                         <Testimonial key={testimonial.name} name={testimonial.name} school={testimonial.school} review={testimonial.review} image={testimonial.image} />
@@ -88,12 +148,11 @@ function Home() {
             </section>
 
             {/* FAQs section */}
-            <section className="my-12">
+            <section className="mt-12">
                 <Container>
                     <div>
-
                         <h2 className="text-3xl font-bold text-blue-950">Frequently Asked Questions</h2>
-                        <p className="text-sm md:text-lg text-blue-950 my-3">Answers to common questions about our consultation services</p>
+                        <p className="text-blue-950 my-4">Answers to common questions about our consultation services</p>
 
                         <div className="bg-white shadow-md shadow-blue-100 overflow-hidden border border-blue-100 rounded-lg">
                             {

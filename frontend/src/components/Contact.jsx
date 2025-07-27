@@ -39,13 +39,13 @@ function Contact() {
     }
     return (
         <Container>
-            <section className="grid grid-cols-1 md:grid-cols-2 items-start gap-16 my-20">
+            <section className="grid grid-cols-1 md:grid-cols-2 items-start gap-16 my-14">
                 <div className="flex flex-col gap-16">
                     <div>
                         <h2 className="text-3xl font-bold text-blue-950">
                             Get In Touch
                         </h2>
-                        <p className="text-sm md:text-lg text-blue-950 mt-6 mb-8">
+                        <p className="text-blue-950 mt-6 mb-8">
                             Have questions about our services or the consultation process? Reach out and we'll get back to you within 24 hours.
                         </p>
                         <div className="grid grid-cols-1 gap-8">

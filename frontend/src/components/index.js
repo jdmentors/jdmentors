@@ -8,6 +8,13 @@ import ScrollToTopIcon from "./ScrollToTopIcon";
 import Contact from "./Contact";
 import FAQ from "./FAQ";
 import Testimonial from "./Testimonial";
+import Stat from "./Stat";
+import ServiceCard from "./ServiceCard";
+import UserAuth from "./UserAuth";
+import UserLogForm from "./UserLogForm";
+import UserRegForm from "./UserRegForm";
+import ForgotPasswordForm from "./ForgotPasswordForm";
+import FileInput from "./FileInput";
 
 export {
     Header,
@@ -20,4 +27,11 @@ export {
     Contact,
     FAQ,
     Testimonial,
+    Stat,
+    ServiceCard,
+    UserAuth,
+    UserLogForm,
+    UserRegForm,
+    ForgotPasswordForm,
+    FileInput,
 }

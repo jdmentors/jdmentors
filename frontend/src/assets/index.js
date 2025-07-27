@@ -3,6 +3,7 @@ import menuIcon from "./menuIcon.svg";
 import darkLogo from "./darkLogo.webp";
 import logo from "./logo.webp";
 import banner from "./banner.webp";
+import aboutUs from "./aboutUs.webp";
 import daniel from './Daniel.jpg';
 import omar from './Omar.jpg';
 import michael from './Michael.jpg';
@@ -22,4 +23,5 @@ export {
     emily,
     priya,
     sarah,
+    aboutUs,
 }
