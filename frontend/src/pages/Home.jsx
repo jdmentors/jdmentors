@@ -73,6 +73,10 @@ const stats = [
     {
         name:'Schools Repesented',
         data:'100+'
+    },
+    {
+        name:'Average Rating',
+        data:`4.9`
     }
 ];
 
@@ -94,7 +98,7 @@ function Home() {
             {/* Stats section */}
             <section className="mt-12">
                 <Container>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 text-center">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 text-center">
                         {
                             stats.map(stat => (
                                 <Stat key={stat.name} name={stat.name} data={stat.data} />
@@ -135,7 +139,7 @@ function Home() {
                         <p className="md:text-lg text-blue-950 my-3">Hear from students who achieved their law school dreams</p>
 
                         <div>
-                            <Marquee speed={40} pauseOnHover={true} className="flex items-stretch py-1">
+                            <Marquee speed={40} pauseOnHover={true} gradient={true} gradientColor="#EFF6FF" gradientWidth={50} className="flex items-stretch py-1 overflow-y-hidden">
                                 {
                                     testimonials.map(testimonial => (
                                         <Testimonial key={testimonial.name} name={testimonial.name} school={testimonial.school} review={testimonial.review} image={testimonial.image} />

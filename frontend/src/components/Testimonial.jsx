@@ -1,5 +1,4 @@
 import { Star } from "lucide-react";
-import { darkLogo } from "../assets";
 
 function Testimonial({ name, review, school, image }) {
     return (

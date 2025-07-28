@@ -10,6 +10,12 @@ import michael from './Michael.jpg';
 import emily from './Emily.jpg';
 import priya from './Priya.jpg';
 import sarah from './Sarah.jpg';
+import ethan from './Ethan.jpg';
+import lina from './Lina.jpg';
+import natalie from './Natalie.jpg';
+import james from './James.jpg';
+import amelia from './Amelia.jpg';
+import kim from './Kim.jpg';
 
 export {
     closeMenu,
@@ -24,4 +30,11 @@ export {
     priya,
     sarah,
     aboutUs,
+    ethan,
+    lina,
+    natalie,
+    james,
+    amelia,
+    kim,
+    
 }

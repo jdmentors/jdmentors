@@ -82,7 +82,7 @@ function Checkout() {
                 <section>
                     <h5 className="font-semibold text-blue-950 md:mt-16">Review Your Order</h5>
 
-                    <div className="border border-blue-100 p-5 rounded-md mb-8 mt-5 md:sticky md:top-20 shadow-lg shadow-blue-100">
+                    <div className="bg-blue-50 border border-blue-100 p-5 rounded-md mb-8 mt-5 md:sticky md:top-20 shadow-lg shadow-blue-100">
                         <div className="flex items-center mb-4">
                             <div className="bg-blue-100 p-2.5 rounded-full mr-4 w-10 h-10 flex items-center justify-center">
                                 <UserCheck2 className="text-blue-600" />
