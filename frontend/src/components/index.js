@@ -16,6 +16,7 @@ import UserRegForm from "./UserRegForm";
 import ForgotPasswordForm from "./ForgotPasswordForm";
 import FileInput from "./FileInput";
 import TweetCard from "./TweetCard";
+import BlogCard from "./BlogCard";
 
 export {
     Header,
@@ -36,4 +37,5 @@ export {
     ForgotPasswordForm,
     FileInput,
     TweetCard,
+    BlogCard,
 }

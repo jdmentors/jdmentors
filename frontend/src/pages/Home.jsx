@@ -1,7 +1,9 @@
 import { daniel, emily, michael, omar, priya, sarah } from "../assets";
-import { CallToAction, Contact, Container, Hero, FAQ, Testimonial, Stat, ServiceCard } from "../components";
+import { CallToAction, Contact, Container, Hero, FAQ, Testimonial, Stat, ServiceCard, BlogCard } from "../components";
 import Marquee from "react-fast-marquee";
 import AboutUs from "../components/AboutUs";
+import { Link } from "react-router";
+import { ArrowRight } from "lucide-react";
 
 const faqs = [
     {
@@ -27,66 +29,66 @@ const testimonials = [
         name: 'Sarah J.',
         review: 'The personal statement review was transformative. My consultant helped me find the perfect narrative thread that tied my experiences together in a way that made admissions committees take notice. I got into my top choice with a scholarship!',
         school: 'Accepted to Boston College Law',
-        image:sarah
+        image: sarah
     },
     {
         name: 'Michael T.',
         review: 'I was really worried about explaining my low GPA from freshman year. The addendum consultation helped me frame it as a growth experience rather than an excuse. The final product was concise and effective—I got into all three schools I applied to!',
         school: 'Accepted to UC Hastings',
-        image:michael
+        image: michael
     },
     {
         name: 'Priya K.',
         review: "The 1-on-1 sessions were invaluable. My consultant didn't just edit my essay—they helped me discover what made my story unique. The final personal statement was something I was truly proud of, and it clearly resonated with admissions committees.",
         school: 'Accepted to Fordham Law',
-        image:priya
+        image: priya
     },
     {
         name: 'Daniel R.',
         review: "As a non-traditional applicant, I felt unsure about how to position my work experience. My consultant helped me connect it directly to the skills law schools look for. The result was a powerful narrative I couldn’t have written alone.",
         school: 'Accepted to Loyola Law School',
-        image:daniel
+        image: daniel
     },
     {
         name: 'Emily C.',
         review: "I had no idea how important the personal statement was until I went through this process. The feedback was sharp, honest, and encouraging. I ended up with an essay that reflected my voice perfectly—and I got into multiple schools.",
         school: 'Accepted to Brooklyn Law School',
-        image:emily
+        image: emily
     },
     {
         name: 'Omar S.',
         review: "What stood out was how personalized the help was. My consultant asked the right questions and pushed me to go deeper with my story. It felt like they genuinely cared about my success. I’m incredibly grateful and would suggest the platform to all.",
         school: 'Accepted to UMiami Law',
-        image:omar
+        image: omar
     }
 ];
 
 const stats = [
     {
-        name:'Students Helped',
-        data:'500+'
+        name: 'Students Helped',
+        data: '500+'
     },
     {
-        name:'Acceptance Rate',
-        data:'100%'
+        name: 'Acceptance Rate',
+        data: '100%'
     },
     {
-        name:'Schools Repesented',
-        data:'100+'
+        name: 'Schools Repesented',
+        data: '100+'
     },
     {
-        name:'Average Rating',
-        data:`4.9`
+        name: 'Average Rating',
+        data: `4.9`
     }
 ];
 
 const services = [
     {
-        title:'Personal Statement Review',
-        description:'Comprehensive 1-on-1 sessions to refine your personal statement, ensuring it effectively communicates your unique story and qualifications.',
-        offers:['Structural and content analysis', 'Grammar and style improvements', 'Strategic positioning for non-T14 schools'],
-        price:100,
-        process:'Submit your draft, Independent review, and 1-hour video consultation to refine your statement.'
+        title: 'Personal Statement Review',
+        description: 'Comprehensive 1-on-1 sessions to refine your personal statement, ensuring it effectively communicates your unique story and qualifications.',
+        offers: ['Structural and content analysis', 'Grammar and style improvements', 'Strategic positioning for non-T14 schools'],
+        price: 100,
+        process: 'Submit your draft, Independent review, and 1-hour video consultation to refine your statement.'
     }
 ];
 
@@ -123,6 +125,10 @@ function Home() {
                                 ))
                             }
                         </div>
+
+                        <div className="flex justify-center mt-10">
+                            <Link className="py-2.5 px-6 rounded-md bg-blue-600 text-white inline-flex items-center gap-2" to="/services">All Services <ArrowRight /></Link>
+                        </div>
                     </div>
                 </Container>
             </section>
@@ -151,8 +157,30 @@ function Home() {
                 </Container>
             </section>
 
-            {/* FAQs section */}
+            {/* Blogs section */}
             <section className="mt-12">
+                <Container>
+                    <div>
+                        <h2 className="text-3xl font-bold text-blue-950">Insights for Law School Success</h2>
+                        <p className="text-blue-950 my-4">Whether you're perfecting your personal statement or navigating addendums, our blog delivers the guidance you need—one post at a time.</p>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 mt-8">
+                            {
+                                Array(3).fill('').map((i) => (
+                                    <BlogCard key={i} />
+                                ))
+                            }
+                        </div>
+
+                        <div className="flex justify-center mt-10">
+                            <Link className="py-2.5 px-6 rounded-md bg-blue-600 text-white inline-flex items-center gap-2" to="/blogs">More Posts <ArrowRight /></Link>
+                        </div>
+                    </div>
+                </Container>
+            </section>
+
+            {/* FAQs section */}
+            <section className="my-12">
                 <Container>
                     <div>
                         <h2 className="text-3xl font-bold text-blue-950">Frequently Asked Questions</h2>
@@ -168,8 +196,6 @@ function Home() {
                     </div>
                 </Container>
             </section>
-
-            <Contact />
 
             <CallToAction />
         </div>

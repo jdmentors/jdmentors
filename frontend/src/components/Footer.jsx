@@ -6,10 +6,10 @@ import { Facebook, Instagram, Linkedin, Mail, Phone, Twitter } from "lucide-reac
 
 function Footer() {
     const quickLinks = [
-        { name: 'About', href: '#about' },
-        { name: 'Contact', href: '#contact' },
-        { name: 'Testimonials', href: '#testimonials' },
-        { name: 'Book Consultation', href: '#contact' },
+        { name: 'About', href: '/about' },
+        { name: 'Blogs', href: '/blogs' },
+        { name: 'Contact', href: '/contact' },
+        { name: 'Testimonials', href: '/testimonials' },
     ];
 
     const ourServices = [

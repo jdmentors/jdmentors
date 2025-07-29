@@ -4,6 +4,8 @@ import Contact from "./Contact";
 import Services from "./Services";
 import Testimonials from "./Testimonials";
 import AboutUs from "./AboutUs";
+import Blogs from "./Blogs";
+import SingleBlog from "./SingleBlog";
 
 export {
     Home,
@@ -12,4 +14,6 @@ export {
     Services,
     Testimonials,
     AboutUs,
+    Blogs,
+    SingleBlog,
 }

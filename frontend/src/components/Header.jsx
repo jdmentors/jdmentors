@@ -12,10 +12,11 @@ function Header() {
 
     const navLinks = [
         { name: 'Home', href: '/' },
-        { name: 'Services', href: '#services' },
-        { name: 'About', href: '#about' },
-        { name: 'Testimonials', href: '#testimonials' },
-        { name: 'Contact', href: '#contact' },
+        { name: 'About', href: '/about' },
+        { name: 'Services', href: '/services' },
+        { name: 'Blogs', href: '/blogs' },
+        { name: 'Testimonials', href: '/testimonials' },
+        { name: 'Contact', href: '/contact' },
     ];
 
     useEffect(() => {
@@ -41,7 +42,7 @@ function Header() {
                         {
                             navLinks.map(link => (
                                 <li className="relative py-1" key={link.name}>
-                                    <NavLink className={({ isActive }) => `${isScrolled ? 'text-blue-950 after:bg-blue-950' : 'text-white after:bg-white'} after:w-0 after:rounded after:h-0.5 after:absolute after:bottom-0 after:left-0 after:content-[""] hover:after:w-full after:transition-all after:duration-150`} to={link.href}>{link.name}</NavLink>
+                                    <NavLink className={({ isActive }) => `${ (isActive && isScrolled) ? 'text-blue-600 after:bg-blue-600' : isActive ? 'text-blue-600 after:bg-blue-600' : isScrolled ? 'text-blue-950 after:bg-blue-950' : 'text-white after:bg-white'} after:w-0 after:rounded after:h-0.5 after:absolute after:bottom-0 after:left-0 after:content-[""] hover:after:w-full after:transition-all after:duration-150`} to={link.href}>{link.name}</NavLink>
                                 </li>
                             ))
                         }
@@ -62,7 +63,7 @@ function Header() {
                         {
                             navLinks.map(link => (
                                 <li key={link.name} className="relative mx-5 py-2">
-                                    <NavLink className={({ isActive }) => `text-blue-950 after:bg-blue-950 after:w-0 after:rounded after:h-0.5 after:absolute after:bottom-0 after:left-0 after:content-[""] hover:after:w-full after:transition-all after:duration-150`} to={link.href}>{link.name}</NavLink>
+                                    <NavLink className={({ isActive }) => `${isActive ? 'text-blue-600 after:bg-blue-600' : 'text-blue-950 after:bg-blue-950'} after:w-0 after:rounded after:h-0.5 after:absolute after:bottom-0 after:left-0 after:content-[""] hover:after:w-full after:transition-all after:duration-150`} to={link.href}>{link.name}</NavLink>
                                 </li>
                             ))
                         }
