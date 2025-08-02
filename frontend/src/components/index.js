@@ -17,6 +17,9 @@ import ForgotPasswordForm from "./ForgotPasswordForm";
 import FileInput from "./FileInput";
 import TweetCard from "./TweetCard";
 import BlogCard from "./BlogCard";
+import UserSidebar from "./user/UserSidebar";
+import UserContainer from "./user/UserContainer";
+import UserHeader from "./user/UserHeader";
 
 export {
     Header,
@@ -38,4 +41,7 @@ export {
     FileInput,
     TweetCard,
     BlogCard,
+    UserSidebar,
+    UserContainer,
+    UserHeader,
 }

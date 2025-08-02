@@ -6,6 +6,8 @@ import Testimonials from "./Testimonials";
 import AboutUs from "./AboutUs";
 import Blogs from "./Blogs";
 import SingleBlog from "./SingleBlog";
+import UserLayout from "./user/UserLayout";
+import UserDashboard from "./user/UserDashboard";
 
 export {
     Home,
@@ -16,4 +18,6 @@ export {
     AboutUs,
     Blogs,
     SingleBlog,
+    UserLayout,
+    UserDashboard,
 }
