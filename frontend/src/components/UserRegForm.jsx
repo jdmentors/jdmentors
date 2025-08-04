@@ -4,6 +4,8 @@ import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
 import { EyeIcon, EyeOff, Lock, Mail, Phone, User } from "lucide-react";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { updateUser, toggleIsUserLoggedIn, toggleShowUserAuthForm } from "../features/forms/UserAuthSlice.js";
 
 function UserRegForm({isLoginActive, setIsLoginActive}){
     const {register, handleSubmit} = useForm({defaultValues:{
@@ -14,22 +16,22 @@ function UserRegForm({isLoginActive, setIsLoginActive}){
     }});
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [showPassword, setShowPassword] = useState(false);
     
     const registerFormHandler = async (formData) => {
         try {
-            console.log(formData);
-            // const {data} = await axios.post(`/api/v1/users/register`, {fullName:formData.fullName, email:formData.email, phone:formData.phone, password:formData.password});
+            const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/users/register`, {fullName:formData.fullName, email:formData.email, phone:formData.phone, password:formData.password}, {withCredentials:true});
 
-            // if(data){
-            //     const accessToken = data.data.accessToken;
-            //     dispatch(updateUser({...data.data.user, accessToken}));
-            //     dispatch(toggleIsUserLoggedIn(true));
-            //     dispatch(toggleShowUserAuthForm(false));
-            //     toast.success(data.message);
-            //     navigate('/user/dashboard');
-            // }
+            if(data.success){
+                const accessToken = data.data.accessToken;
+                dispatch(updateUser({...data.data.user, accessToken}));
+                dispatch(toggleIsUserLoggedIn(true));
+                dispatch(toggleShowUserAuthForm(false));
+                navigate('/user/dashboard');
+                toast.success(data.message);
+            }
         } catch (error) {
             console.error(error.message);
             toast.error(error.response.data.message);
