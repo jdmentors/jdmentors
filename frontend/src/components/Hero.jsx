@@ -15,7 +15,7 @@ function Hero() {
                         <p className={`inline-flex items-center gap-1 bg-white text-blue-950 px-4 py-2 rounded-full text-sm font-medium`}>
                             <Shield size={24} strokeWidth={1.5} />
 
-                            Highly Trusted by Law Applicants
+                            Trusted by Law Applicants
                         </p>
                         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">Craft Your Path to <span className="text-blue-600 text-shadow-sm">Law School Success</span></h1>
                         <p className="text-lg text-white z-40 leading-relaxed">Personalized 1-on-1 consultations to strengthen your law school applications for non-T14 schools. Expert guidance on personal statements and addendums to make your application stand out.</p>

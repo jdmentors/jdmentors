@@ -1,13 +1,16 @@
-import { LayoutDashboard, LogOut } from "lucide-react";
+import { LaptopIcon, LayoutDashboard, LogOut, Newspaper, Users } from "lucide-react";
 import { NavLink } from "react-router";
 
 const navigation = [
-    {name:'Dashboard', path:'/user/dashboard', icon: <LayoutDashboard size={25} strokeWidth={1.5} />},
+    {name:'Dashboard', path:'/admin/dashboard', icon: <LayoutDashboard size={25} strokeWidth={1.5} />},
+    {name:'Users', path:'/admin/users', icon: <Users size={25} strokeWidth={1.5} />},
+    {name:'Services', path:'/admin/services', icon: <LaptopIcon size={25} strokeWidth={1.5} />},
+    {name:'Blogs', path:'/admin/blogs', icon: <Newspaper size={25} strokeWidth={1.5} />},
 ];
 
-function UserSidebar(){
+function AdminSidebar(){
     return (
-        <aside className="border-r-2 border-r-blue-100 w-1/6">
+        <aside className="border-r-2 bg-gray-900 text-white border-r-blue-100 w-1/6">
             <nav>
                 <ul>
                     {
@@ -29,4 +32,4 @@ function UserSidebar(){
     );
 }
 
-export default UserSidebar;
+export default AdminSidebar;

@@ -7,7 +7,14 @@ import AboutUs from "./AboutUs";
 import Blogs from "./Blogs";
 import SingleBlog from "./SingleBlog";
 import UserLayout from "./user/UserLayout";
+import AdminLayout from "./admin/AdminLayout";
+import AdminDashboard from "./admin/AdminDashboard";
 import UserDashboard from "./user/UserDashboard";
+import AllUsers from "./admin/AllUsers";
+import AllServices from "./admin/AllServices";
+import AllBlogs from "./admin/AllBlogs";
+import AddBlog from "./admin/AddBlog";
+import AddService from "./admin/AddService";
 
 export {
     Home,
@@ -20,4 +27,11 @@ export {
     SingleBlog,
     UserLayout,
     UserDashboard,
+    AdminLayout,
+    AdminDashboard,
+    AllUsers,
+    AllServices,
+    AllBlogs,
+    AddBlog,
+    AddService,
 }

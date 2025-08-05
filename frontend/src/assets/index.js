@@ -16,6 +16,7 @@ import natalie from './Natalie.jpg';
 import james from './James.jpg';
 import amelia from './Amelia.jpg';
 import kim from './Kim.jpg';
+import user from './user.webp';
 
 export {
     closeMenu,
@@ -36,5 +37,5 @@ export {
     james,
     amelia,
     kim,
-    
+    user,
 }

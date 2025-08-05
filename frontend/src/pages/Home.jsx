@@ -84,6 +84,7 @@ const stats = [
 
 const services = [
     {
+        _id: 'df75fd4r8fg45fvb41gf68ghg',
         title: 'Personal Statement Review',
         description: 'Comprehensive 1-on-1 sessions to refine your personal statement, ensuring it effectively communicates your unique story and qualifications.',
         offers: ['Structural and content analysis', 'Grammar and style improvements', 'Strategic positioning for non-T14 schools'],
@@ -121,7 +122,7 @@ function Home() {
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 sm:gap-8">
                             {
                                 Array(5).fill('').map(service => (
-                                    <ServiceCard key={services[0].title} title={services[0].title} description={services[0].description} offers={services[0].offers} price={services[0].price} process={services[0].process} />
+                                    <ServiceCard _id={services[0]._id} key={services[0]._id} title={services[0].title} description={services[0].description} offers={services[0].offers} price={services[0].price} process={services[0].process} />
                                 ))
                             }
                         </div>

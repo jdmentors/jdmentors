@@ -1,10 +1,24 @@
 import { CalendarCheck2, Check, UserCheck2 } from "lucide-react";
-import { useDispatch } from "react-redux";
-import { Link } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router";
 import { toggleShowUserAuthForm } from "../features/forms/UserAuthSlice";
 
-function ServiceCard({title, description, offers, price, process}) {
+function ServiceCard({_id, title, description, offers, price, process}) {
     const dispatch = useDispatch();
+    const isUserLoggedIn = useSelector(state => state.user.isUserLoggedIn);
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        try {
+            if(isUserLoggedIn){
+                navigate(`/checkout/${_id}`);
+            }else{
+                dispatch(toggleShowUserAuthForm(true));
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     return (
         <div className="service-card bg-white rounded-xl overflow-hidden shadow-lg shadow-blue-200 border border-blue-100 transition duration-300">
@@ -33,13 +47,13 @@ function ServiceCard({title, description, offers, price, process}) {
                     <p className="text-sm text-gray-600 mt-1">
                         Process: {process}
                     </p>
-                    <Link
-                        onClick={() => dispatch(toggleShowUserAuthForm(true))}
+                    <button
+                        onClick={handleClick}
                         to="/"
-                        className="mt-4 w-full flex gap-1 items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        className="mt-4 w-full flex gap-1 items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                     >
                         <CalendarCheck2 size={18} /> Book Now
-                    </Link>
+                    </button>
                 </div>
             </div>
         </div>

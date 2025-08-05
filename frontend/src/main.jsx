@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App.jsx';
 import { BrowserRouter, Route, Routes } from "react-router";
-import { AboutUs, Blogs, Checkout, Contact, Home, Services, SingleBlog, Testimonials, UserDashboard, UserLayout } from './pages';
+import { AboutUs, AddBlog, AddService, AdminDashboard, AdminLayout, AllBlogs, AllServices, AllUsers, Blogs, Checkout, Contact, Home, Services, SingleBlog, Testimonials, UserDashboard, UserLayout } from './pages';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from './app/store.js';
 import { Provider } from 'react-redux';
@@ -27,6 +27,15 @@ createRoot(document.getElementById('root')).render(
 
                         <Route path='/user' element={<UserLayout />}>
                             <Route path='/user/dashboard' element={<UserDashboard />} />
+                        </Route>
+
+                        <Route path='/admin' element={<AdminLayout />}>
+                            <Route path='/admin/dashboard' element={<AdminDashboard />} />
+                            <Route path='/admin/users' element={<AllUsers />} />
+                            <Route path='/admin/services' element={<AllServices />} />
+                            <Route path='/admin/services/add' element={<AddService />} />
+                            <Route path='/admin/blogs' element={<AllBlogs />} />
+                            <Route path='/admin/blogs/add' element={<AddBlog />} />
                         </Route>
                     </Routes>
                 </BrowserRouter>
