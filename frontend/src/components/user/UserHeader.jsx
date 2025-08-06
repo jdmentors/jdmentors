@@ -17,9 +17,9 @@ function UserHeader(){
     const [isScrolled, setIsScrolled] = useState(false);
 
     return (
-        <header className="flex w-full py-4 px-10 justify-between border-b border-b-blue-100">
+        <header className="flex w-full p-4 justify-between border-b border-b-blue-100">
             <Link to="/" className="w-full z-50">
-                <img src={darkLogo} alt="logo" className="h-8 md:h-10 z-50" />
+                <img src={darkLogo} alt="logo" className="h-9 md:h-10 z-50" />
             </Link>
 
             <nav className="hidden lg:block">

@@ -15,6 +15,8 @@ import AllServices from "./admin/AllServices";
 import AllBlogs from "./admin/AllBlogs";
 import AddBlog from "./admin/AddBlog";
 import AddService from "./admin/AddService";
+import AllSessions from "./admin/AllSessions";
+import ResetPassword from "./ResetPassword";
 
 export {
     Home,
@@ -34,4 +36,6 @@ export {
     AllBlogs,
     AddBlog,
     AddService,
+    AllSessions,
+    ResetPassword,
 }

@@ -3,10 +3,11 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App.jsx';
 import { BrowserRouter, Route, Routes } from "react-router";
-import { AboutUs, AddBlog, AddService, AdminDashboard, AdminLayout, AllBlogs, AllServices, AllUsers, Blogs, Checkout, Contact, Home, Services, SingleBlog, Testimonials, UserDashboard, UserLayout } from './pages';
+import { AboutUs, AddBlog, AddService, AdminDashboard, AdminLayout, AllBlogs, AllServices, AllSessions, AllUsers, Blogs, Checkout, Contact, Home, ResetPassword, Services, SingleBlog, Testimonials, UserDashboard, UserLayout } from './pages';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from './app/store.js';
 import { Provider } from 'react-redux';
+import { CreateAdmin, Profile, Protected } from './components/index.js';
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>
@@ -21,21 +22,25 @@ createRoot(document.getElementById('root')).render(
                             <Route path='/services' element={<Services />} />
                             <Route path='/testimonials' element={<Testimonials />} />
                             <Route path='/about' element={<AboutUs />} />
+                            <Route path='/reset-password' element={<ResetPassword />} />
                             <Route path='/blogs' element={<Blogs />} />
                             <Route path='/blogs/:blogId' element={<SingleBlog />} />
                         </Route>
 
                         <Route path='/user' element={<UserLayout />}>
-                            <Route path='/user/dashboard' element={<UserDashboard />} />
+                            <Route path='/user/dashboard' element={<Protected authetication={true}><UserDashboard /></Protected>} />
                         </Route>
 
                         <Route path='/admin' element={<AdminLayout />}>
                             <Route path='/admin/dashboard' element={<AdminDashboard />} />
+                            <Route path='/admin/sessions' element={<AllSessions />} />
                             <Route path='/admin/users' element={<AllUsers />} />
                             <Route path='/admin/services' element={<AllServices />} />
                             <Route path='/admin/services/add' element={<AddService />} />
                             <Route path='/admin/blogs' element={<AllBlogs />} />
                             <Route path='/admin/blogs/add' element={<AddBlog />} />
+                            <Route path='/admin/profile' element={<Profile />} />
+                            <Route path='/admin/create' element={<CreateAdmin />} />
                         </Route>
                     </Routes>
                 </BrowserRouter>

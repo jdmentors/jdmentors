@@ -12,19 +12,24 @@ function UserRegForm({isLoginActive, setIsLoginActive}){
         fullName:'',
         email:'',
         phone:'',
-        password:''
+        password:'',
+        userType:'user'
     }});
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const [showPassword, setShowPassword] = useState(false);
+    const [isRegistering, setIsRegistering] = useState(false);
     
     const registerFormHandler = async (formData) => {
         try {
+            setIsRegistering(true);
+
             const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/users/register`, {fullName:formData.fullName, email:formData.email, phone:formData.phone, password:formData.password}, {withCredentials:true});
 
             if(data.success){
+                setIsRegistering(false);
                 const accessToken = data.data.accessToken;
                 dispatch(updateUser({...data.data.user, accessToken}));
                 dispatch(toggleIsUserLoggedIn(true));
@@ -70,11 +75,21 @@ function UserRegForm({isLoginActive, setIsLoginActive}){
                     </div>
                 </div>
 
-                <button className="w-full bg-blue-600 py-2 text-white rounded cursor-pointer my-2 font-light" type="submit">Register</button>
+                <button className="w-full bg-blue-600 py-2 text-white rounded cursor-pointer my-2 font-light" type="submit">
+                    {
+                        !isRegistering ? 'Register' :
+                            (<span className="flex space-x-1 items-center justify-center py-2">
+                                <span className="w-2.5 h-2.5 bg-white rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+                                <span className="w-2.5 h-2.5 bg-white rounded-full animate-bounce [animation-delay:-0.2s]"></span>
+                                <span className="w-2.5 h-2.5 bg-white rounded-full animate-bounce [animation-delay:-0.1s]"></span>
+                                <span className="w-2.5 h-2.5 bg-white rounded-full animate-bounce"></span>
+                            </span>)
+                    }
+                </button>
 
                 <p className="text-sm font-light text-gray-600">Already have an account? <span to="" className="underline text-blue-600 cursor-pointer" onClick={() => setIsLoginActive(true)}>Login</span></p>
 
-                <button className="w-full mt-5 bg-blue-950 py-2 text-white rounded cursor-pointer my-2 font-light">Continue as Guest</button>
+                {/* <button className="w-full mt-5 bg-blue-950 py-2 text-white rounded cursor-pointer my-2 font-light">Continue as Guest</button> */}
             </form>
         </section>
     );

@@ -1,5 +1,6 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const registerUser = async (req, res) => {
     try {
@@ -47,9 +48,9 @@ const loginUser = async (req, res) => {
             return res.status(404).json({success:false, message:'No user found with this email.'});
         }
 
-        const { accessToken } = await generateAccessAndRefreshToken(user);
+        const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user);
 
-        return res.status(200).cookie('accessToken', accessToken, { httpOnly: true, secure:false, sameSite: 'lax', maxAge: 15 * 60 * 1000 }).json({success:true, message:'Logged In', data:{user:{id:user._id, fullName:user.fullName, email, phone:user.phone || '', userType:user.userType}, accessToken}});
+        return res.status(200).cookie('accessToken', accessToken, { httpOnly: true, secure:false, sameSite: 'lax' }).json({success:true, message:'Logged In', data:{user:{id:user._id, fullName:user.fullName, email, phone:user.phone || '', userType:user.userType}, accessToken, refreshToken}});
     } catch (error) {
         throw new Error(error);
     }
@@ -94,8 +95,30 @@ const generateAccessAndRefreshToken = async (user) => {
     }
 }
 
+const refreshAccessToken = async (req, res) => {
+    try {
+        const refreshToken = req.headers.authorization.split(' ')[1];
+        
+        const verified = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_KEY);
+
+        if(verified){
+            const { id } = await jwt.decode(refreshToken);
+            const user = await User.findById(id);
+
+            if(user){
+                const accessToken = await user.generateAccessToken();
+
+                return res.status(200).cookie('accessToken', accessToken, { httpOnly: true, secure:false, sameSite: 'lax' }).json({success:true, data:{ accessToken }})
+            }
+        }
+    } catch (error) {
+        return res.status(401).json({success:false, message:'refreshToken'})
+    }
+}
+
 export {
     registerUser,
     loginUser,
     logOutUser,
+    refreshAccessToken,
 }

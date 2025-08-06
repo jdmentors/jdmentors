@@ -27,6 +27,11 @@ import AdminFooter from "./admin/AdminFooter";
 import RTE from "./RTE";
 import AddBlogForm from "./admin/AddBlogForm";
 import AddServiceForm from "./admin/AddServiceForm";
+import DeleteModalDialogue from "./DeleteModalDialogue";
+import Profile from "./Profile";
+import CreateAdmin from "./admin/CreateAdmin";
+import UserPopUp from "./UserPopUp";
+import Protected from "./Protected";
 
 export {
     Header,
@@ -58,4 +63,9 @@ export {
     RTE,
     AddBlogForm,
     AddServiceForm,
+    DeleteModalDialogue,
+    Profile,
+    CreateAdmin,
+    UserPopUp,
+    Protected
 }

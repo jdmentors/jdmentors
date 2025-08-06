@@ -22,6 +22,7 @@ function Contact() {
     const submitHandler = async (formData) => {
         try {
             console.log(formData);
+            setSending(true);
             // setSending(true);
             // const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_NAME}/api/v1/contact`, {name:formData.name, email:formData.email, phone:formData.phone, service:formData.service || 'User Query', message:formData.message});
 
@@ -149,6 +150,7 @@ function Contact() {
                                 !sending ? 'Send Message' :
                                     (<span className="flex space-x-1">
                                         <span className="w-2.5 h-2.5 bg-white rounded-full animate-bounce [animation-delay:-0.2s]"></span>
+                                        <span className="w-2.5 h-2.5 bg-white rounded-full animate-bounce [animation-delay:-0.1s]"></span>
                                         <span className="w-2.5 h-2.5 bg-white rounded-full animate-bounce [animation-delay:-0.1s]"></span>
                                         <span className="w-2.5 h-2.5 bg-white rounded-full animate-bounce"></span>
                                     </span>)

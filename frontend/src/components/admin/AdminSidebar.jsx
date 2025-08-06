@@ -1,11 +1,14 @@
-import { LaptopIcon, LayoutDashboard, LogOut, Newspaper, Users } from "lucide-react";
+import { LaptopIcon, LayoutDashboard, LogOut, Newspaper, Plus, Settings, UserCircle, Users } from "lucide-react";
 import { NavLink } from "react-router";
 
 const navigation = [
     {name:'Dashboard', path:'/admin/dashboard', icon: <LayoutDashboard size={25} strokeWidth={1.5} />},
+    {name:'Sessions', path:'/admin/sessions', icon: <LaptopIcon size={25} strokeWidth={1.5} />},
     {name:'Users', path:'/admin/users', icon: <Users size={25} strokeWidth={1.5} />},
-    {name:'Services', path:'/admin/services', icon: <LaptopIcon size={25} strokeWidth={1.5} />},
+    {name:'Services', path:'/admin/services', icon: <Settings size={25} strokeWidth={1.5} />},
     {name:'Blogs', path:'/admin/blogs', icon: <Newspaper size={25} strokeWidth={1.5} />},
+    {name:'Profile', path:'/admin/profile', icon: <UserCircle size={25} strokeWidth={1.5} />},
+    {name:'Create Admin', path:'/admin/create', icon: <Plus size={25} strokeWidth={1.5} />},
 ];
 
 function AdminSidebar(){

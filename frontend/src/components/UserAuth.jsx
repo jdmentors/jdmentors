@@ -13,8 +13,8 @@ function UserAuth(){
 
     return (
         <section className="fixed z-50 top-0 left-0 right-0 bottom-0 bg-black/80 flex items-center justify-center">
-            <div className="w-full mx-5 sm:w-1/2 lg:w-1/3 xl:w-1/4 bg-white px-6 sm:px-8 md:px-10 rounded-md drop-shadow-xl drop-shadow-blue-500 relative flex overflow-hidden">
-                <div className={`min-w-[300%] flex items-start transition-all duration-200 my-14 ${(isForgotPasswordActive && !isLoginActive) ? 'translate-x-0 max-h-68' : (!isLoginActive && !isForgotPasswordActive) ? '-translate-x-2/3 max-h-122' : '-translate-x-1/3 max-h-87'}`}>
+            <div className="w-full mx-5 sm:w-1/2 lg:w-1/3 xl:w-1/4 bg-white px-6 sm:px-8 md:px-10 rounded-md drop-shadow-xl drop-shadow-blue-400 relative flex overflow-hidden">
+                <div className={`min-w-[300%] flex items-start transition-all duration-200 my-14 ${(isForgotPasswordActive && !isLoginActive) ? 'translate-x-0 max-h-50' : (!isLoginActive && !isForgotPasswordActive) ? '-translate-x-2/3 max-h-104' : '-translate-x-1/3 max-h-69'}`}>
                     <ForgotPasswordForm isLoginActive={isLoginActive} setIsLoginActive={setIsLoginActive} isForgotPasswordActive={isForgotPasswordActive} setIsForgotPasswordActive={setIsForgotPasswordActive} />
 
                     <UserLogForm isLoginActive={isLoginActive} setIsLoginActive={setIsLoginActive} isForgotPasswordActive={isForgotPasswordActive} setIsForgotPasswordActive={setIsForgotPasswordActive} />

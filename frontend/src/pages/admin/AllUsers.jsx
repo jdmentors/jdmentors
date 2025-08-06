@@ -1,6 +1,7 @@
 import { AdminContainer, AdminSidebar } from "../../components";
 import { Trash } from "lucide-react";
 import { user } from "../../assets";
+import { Link } from "react-router";
 
 function AllUsers() {
     const adminBookings = [
@@ -56,9 +57,11 @@ function AllUsers() {
                         </div>
 
                         <div className="my-5 overflow-x-auto">
-                            <div className="hidden sm:grid grid-cols-[100px_1fr_1fr_1fr_1fr_1fr] gap-5 items-center py-3 border-b-2 border-b-blue-100">
-                                <h5 className="text-lg">Image</h5>
+                            <div className="hidden sm:grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-5 items-center py-3 border-b-2 border-b-blue-100">
+                                {/* <h5 className="text-lg">Image</h5> */}
                                 <h5 className="text-lg">User</h5>
+                                <h5 className="text-lg">Email</h5>
+                                <h5 className="text-lg">Phone</h5>
                                 <h5 className="text-lg">Session</h5>
                                 <h5 className="text-lg">Spent</h5>
                                 <h5 className="text-lg">Member Since</h5>
@@ -73,12 +76,14 @@ function AllUsers() {
                                         <div className="hidden sm:block">
                                             {
                                                 adminBookings.map(booking => (
-                                                    <div key={booking._id} className="md:grid grid-cols-[100px_1fr_1fr_1fr_1fr_1fr] gap-5 items-center py-5 text-gray-600">
-                                                        <img src={user} alt="" className="h-9 w-9 sm:h-12 sm:w-12 object-cover rounded-full border-2 border-blue-100" />
+                                                    <div key={booking._id} className="md:grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-5 items-center py-5 text-gray-600">
+                                                        {/* <img src={user} alt="" className="h-9 w-9 sm:h-12 sm:w-12 object-cover rounded-full border-2 border-blue-100" /> */}
 
-                                                        <p>
-                                                            Sahid Khan
-                                                        </p>
+                                                        <p>Sahid Khan</p>
+
+                                                        <Link to={`mailto:sahid@sahid.com`} className="text-blue-600 underline">sahid@sahid.com</Link>
+
+                                                        <Link to={`tel:8574123698`} className="text-blue-600 underline">7485963698</Link>
 
                                                         <p>12</p>
                                                         <p>$840</p>
@@ -94,15 +99,20 @@ function AllUsers() {
                                                 adminBookings.map(booking => (
                                                     <div key={booking._id} className="flex flex-col gap-3 py-5 text-gray-600 border-b-2 border-b-blue-100">
                                                         <div className="flex gap-4">
-                                                            <p className="text-gray-800">Image:</p>
-                                                            <img src={user} alt="" className="h-9 w-9 sm:h-12 sm:w-12 object-cover rounded-full border-2 border-blue-100" />
+                                                            <p className="text-gray-800">User:</p>
+                                                            <p>
+                                                                Sahid Khan
+                                                            </p>
                                                         </div>
 
                                                         <div className="flex gap-4">
-                                                            <p className="text-gray-800">User:</p>
-                                                            <p className="text-blue-600 underline">
-                                                                Sahid Khan
-                                                            </p>
+                                                            <p className="text-gray-800">Email:</p>
+                                                            <p className="text-blue-600 underline">sahid@sahid.com</p>
+                                                        </div>
+
+                                                        <div className="flex gap-4">
+                                                            <p className="text-gray-800">Phone:</p>
+                                                            <p className="text-blue-600 underline">+1 7485963689</p>
                                                         </div>
 
                                                         <div className="flex gap-4">

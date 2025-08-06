@@ -2,13 +2,15 @@ import { Link, NavLink, useLocation } from "react-router";
 import { Container } from "./";
 import { useEffect, useState } from "react";
 import { closeMenu, darkLogo, menuIcon } from "../assets";
-import { Phone, Video } from 'lucide-react';
+import { LayoutDashboard, Phone, Video } from 'lucide-react';
 import { logo } from "../assets";
+import { useSelector } from "react-redux";
 
 function Header() {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { pathname } = useLocation();
+    const isUserLoggedIn = useSelector(state => state.user.isUserLoggedIn);
 
     const navLinks = [
         { name: 'Home', href: '/' },
@@ -42,16 +44,26 @@ function Header() {
                         {
                             navLinks.map(link => (
                                 <li className="relative py-1" key={link.name}>
-                                    <NavLink className={({ isActive }) => `${ (isActive && isScrolled) ? 'text-blue-600 after:bg-blue-600' : isActive ? 'text-blue-600 after:bg-blue-600' : isScrolled ? 'text-blue-950 after:bg-blue-950' : 'text-white after:bg-white'} after:w-0 after:rounded after:h-0.5 after:absolute after:bottom-0 after:left-0 after:content-[""] hover:after:w-full after:transition-all after:duration-150`} to={link.href}>{link.name}</NavLink>
+                                    <NavLink className={({ isActive }) => `${(isActive && isScrolled) ? 'text-blue-600 after:bg-blue-600' : isActive ? 'text-blue-600 after:bg-blue-600' : isScrolled ? 'text-blue-950 after:bg-blue-950' : 'text-white after:bg-white'} after:w-0 after:rounded after:h-0.5 after:absolute after:bottom-0 after:left-0 after:content-[""] hover:after:w-full after:transition-all after:duration-150`} to={link.href}>{link.name}</NavLink>
                                 </li>
                             ))
                         }
                         <li>
-                            <Link to='/contact' className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700">
-                                <Video size={24} strokeWidth={1.5} />
+                            {
+                                isUserLoggedIn
+                                    ?
+                                    <Link to='/user/dashboard' className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700">
+                                        <LayoutDashboard size={24} strokeWidth={1.5} />
 
-                                <span>Book Consultation</span>
-                            </Link>
+                                        <span>Dashboard</span>
+                                    </Link>
+                                    :
+                                    <Link to='/services' className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700">
+                                        <Video size={24} strokeWidth={1.5} />
+
+                                        <span>Book Consultation</span>
+                                    </Link>
+                            }
                         </li>
 
                     </ul>
@@ -66,6 +78,17 @@ function Header() {
                                     <NavLink className={({ isActive }) => `${isActive ? 'text-blue-600 after:bg-blue-600' : 'text-blue-950 after:bg-blue-950'} after:w-0 after:rounded after:h-0.5 after:absolute after:bottom-0 after:left-0 after:content-[""] hover:after:w-full after:transition-all after:duration-150`} to={link.href}>{link.name}</NavLink>
                                 </li>
                             ))
+                        }
+                        {
+                            isUserLoggedIn
+                            &&
+                            <li className="py-2">
+                                <Link to='/user/dashboard' className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700">
+                                    <LayoutDashboard size={24} strokeWidth={1.5} />
+
+                                    <span>Dashboard</span>
+                                </Link>
+                        </li>
                         }
                         <li className="py-2">
                             <Link to='#contact' className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700">

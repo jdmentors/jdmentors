@@ -1,11 +1,67 @@
+import axios from "axios";
 import { LayoutDashboard, LogOut } from "lucide-react";
-import { NavLink } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink, useNavigate } from "react-router";
+import { toggleIsUserLoggedIn, toggleShowUserAuthForm, updateUser } from "../../features/forms/UserAuthSlice.js";
+import toast from "react-hot-toast";
 
 const navigation = [
     {name:'Dashboard', path:'/user/dashboard', icon: <LayoutDashboard size={25} strokeWidth={1.5} />},
 ];
 
 function UserSidebar(){
+    const user = useSelector(state => state.user.user);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const refreshAccessToken = async () => {
+        try {
+             const { data } = await axios.get(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/users/refresh-access-token`, {headers: {Authorization: `Bearer ${user.refreshToken}`}});
+
+             if(data && data.success){
+                dispatch(updateUser({...user, accessToken:data.data.accessToken}));
+                return data.data.accessToken;
+            }
+        } catch (error) {
+            if(error?.response?.data?.message === 'refreshToken'){
+                dispatch(updateUser({}));
+                dispatch(toggleIsUserLoggedIn(false));
+                dispatch(toggleShowUserAuthForm(true));
+                navigate('/');
+            }else{
+                throw new Error(error);
+            }            
+        }
+    }
+
+    const logOutHandler = async () => {
+        try {
+            const { data } = await axios.get(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/users/logout`, {headers: {Authorization: `Bearer ${user.accessToken}`}});
+
+            if(data && data.success){
+                dispatch(toggleIsUserLoggedIn(false));
+                dispatch(updateUser({}));
+                navigate('/');
+                toast.success(data.message);
+            }
+        } catch (error) {
+            if(error?.response?.data?.message === 'accessToken'){
+                const newAccessToken = await refreshAccessToken();
+
+                const { data } = await axios.get(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/users/logout`, {headers: {Authorization: `Bearer ${newAccessToken}`}});
+
+                if(data && data.success){
+                    dispatch(toggleIsUserLoggedIn(false));
+                    dispatch(updateUser({}));
+                    navigate('/');
+                    toast.success(data.message);
+                }
+            }else{
+                throw new Error(error);
+            }
+        }
+    }
+
     return (
         <aside className="border-r-2 border-r-blue-100 w-1/6">
             <nav>
@@ -20,8 +76,8 @@ function UserSidebar(){
                             </li>
                         ))
                     }
-                    <li className="px-1 py-2 md:py-3 md:px-5 flex justify-center md:justify-start items-center cursor-pointer" onClick={() => ``}>
-                        <button className="flex gap-2 cursor-pointer"><LogOut size={25} strokeWidth={1.5} /> <span className="hidden md:block">Log Out</span></button>
+                    <li className="px-1 py-2 md:py-3 md:px-5 flex justify-center md:justify-start items-center cursor-pointer">
+                        <button onClick={logOutHandler} className="flex gap-2 cursor-pointer"><LogOut size={25} strokeWidth={1.5} /> <span className="hidden md:block">Log Out</span></button>
                     </li>
                 </ul>
             </nav>

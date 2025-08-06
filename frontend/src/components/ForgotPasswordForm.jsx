@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { Mail } from "lucide-react";
+import { useState } from "react";
 
 function ForgotPasswordForm({isLoginActive, setIsLoginActive, isForgotPasswordActive, setIsForgotPasswordActive}){
 
@@ -12,8 +13,12 @@ function ForgotPasswordForm({isLoginActive, setIsLoginActive, isForgotPasswordAc
         email:user.email || ''
     }});
 
+    const [isSending, setIsSending] = useState(false);
+
     const forgotPasswordHandler = async (formData) => {
         try {
+            setIsSending(true);
+
             console.log(formData);
             // const { data } = await axios.post('/api/v1/users/forgot-password', {email:formData.email});
 
@@ -40,11 +45,21 @@ function ForgotPasswordForm({isLoginActive, setIsLoginActive, isForgotPasswordAc
                     Remember Password?
                 </p>
 
-                <button className="w-full bg-blue-600 py-2 text-white rounded cursor-pointer my-2 font-light" type="submit">Send Reset Link</button>
+                <button className="w-full bg-blue-600 py-2 text-white rounded cursor-pointer my-2 font-light" type="submit">
+                    {
+                        !isSending ? 'Send Reset Link' :
+                            (<span className="flex space-x-1 items-center justify-center py-2">
+                                <span className="w-2.5 h-2.5 bg-white rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+                                <span className="w-2.5 h-2.5 bg-white rounded-full animate-bounce [animation-delay:-0.2s]"></span>
+                                <span className="w-2.5 h-2.5 bg-white rounded-full animate-bounce [animation-delay:-0.1s]"></span>
+                                <span className="w-2.5 h-2.5 bg-white rounded-full animate-bounce"></span>
+                            </span>)
+                    }
+                </button>
 
                 <p className="text-sm font-light text-gray-600">Don't have an account? <span to="" className="underline text-blue-500 cursor-pointer" onClick={() => {setIsLoginActive(false); setIsForgotPasswordActive(false);}}>Sign up</span></p>
 
-                <button className="w-full mt-5 bg-blue-950 py-2 text-white rounded cursor-pointer my-2 font-light">Continue as Guest</button>
+                {/* <button className="w-full mt-5 bg-blue-950 py-2 text-white rounded cursor-pointer my-2 font-light">Continue as Guest</button> */}
             </form>
         </section>
     );

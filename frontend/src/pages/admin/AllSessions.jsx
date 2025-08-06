@@ -44,7 +44,7 @@ const adminBookings = [
 
 ]
 
-function AdminDashboard() {
+function AllSessions() {
     const accessToken = useSelector(state => state.user.user.accessToken);
     const [showUserPopUp, setShowUserPopUp] = useState(false);
     // const [adminBookings, setadminBookings] = useState(null);
@@ -66,8 +66,7 @@ function AdminDashboard() {
     // }, [])
 
     return (
-        <section className="flex min-h-[90vh] relative">
-            
+        <section className="flex min-h-[90vh]">
             {
                 showUserPopUp &&
                 <section className="top-0 left-0 right-0 bottom-0 bg-black/70 z-50 flex items-center justify-center fixed">
@@ -79,77 +78,8 @@ function AdminDashboard() {
 
             <AdminContainer>
                 <div className="max-w-full">
-                    <h2 className="text-3xl md:text-4xl font-bold mb-5 text-blue-950">Dashboard</h2>
-                    <p className="text-gray-600">Monitor your sessions and docs-all in one place. Stay updated with real-time insights to ensure smooth operations.</p>
-                </div>
-
-                {/* Stats section */}
-                <div className="my-10 max-w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-14">
-                    <div className="flex justify-between gap-10 lg:gap-5 bg-blue-50 items-center border-2 border-blue-100 rounded-xl p-7">
-                        <div className="bg-blue-100 p-3 rounded-md">
-                            <User size={30} strokeWidth={1.5} className="text-blue-600" />
-                        </div>
-
-                        <div>
-                            <p className="text-gray-600">Users</p>
-                            <p className="text-2xl text-blue-950 font-semibold">78</p>
-                        </div>
-                    </div>
-
-                    <div className="flex justify-between gap-10 bg-blue-50 items-center border-2 border-blue-100 rounded-xl p-7">
-                        <div className="bg-blue-100 p-3 rounded-md">
-                            <VideoIcon size={30} strokeWidth={1.5} className="text-blue-600" />
-                        </div>
-
-                        <div>
-                            <p className="text-gray-600">Sessions</p>
-                            <p className="text-2xl text-blue-950 font-semibold">170</p>
-                        </div>
-                    </div>
-
-                    <div className="flex justify-between gap-10 bg-blue-50 items-center border-2 border-blue-100 rounded-xl p-7">
-                        <div className="bg-blue-100 p-3 rounded-md">
-                            <DollarSign size={30} strokeWidth={1.5} className="text-blue-600" />
-                        </div>
-
-                        <div>
-                            <p className="text-gray-600">Revenue</p>
-                            <p className="text-2xl text-blue-950 font-semibold">$4250</p>
-                        </div>
-                    </div>
-
-                    <div className="flex justify-between gap-10 bg-blue-50 items-center border-2 border-blue-100 rounded-xl p-7">
-                        <div className="bg-blue-100 p-3 rounded-md">
-                            <Settings size={30} strokeWidth={1.5} className="text-blue-600" />
-                        </div>
-
-                        <div>
-                            <p className="text-gray-600">Services</p>
-                            <p className="text-2xl text-blue-950 font-semibold">13</p>
-                        </div>
-                    </div>
-
-                    <div className="flex justify-between gap-10 bg-blue-50 items-center border-2 border-blue-100 rounded-xl p-7">
-                        <div className="bg-blue-100 p-3 rounded-md">
-                            <Newspaper size={30} strokeWidth={1.5} className="text-blue-600" />
-                        </div>
-
-                        <div>
-                            <p className="text-gray-600">Blogs</p>
-                            <p className="text-2xl text-blue-950 font-semibold">7</p>
-                        </div>
-                    </div>
-
-                    <div className="flex justify-between gap-10 bg-blue-50 items-center border-2 border-blue-100 rounded-xl p-7">
-                        <div className="bg-blue-100 p-3 rounded-md">
-                            <UserRound size={30} strokeWidth={1.5} className="text-blue-600" />
-                        </div>
-
-                        <div>
-                            <p className="text-gray-600">Admins</p>
-                            <p className="text-2xl text-blue-950 font-semibold">1</p>
-                        </div>
-                    </div>
+                    <h2 className="text-3xl md:text-4xl font-bold mb-5 text-blue-950">All Sessions</h2>
+                    <p className="text-gray-600">Track and manage every scheduled session or consultation in one place. Stay informed and ensure seamless communication between users and experts.</p>
                 </div>
 
                 <div className="my-10 max-w-full">
@@ -189,10 +119,10 @@ function AdminDashboard() {
                                                         <p>$60</p>
 
                                                         <Link to="/" className="flex gap-1 items-center"><FileDownIcon size={18} /> <span className="text-blue-600 hover:underline">file.pdf</span></Link>
-                                                        
-                                                        
+
+
                                                         <p className={`flex items-center gap-1 ${booking.isPaid ? 'text-green-600' : 'text-red-600'}`}><span className={`h-2 w-2 ${booking.isPaid ? 'bg-green-600' : 'bg-red-600'} rounded-full`}></span> <span>{booking.isPaid ? 'Paid' : 'Unpaid'}</span></p>
-                                                        
+
                                                     </div>
                                                 ))
                                             }
@@ -249,4 +179,4 @@ function AdminDashboard() {
     );
 }
 
-export default AdminDashboard;
+export default AllSessions;
