@@ -1,5 +1,5 @@
 import { daniel, emily, michael, omar, priya, sarah } from "../assets";
-import { CallToAction, Contact, Container, Hero, FAQ, Testimonial, Stat, ServiceCard, BlogCard } from "../components";
+import { CallToAction, Container, Hero, FAQ, Testimonial, Stat, BlogCard, AllServices } from "../components";
 import Marquee from "react-fast-marquee";
 import AboutUs from "../components/AboutUs";
 import { Link } from "react-router";
@@ -82,17 +82,6 @@ const stats = [
     }
 ];
 
-const services = [
-    {
-        _id: 'df75fd4r8fg45fvb41gf68ghg',
-        title: 'Personal Statement Review',
-        description: 'Comprehensive 1-on-1 sessions to refine your personal statement, ensuring it effectively communicates your unique story and qualifications.',
-        offers: ['Structural and content analysis', 'Grammar and style improvements', 'Strategic positioning for non-T14 schools'],
-        price: 100,
-        process: 'Submit your draft, Independent review, and 1-hour video consultation to refine your statement.'
-    }
-];
-
 function Home() {
     return (
         <div className="min-h-[70vh]">
@@ -117,15 +106,9 @@ function Home() {
                     <div>
 
                         <h2 className="text-3xl font-bold text-blue-950">Our Specialized Services</h2>
-                        <p className="md:text-lg text-blue-950 my-3">Tailored support to make your law school application stand out.</p>
+                        <p className="md:text-lg text-blue-950 mt-3 mb-8">Tailored support to make your law school application stand out.</p>
 
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 sm:gap-8">
-                            {
-                                Array(5).fill('').map(service => (
-                                    <ServiceCard _id={services[0]._id} key={services[0]._id} title={services[0].title} description={services[0].description} offers={services[0].offers} price={services[0].price} process={services[0].process} />
-                                ))
-                            }
-                        </div>
+                        <AllServices limit={3} />
 
                         <div className="flex justify-center mt-10">
                             <Link className="py-2.5 px-6 rounded-md bg-blue-600 text-white inline-flex items-center gap-2" to="/services">All Services <ArrowRight /></Link>
@@ -167,7 +150,7 @@ function Home() {
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 mt-8">
                             {
-                                Array(3).fill('').map((i) => (
+                                Array(3).fill('').map((_, i) => (
                                     <BlogCard key={i} />
                                 ))
                             }

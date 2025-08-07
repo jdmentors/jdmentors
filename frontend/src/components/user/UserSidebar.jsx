@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router";
 import { toggleIsUserLoggedIn, toggleShowUserAuthForm, updateUser } from "../../features/forms/UserAuthSlice.js";
 import toast from "react-hot-toast";
+import useRefreshToken from "../../hooks/useRefreshToken.jsx";
 
 const navigation = [
     {name:'Dashboard', path:'/user/dashboard', icon: <LayoutDashboard size={25} strokeWidth={1.5} />},
@@ -14,25 +15,7 @@ function UserSidebar(){
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const refreshAccessToken = async () => {
-        try {
-             const { data } = await axios.get(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/users/refresh-access-token`, {headers: {Authorization: `Bearer ${user.refreshToken}`}});
-
-             if(data && data.success){
-                dispatch(updateUser({...user, accessToken:data.data.accessToken}));
-                return data.data.accessToken;
-            }
-        } catch (error) {
-            if(error?.response?.data?.message === 'refreshToken'){
-                dispatch(updateUser({}));
-                dispatch(toggleIsUserLoggedIn(false));
-                dispatch(toggleShowUserAuthForm(true));
-                navigate('/');
-            }else{
-                throw new Error(error);
-            }            
-        }
-    }
+    const refreshAccessToken = useRefreshToken();
 
     const logOutHandler = async () => {
         try {

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
 import { toggleShowUserAuthForm } from "../features/forms/UserAuthSlice";
 
-function ServiceCard({_id, title, description, offers, price, process}) {
+function ServiceCard({_id, title, description, features, price, process}) {
     const dispatch = useDispatch();
     const isUserLoggedIn = useSelector(state => state.user.isUserLoggedIn);
     const navigate = useNavigate();
@@ -34,7 +34,7 @@ function ServiceCard({_id, title, description, offers, price, process}) {
                 </p>
                 <ul className="text-gray-600 space-y-2 mb-6">
                     {
-                        offers.map(offer => (
+                        features.map(offer => (
                             <li key={offer} className="flex items-start gap-1">
                                 <Check className="text-blue-600" size={18} />
                                 <span>{offer}</span>

@@ -1,12 +1,17 @@
-import { RTE } from "../";
 import { useForm } from "react-hook-form";
-import { useCallback, useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useCallback, useEffect } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import useRefreshToken from "../../hooks/useRefreshToken";
+import { updateUser } from "../../features/forms/UserAuthSlice.js";
 
 function AddServiceForm({ service, id }) {
-    const navigate = useNavigate();
+    const user = useSelector(state => state.user.user);
+    const refreshAccessToken = useRefreshToken();
+    const dispatch = useDispatch();
 
-    const { register, handleSubmit, control, watch, setValue, getValues } = useForm({
+    const { register, handleSubmit, control, watch, setValue, getValues, reset } = useForm({
         defaultValues: {
             title: service?.title || "",
             slug: service?.slug || "",
@@ -20,9 +25,33 @@ function AddServiceForm({ service, id }) {
 
     const publishService = async (serviceData) => {
         try {
-            console.log(serviceData);
+            const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/services/create`, {title:serviceData.title, slug:serviceData.slug, description:serviceData.description, price:serviceData.price, process:serviceData.process || '', features:serviceData.features || '', status:serviceData.status}, {headers: {Authorization: `Bearer ${user.accessToken}`}});
+
+            if(data && data.success){
+                toast.success(data.message);
+                reset();
+            }
         } catch (error) {
-            console.error(error);
+            const message = error?.response?.data?.message;
+            if(message === 'accessToken'){
+                try {
+                    const newAccessToken = await refreshAccessToken();
+
+                    const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/services/create`, {title:serviceData.title, slug:serviceData.slug, description:serviceData.description, price:serviceData.price, process:serviceData.process || '', features:serviceData.features || '', status:serviceData.status}, {headers: {Authorization: `Bearer ${newAccessToken}`}});
+
+                    if(data && data.success){
+                        toast.success(data.message);
+                        dispatch(updateUser({...user, accessToken:newAccessToken}));
+                        reset();
+                    }
+                } catch (error) {
+                    toast.error(error?.response?.data?.message);
+                }
+            }
+
+            if(message == 'Service already exists with this title'){
+                toast.error(message);
+            }
         }
     }
 
@@ -69,14 +98,16 @@ function AddServiceForm({ service, id }) {
 
                     <div className="flex flex-col gap-2">
                         <label className="text-gray-700" htmlFor="features">Features:</label>
-                        <input className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="features" type="text" {...register('features', { required: true })} placeholder="Enter service features here..." />
+                        <input className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="features" type="text" {...register(`features[0]`, { required: false })} placeholder="Enter service features here..." />
+                        <input className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="features" type="text" {...register(`features[1]`, { required: false })} placeholder="Enter service features here..." />
+                        <input className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="features" type="text" {...register(`features[2]`, { required: false })} placeholder="Enter service features here..." />
                     </div>
 
                     <br />
 
                     <div className="flex flex-col gap-2">
                         <label className="text-gray-700" htmlFor="process">Process:</label>
-                        <textarea rows={4} className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="process" {...register('process', { required: true })} placeholder="Enter service process here..." />
+                        <textarea rows={4} className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="process" {...register('process', { required: false })} placeholder="Enter service process here..." />
                     </div>
 
                     <br />

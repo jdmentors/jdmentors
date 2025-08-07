@@ -2,44 +2,54 @@ import { AdminContainer, AdminSidebar } from "../../components";
 import { Pencil, Plus, Trash } from "lucide-react";
 import { user } from "../../assets";
 import { Link } from "react-router";
+import { useState } from "react";
+import useGetAllServices from "../../hooks/useGetAllServices";
+import { useEffect } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import useRefreshToken from "../../hooks/useRefreshToken"
 
 function AllServices() {
-    const adminBookings = [
-        {
-            "_id": "67f76839994a731e97d3b8ce",
-            "user": 'Sahid Khan',
-            "room": 2,
-            "hotel": 3,
-            "checkInDate": "2025-04-30T00:00:00.000Z",
-            "checkOutDate": "2025-05-01T00:00:00.000Z",
-            "totalPrice": 299,
-            "guests": 1,
-            "status": "pending",
-            "paymentMethod": "Stripe",
-            "isPaid": false,
-            "createdAt": "2025-04-10T06:42:01.529Z",
-            "updatedAt": "2025-04-10T06:43:54.520Z",
-            "__v": 0
-        },
+    const [allServices, setAllServices] = useState(null);
+    const getAllServices = useGetAllServices();
+    const user = useSelector(state => state.user.user);
+    const refreshAccessToken = useRefreshToken();
 
-        {
-            "_id": "47g5g239994a731e97d3b8ce",
-            "user": 'Sana',
-            "room": 2,
-            "hotel": 3,
-            "checkInDate": "2025-04-30T00:00:00.000Z",
-            "checkOutDate": "2025-05-01T00:00:00.000Z",
-            "totalPrice": 299,
-            "guests": 1,
-            "status": "pending",
-            "paymentMethod": "Stripe",
-            "isPaid": false,
-            "createdAt": "2025-04-10T06:42:01.529Z",
-            "updatedAt": "2025-04-10T06:43:54.520Z",
-            "__v": 0
-        },
+    useEffect(() => {
+        const fetchAllServices = async () => {
+            setAllServices(await getAllServices());
+        }
+        fetchAllServices();
+    }, [])
 
-    ]
+    console.log(allServices);
+    
+    const handleDeleteService = async (id) => {
+        try {
+            const { data } = await axios.delete(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/services/delete/${id}`, {headers: {Authorization: `Bearer ${user.accessToken}`}});
+
+            if(data && data.success){
+                toast.success(data.message);
+            }
+        } catch (error) {
+            const message = error?.response?.data?.message;
+            if(message === 'accessToken'){
+                try {
+                    const newAccessToken = await refreshAccessToken();
+
+                    const { data } = await axios.delete(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/services/delete/${id}`, {headers: {Authorization: `Bearer ${newAccessToken}`}});
+
+                    if(data && data.success){
+                        toast.success(data.message);
+                        setAllServices(prevServices => prevServices.filter(service => service._id.toString() !== id.toString()));
+                    }
+                } catch (error) {
+                    toast.error(error?.response?.data?.message);
+                }
+            }
+        }
+    }
     return (
         <section className="flex min-h-[90vh]">
             <AdminSidebar />
@@ -71,24 +81,24 @@ function AllServices() {
                             </div>
 
                             {
-                                adminBookings
+                                allServices
                                 &&
                                 (
                                     <>
                                         <div className="hidden sm:block">
                                             {
-                                                adminBookings.map(booking => (
-                                                    <div key={booking._id} className="md:grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr] gap-5 items-center py-5 text-gray-600">
-                                                        <p className="text-gray-600">Personal Statement Review</p>
+                                                allServices.map(service => (
+                                                    <div key={service._id} className="md:grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr] gap-5 items-center py-5 text-gray-600">
+                                                        <p className="text-gray-600">{service.title}</p>
 
                                                         <p className="">
-                                                            $60/hr
+                                                            ${service.price}/hr
                                                         </p>
 
                                                         <p>41</p>
                                                         <p>$1540</p>
                                                         <label className="relative cursor-pointer">
-                                                            <input type="checkbox" onChange={(e) => toggleRoomAvailability(e.target.checked, room._id)} checked={true} className="sr-only peer" />
+                                                            <input type="checkbox" onChange={(e) => ``} checked={service.status === 'active' ? true : false} className="sr-only peer" />
 
                                                             <div className="w-12 h-7 peer-checked:bg-blue-600 bg-blue-200 border border-blue-200 rounded-full transition-colors duration-200"></div>
 
@@ -97,7 +107,7 @@ function AllServices() {
 
                                                         <div className="flex gap-3">
                                                             <button className="bg-green-600 px-4 py-3 rounded-md text-white max-w-max cursor-pointer"><Pencil size={18} /></button>
-                                                            <button className="bg-red-600 px-4 py-3 rounded-md text-white max-w-max cursor-pointer"><Trash size={18} /></button>
+                                                            <button onClick={() => handleDeleteService(service._id)} className="bg-red-600 px-4 py-3 rounded-md text-white max-w-max cursor-pointer"><Trash size={18} /></button>
                                                         </div>
                                                     </div>
                                                 ))
@@ -105,17 +115,17 @@ function AllServices() {
                                         </div>
                                         <div className="sm:hidden">
                                             {
-                                                adminBookings.map(booking => (
-                                                    <div key={booking._id} className="flex flex-col gap-3 py-5 text-gray-600 border-b-2 border-b-blue-100">
+                                                allServices.map(service => (
+                                                    <div key={service._id} className="flex flex-col gap-3 py-5 text-gray-600 border-b-2 border-b-blue-100">
                                                         <div className="flex gap-4">
                                                             <p className="text-gray-800">Title:</p>
-                                                            <p className="text-gray-600">Personal Statement Review</p>
+                                                            <p className="text-gray-600">{service.title}</p>
                                                         </div>
 
                                                         <div className="flex gap-4">
                                                             <p className="text-gray-800">Rate:</p>
                                                             <p>
-                                                                $60/hr
+                                                                ${service.price}/hr
                                                             </p>
                                                         </div>
 
@@ -132,7 +142,7 @@ function AllServices() {
                                                         <div className="flex gap-4">
                                                             <p className="text-gray-800">Status:</p>
                                                             <label className="relative cursor-pointer">
-                                                                <input type="checkbox" onChange={(e) => toggleRoomAvailability(e.target.checked, room._id)} checked={true} className="sr-only peer" />
+                                                                <input type="checkbox" onChange={(e) => ``} checked={service.status === 'active' ? true : false} className="sr-only peer" />
 
                                                                 <div className="w-12 h-7 peer-checked:bg-blue-600 bg-blue-200 border border-blue-200 rounded-full transition-colors duration-200"></div>
 
@@ -145,7 +155,7 @@ function AllServices() {
 
                                                             <div className="flex flex-wrap gap-4">
                                                                 <button className="bg-green-600 px-3 py-1 rounded-md text-white max-w-max cursor-pointer">Edit</button>
-                                                                <button className="bg-red-600 px-3 py-1 rounded-md text-white max-w-max cursor-pointer">Delete</button>
+                                                                <button onClick={() => handleDeleteService(service._id)} className="bg-red-600 px-3 py-1 rounded-md text-white max-w-max cursor-pointer">Delete</button>
                                                             </div>
                                                         </div>
                                                     </div>

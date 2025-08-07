@@ -32,6 +32,7 @@ import Profile from "./Profile";
 import CreateAdmin from "./admin/CreateAdmin";
 import UserPopUp from "./UserPopUp";
 import Protected from "./Protected";
+import AllServices from "./AllServices";
 
 export {
     Header,
@@ -67,5 +68,6 @@ export {
     Profile,
     CreateAdmin,
     UserPopUp,
-    Protected
+    Protected,
+    AllServices,
 }
