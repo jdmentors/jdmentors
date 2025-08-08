@@ -5,12 +5,12 @@ const serviceSchema = new Schema({
         type: String,
         required: true,
         trim: true,
+        index: true
     },
     slug: {
         type: String,
         required: true,
         trim: true,
-        index: true
     },
     description: {
         type: String,
@@ -30,10 +30,10 @@ const serviceSchema = new Schema({
         required: true,
     },
     status: {
-        type: String,
+        type: Boolean,
         required: true,
         trim: true,
-        default: "active"
+        default: true
     },
     user: {
         type: Schema.Types.ObjectId,

@@ -7,7 +7,7 @@ import useGetAllServices from "../../hooks/useGetAllServices";
 import { useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useRefreshToken from "../../hooks/useRefreshToken"
 
 function AllServices() {
@@ -15,6 +15,7 @@ function AllServices() {
     const getAllServices = useGetAllServices();
     const user = useSelector(state => state.user.user);
     const refreshAccessToken = useRefreshToken();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const fetchAllServices = async () => {
@@ -23,26 +24,67 @@ function AllServices() {
         fetchAllServices();
     }, [])
 
-    console.log(allServices);
-    
     const handleDeleteService = async (id) => {
         try {
-            const { data } = await axios.delete(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/services/delete/${id}`, {headers: {Authorization: `Bearer ${user.accessToken}`}});
+            const { data } = await axios.delete(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/services/delete/${id}`, { headers: { Authorization: `Bearer ${user.accessToken}` } });
 
-            if(data && data.success){
+            if (data && data.success) {
                 toast.success(data.message);
+                setAllServices(prevServices => prevServices.filter(service => service._id.toString() !== id.toString()));
             }
         } catch (error) {
             const message = error?.response?.data?.message;
-            if(message === 'accessToken'){
+            if (message === 'accessToken') {
                 try {
                     const newAccessToken = await refreshAccessToken();
 
-                    const { data } = await axios.delete(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/services/delete/${id}`, {headers: {Authorization: `Bearer ${newAccessToken}`}});
+                    const { data } = await axios.delete(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/services/delete/${id}`, { headers: { Authorization: `Bearer ${newAccessToken}` } });
 
-                    if(data && data.success){
+                    if (data && data.success) {
                         toast.success(data.message);
+                        dispatch(updateUser({ ...user, accessToken: newAccessToken }));
                         setAllServices(prevServices => prevServices.filter(service => service._id.toString() !== id.toString()));
+                    }
+                } catch (error) {
+                    toast.error(error?.response?.data?.message);
+                }
+            }
+        }
+    }
+
+    const handleUpdateAvailability = async (id, e) => {
+        try {
+            const { data } = await axios.patch(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/services/availability/${id}`, { status: e.target.checked }, { headers: { Authorization: `Bearer ${user.accessToken}` } });
+
+            if (data && data.success) {
+                toast.success(data.message);
+                setAllServices(services =>
+                    services.map(service =>
+                        service._id === id
+                            ? { ...service, status: data.data.status }
+                            : service
+                    )
+                );
+            }
+        } catch (error) {
+            const message = error?.response?.data?.message;
+            if (message === 'accessToken') {
+                try {
+                    const newAccessToken = await refreshAccessToken();
+
+                    const { data } = await axios.patch(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/services/availability/${id}`, { status: e.target.checked }, { headers: { Authorization: `Bearer ${newAccessToken}` } });
+
+                    if (data && data.success) {
+                        toast.success(data.message);
+                        dispatch(updateUser({ ...user, accessToken: newAccessToken }));
+                        setAllServices(services =>
+                            services.map(service =>
+                                service._id === id
+                                    ? { ...service, status: data.data.status }
+                                    : service
+                            )
+                        );
+
                     }
                 } catch (error) {
                     toast.error(error?.response?.data?.message);
@@ -98,15 +140,16 @@ function AllServices() {
                                                         <p>41</p>
                                                         <p>$1540</p>
                                                         <label className="relative cursor-pointer">
-                                                            <input type="checkbox" onChange={(e) => ``} checked={service.status === 'active' ? true : false} className="sr-only peer" />
+                                                            <input type="checkbox" checked={service.status} onChange={(e) => handleUpdateAvailability(service._id, e)} className="sr-only peer" />
 
                                                             <div className="w-12 h-7 peer-checked:bg-blue-600 bg-blue-200 border border-blue-200 rounded-full transition-colors duration-200"></div>
 
                                                             <span className="h-5 w-5 bg-white rounded-full absolute top-1/2 -translate-y-1/2 peer-checked:translate-x-full mx-1 transition duration-200"></span>
                                                         </label>
 
+
                                                         <div className="flex gap-3">
-                                                            <button className="bg-green-600 px-4 py-3 rounded-md text-white max-w-max cursor-pointer"><Pencil size={18} /></button>
+                                                            <Link to={`/admin/services/edit/${service._id}`} className="bg-green-600 px-4 py-3 rounded-md text-white max-w-max cursor-pointer"><Pencil size={18} /></Link>
                                                             <button onClick={() => handleDeleteService(service._id)} className="bg-red-600 px-4 py-3 rounded-md text-white max-w-max cursor-pointer"><Trash size={18} /></button>
                                                         </div>
                                                     </div>
@@ -142,7 +185,7 @@ function AllServices() {
                                                         <div className="flex gap-4">
                                                             <p className="text-gray-800">Status:</p>
                                                             <label className="relative cursor-pointer">
-                                                                <input type="checkbox" onChange={(e) => ``} checked={service.status === 'active' ? true : false} className="sr-only peer" />
+                                                                <input type="checkbox" checked={service.status} onChange={(e) => handleUpdateAvailability(service._id, e)} className="sr-only peer" />
 
                                                                 <div className="w-12 h-7 peer-checked:bg-blue-600 bg-blue-200 border border-blue-200 rounded-full transition-colors duration-200"></div>
 
@@ -154,7 +197,7 @@ function AllServices() {
                                                             <p className="text-gray-800">Actions:</p>
 
                                                             <div className="flex flex-wrap gap-4">
-                                                                <button className="bg-green-600 px-3 py-1 rounded-md text-white max-w-max cursor-pointer">Edit</button>
+                                                                <Link to={`/admin/services/edit/${service._id}`} className="bg-green-600 px-3 py-1 rounded-md text-white max-w-max cursor-pointer">Edit</Link>
                                                                 <button onClick={() => handleDeleteService(service._id)} className="bg-red-600 px-3 py-1 rounded-md text-white max-w-max cursor-pointer">Delete</button>
                                                             </div>
                                                         </div>

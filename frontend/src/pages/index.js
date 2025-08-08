@@ -17,6 +17,8 @@ import AddBlog from "./admin/AddBlog";
 import AddService from "./admin/AddService";
 import AllSessions from "./admin/AllSessions";
 import ResetPassword from "./ResetPassword";
+import EditService from "./admin/EditService";
+import EditBlog from "./admin/EditBlog";
 
 export {
     Home,
@@ -38,4 +40,6 @@ export {
     AddService,
     AllSessions,
     ResetPassword,
+    EditService,
+    EditBlog,
 }

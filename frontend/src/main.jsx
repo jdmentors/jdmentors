@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App.jsx';
 import { BrowserRouter, Route, Routes } from "react-router";
-import { AboutUs, AddBlog, AddService, AdminDashboard, AdminLayout, AllBlogs, AllServices, AllSessions, AllUsers, Blogs, Checkout, Contact, Home, ResetPassword, Services, SingleBlog, Testimonials, UserDashboard, UserLayout } from './pages';
+import { AboutUs, AddBlog, AddService, AdminDashboard, AdminLayout, AllBlogs, AllServices, AllSessions, AllUsers, Blogs, Checkout, Contact, EditBlog, EditService, Home, ResetPassword, Services, SingleBlog, Testimonials, UserDashboard, UserLayout } from './pages';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from './app/store.js';
 import { Provider } from 'react-redux';
@@ -24,7 +24,7 @@ createRoot(document.getElementById('root')).render(
                             <Route path='/about' element={<AboutUs />} />
                             <Route path='/reset-password' element={<ResetPassword />} />
                             <Route path='/blogs' element={<Blogs />} />
-                            <Route path='/blogs/:blogId' element={<SingleBlog />} />
+                            <Route path='/blogs/:slug' element={<SingleBlog />} />
                         </Route>
 
                         <Route path='/user' element={<UserLayout />}>
@@ -37,8 +37,10 @@ createRoot(document.getElementById('root')).render(
                             <Route path='/admin/users' element={<AllUsers />} />
                             <Route path='/admin/services' element={<AllServices />} />
                             <Route path='/admin/services/add' element={<AddService />} />
+                            <Route path='/admin/services/edit/:serviceId' element={<EditService />} />
                             <Route path='/admin/blogs' element={<AllBlogs />} />
                             <Route path='/admin/blogs/add' element={<AddBlog />} />
+                            <Route path='/admin/blogs/edit/:slug' element={<EditBlog />} />
                             <Route path='/admin/profile' element={<Profile />} />
                             <Route path='/admin/create' element={<CreateAdmin />} />
                         </Route>

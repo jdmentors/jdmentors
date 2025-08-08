@@ -21,11 +21,11 @@ function AllServices({limit}){
                         (
                             limit?
                             allServices.slice(0,limit).map(service => (
-                            <ServiceCard key={service.title} title={service.title} description={service.description} features={service.features} price={service.price} process={service.process} />
+                            service.status === true && <ServiceCard key={service.title} title={service.title} description={service.description} features={service.features} price={service.price} process={service.process} />
                         ))
                         :
                         allServices.map(service => (
-                            <ServiceCard key={service.title} title={service.title} description={service.description} features={service.features} price={service.price} process={service.process} />
+                            service.status === true && <ServiceCard key={service.title} title={service.title} description={service.description} features={service.features} price={service.price} process={service.process} />
                         ))
                         )
                     }

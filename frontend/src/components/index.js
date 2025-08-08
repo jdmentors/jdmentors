@@ -33,6 +33,7 @@ import CreateAdmin from "./admin/CreateAdmin";
 import UserPopUp from "./UserPopUp";
 import Protected from "./Protected";
 import AllServices from "./AllServices";
+import AllBlogs from "./AllBlogs";
 
 export {
     Header,
@@ -70,4 +71,5 @@ export {
     UserPopUp,
     Protected,
     AllServices,
+    AllBlogs,
 }
