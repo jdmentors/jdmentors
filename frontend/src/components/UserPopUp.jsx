@@ -1,8 +1,28 @@
 import { DollarSign, Laptop, Mail, Phone, User, UserPlus, X } from "lucide-react";
 import { Link } from "react-router";
 import { user as UserImg } from "../assets";
+import { useEffect } from "react";
+import { useState } from "react";
+import axios from "axios";
 
-function UserPopUp({funToRun}){
+function UserPopUp({funToRun, id}){
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const getUser = async () => {
+            try {
+                const { data } = await axios.get(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/users/${id}`);
+
+                if(data && data.success){
+                    setUser(data.data);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        getUser();
+    }, [])
+
     return (
             <div className="text-gray-600 shadow-2xl shadow-blue-300/60 w-4/5 sm:w-sm bg-white rounded-xl overflow-hidden">
                 <div className="px-5 py-3 flex justify-between items-center bg-blue-600 text-white">

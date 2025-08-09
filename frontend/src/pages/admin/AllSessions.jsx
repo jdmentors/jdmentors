@@ -47,6 +47,7 @@ const adminBookings = [
 function AllSessions() {
     const accessToken = useSelector(state => state.user.user.accessToken);
     const [showUserPopUp, setShowUserPopUp] = useState(false);
+    const [allSessions, setallSessions] = useState(null);
     // const [adminBookings, setadminBookings] = useState(null);
 
     // useEffect(() => {

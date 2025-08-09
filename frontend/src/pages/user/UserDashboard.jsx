@@ -7,62 +7,62 @@ import { useState } from "react";
 import { File, FileCheck, FileDownIcon, Video } from "lucide-react";
 import { Link } from "react-router";
 
-const userBookings = [
-    {
-        "_id": "67f76839994a731e97d3b8ce",
-        "user": 1,
-        "room": 2,
-        "hotel": 3,
-        "checkInDate": "2025-04-30T00:00:00.000Z",
-        "checkOutDate": "2025-05-01T00:00:00.000Z",
-        "totalPrice": 299,
-        "guests": 1,
-        "status": "pending",
-        "paymentMethod": "Stripe",
-        "isPaid": false,
-        "createdAt": "2025-04-10T06:42:01.529Z",
-        "updatedAt": "2025-04-10T06:43:54.520Z",
-        "__v": 0
-    },
+// const userSessions = [
+//     {
+//         "_id": "67f76839994a731e97d3b8ce",
+//         "user": 1,
+//         "room": 2,
+//         "hotel": 3,
+//         "checkInDate": "2025-04-30T00:00:00.000Z",
+//         "checkOutDate": "2025-05-01T00:00:00.000Z",
+//         "totalPrice": 299,
+//         "guests": 1,
+//         "status": "pending",
+//         "paymentMethod": "Stripe",
+//         "isPaid": false,
+//         "createdAt": "2025-04-10T06:42:01.529Z",
+//         "updatedAt": "2025-04-10T06:43:54.520Z",
+//         "__v": 0
+//     },
 
-    {
-        "_id": "47g5g239994a731e97d3b8ce",
-        "user": 1,
-        "room": 2,
-        "hotel": 3,
-        "checkInDate": "2025-04-30T00:00:00.000Z",
-        "checkOutDate": "2025-05-01T00:00:00.000Z",
-        "totalPrice": 299,
-        "guests": 1,
-        "status": "pending",
-        "paymentMethod": "Stripe",
-        "isPaid": false,
-        "createdAt": "2025-04-10T06:42:01.529Z",
-        "updatedAt": "2025-04-10T06:43:54.520Z",
-        "__v": 0
-    },
+//     {
+//         "_id": "47g5g239994a731e97d3b8ce",
+//         "user": 1,
+//         "room": 2,
+//         "hotel": 3,
+//         "checkInDate": "2025-04-30T00:00:00.000Z",
+//         "checkOutDate": "2025-05-01T00:00:00.000Z",
+//         "totalPrice": 299,
+//         "guests": 1,
+//         "status": "pending",
+//         "paymentMethod": "Stripe",
+//         "isPaid": false,
+//         "createdAt": "2025-04-10T06:42:01.529Z",
+//         "updatedAt": "2025-04-10T06:43:54.520Z",
+//         "__v": 0
+//     },
 
-]
+// ]
 
 function UserDashboard() {
-    const accessToken = useSelector(state => state.user.user.accessToken);
-    // const [userBookings, setUserBookings] = useState(null);
+    const user = useSelector(state => state.user.user);
+    const [userSessions, setUserSessions] = useState(null);
 
-    // useEffect(() => {
-    //     const getUserBookings = async () => {
-    //         try {
-    //             // const { data } = await axios.get('/api/v1/bookings/user', { headers: { Authorization: `Bearer ${accessToken}` } });
+    useEffect(() => {
+        const getUserSessions = async () => {
+            try {
+                // const { data } = await axios.get('/api/v1/Sessions/user', { headers: { Authorization: `Bearer ${accessToken}` } });
 
-    //             // if (data.success) {
-    //             //     setUserBookings(data.userBookings);
-    //             // }
-    //         } catch (error) {
-    //             console.error(error);
-    //             toast.error(error.message);
-    //         }
-    //     }
-    //     getUserBookings();
-    // }, [])
+                // if (data.success) {
+                //     setUserSessions(data.userSessions);
+                // }
+            } catch (error) {
+                console.error(error);
+                toast.error(error.message);
+            }
+        }
+        getUserSessions();
+    }, [])
 
     return (
         <section className="flex min-h-[70vh]">
@@ -77,7 +77,7 @@ function UserDashboard() {
                 <div className="my-10 max-w-full">
                     <div className="overflow-hidden rounded-2xl border-2 border-blue-100 bg-white px-4 pb-3 pt-4 sm:px-6">
                         <div className="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between">
-                            <h3 className="text-lg font-semibold text-gray-800">Recent Bookings</h3>
+                            <h3 className="text-lg font-semibold text-gray-800">Recent Sessions</h3>
                         </div>
 
                         {/* <div className="max-w-full overflow-x-auto">
@@ -118,26 +118,26 @@ function UserDashboard() {
                         <div className="my-5 overflow-x-auto">
                             <div className="hidden sm:grid grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-5 items-center py-3 border-b-2 border-b-blue-100">
                                 <h5 className="text-lg">Services</h5>
-                                <h5 className="text-lg">Duration</h5>
+                                <h5 className="text-lg">Preferred Time</h5>
                                 <h5 className="text-lg">Price</h5>
                                 <h5 className="text-lg">Document</h5>
                                 <h5 className="text-lg">Status</h5>
                             </div>
 
                             {
-                                userBookings
+                                userSessions
                                 &&
                                 (
                                     <>
                                         <div className="hidden sm:block">
                                             {
-                                                userBookings.map(booking => (
+                                                userSessions.map(booking => (
                                                     <div key={booking._id} className="md:grid grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-5 items-center py-5 text-gray-600">
                                                         <Link to="/" className="text-gray-800">
                                                             Personal Statement Review
                                                         </Link>
 
-                                                        <p>1 Hour</p>
+                                                        <p>1 pm Aug 10, 2025</p>
                                                         <p>$60</p>
                                                         <Link to="/" className="flex gap-1 items-center"><FileDownIcon size={18} /> <span className="text-blue-500 hover:underline">file.pdf</span></Link>
 
@@ -150,7 +150,7 @@ function UserDashboard() {
                                         </div>
                                         <div className="sm:hidden">
                                             {
-                                                userBookings.map(booking => (
+                                                userSessions.map(booking => (
                                                     <div key={booking._id} className="flex flex-col gap-3 py-5 text-gray-600 border-b-2 border-b-blue-100">
                                                         <div className="flex gap-2">
                                                             <p className="text-gray-800">Service:</p>
@@ -160,8 +160,8 @@ function UserDashboard() {
                                                         </div>
 
                                                         <div className="flex gap-2">
-                                                            <p className="text-gray-800">Duration:</p>
-                                                            <p>1 Hour</p>
+                                                            <p className="text-gray-800">Preferred Time:</p>
+                                                            <p>1 pm Aug 10, 2025</p>
                                                         </div>
 
                                                         <div className="flex gap-2">

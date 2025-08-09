@@ -1,5 +1,5 @@
 import { daniel, emily, michael, omar, priya, sarah } from "../assets";
-import { CallToAction, Container, Hero, FAQ, Testimonial, Stat, BlogCard, AllServices } from "../components";
+import { CallToAction, Container, Hero, FAQ, Testimonial, Stat, BlogCard, AllServices, AllBlogs } from "../components";
 import Marquee from "react-fast-marquee";
 import AboutUs from "../components/AboutUs";
 import { Link } from "react-router";
@@ -148,13 +148,15 @@ function Home() {
                         <h2 className="text-3xl font-bold text-blue-950">Insights for Law School Success</h2>
                         <p className="text-blue-950 my-4">Whether you're perfecting your personal statement or navigating addendums, our blog delivers the guidance you need—one post at a time.</p>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 mt-8">
+                        {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 mt-8">
                             {
                                 Array(3).fill('').map((_, i) => (
                                     <BlogCard key={i} />
                                 ))
                             }
-                        </div>
+                        </div> */}
+
+                        <AllBlogs limit={3} />
 
                         <div className="flex justify-center mt-10">
                             <Link className="py-2.5 px-6 rounded-md bg-blue-600 text-white inline-flex items-center gap-2" to="/blogs">More Posts <ArrowRight /></Link>

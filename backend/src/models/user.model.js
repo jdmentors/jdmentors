@@ -28,6 +28,10 @@ const userSchema = new Schema({
         trim: true,
         default: 'user'
     },
+    image: {
+        type: String,
+        trim: true
+    },
     refreshToken: {
         type: String,
     }

@@ -6,6 +6,7 @@ import cors from "cors";
 import serviceRouter from "./routes/service.route.js";
 import blogRouter from "./routes/blog.route.js";
 import { configureCloudinary } from "./utils/cloudinary.js";
+import sessionRouter from "./routes/session.route.js";
 
 const app = express();
 dbConnect();
@@ -23,5 +24,6 @@ app.get('/', (req, res) => res.send('Welcome Back!!'));
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/services', serviceRouter);
 app.use('/api/v1/blogs', blogRouter);
+app.use('/api/v1/sessions', sessionRouter);
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

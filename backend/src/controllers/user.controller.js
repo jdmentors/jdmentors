@@ -1,10 +1,11 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 const registerUser = async (req, res) => {
     try {
-        const { fullName, email, phone='', password } = req.body;
+        const { fullName, email, phone='', image='', password } = req.body;
 
         if(!fullName || !email || !password){
             return res.status(400).json({success:false, message:'All fields are required.'});
@@ -16,7 +17,7 @@ const registerUser = async (req, res) => {
             return res.status(400).json({success:false, message:'Email already exists.'});
         }
 
-        const createdUser = await User.create({fullName, email, phone, password});
+        const createdUser = await User.create({fullName, email, phone, password, image});
 
         if(!createdUser){
             return res.status(500).json({success:false, message:'Could not create user.'});
@@ -116,9 +117,102 @@ const refreshAccessToken = async (req, res) => {
     }
 }
 
+const getAllUsers = async (req, res) => {
+    try {
+        const allUsers = await User.find().select("fullName email phone createdAt");
+
+        if (!allUsers) {
+            return res.status(404).json({ success: false, message: 'No Users found' });
+        }
+
+        return res.status(200).json({ success: true, message: 'Users found', data: allUsers });
+    } catch (error) {
+        return res.status(500).json({ success: false, message: 'Failed to get User' });
+    }
+}
+
+const getAUser = async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        if (!userId) {
+            return res.status(400).json({ success: false, message: 'User ID is needed' });
+        }
+
+        const user = await User.findOne({_id:userId}).select("fullName email phone createdAt");
+
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'No user found' });
+        }
+
+        return res.status(200).json({ success: true, message: 'User found', data: user });
+    } catch (error) {
+        return res.status(500).json({ success: false, message: 'Failed to get user' });
+    }
+}
+
+const deleteUser = async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        if (!userId) {
+            return res.status(400).json({ success: false, message: 'User ID needed to delete' });
+        }
+
+        const user = await User.findByIdAndDelete(userId);
+
+        if (!user) {
+            return res.status(500).json({ success: false, message: 'No user found' });
+        }
+
+        return res.status(200).json({ success: true, message: 'User deleted' });
+    } catch (error) {
+        return res.status(500).json({ success: false, message: 'Deletion failed' });
+    }
+}
+
+const updateUser = async (req, res) => {
+    try{
+        const user = req.user;
+        const { fullName, email, phone, image, password } = req.body;
+        const uploadedImg = req.files[0];
+
+        if(!fullName || !email || !phone || !password){
+            return res.status(400).json({success:false, message:'All fields are required.'});
+        }
+
+        let image_url;
+
+        if(uploadedImg){
+            image_url = await uploadOnCloudinary(uploadedImg?.path);
+        }
+
+        const refreshToken = user.refreshToken;
+
+        user.fullName = fullName;
+        user.email = email;
+        user.phone = phone;
+        user.password = password;
+        user.image = image_url || image;
+
+        await user.save({validateBeforeSave:false});
+
+        const accessToken = req?.headers?.authorization.split(' ')[1];
+
+        res.status(200).json({success:true, message:'Profile updated', data:{user, accessToken, refreshToken}});
+    }catch(error){
+        throw new Error(error.message);
+    }
+}
+
 export {
     registerUser,
     loginUser,
     logOutUser,
     refreshAccessToken,
+    getAllUsers,
+    getAUser,
+    deleteUser,
+    updateUser,
+    userExists,
 }

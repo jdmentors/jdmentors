@@ -9,7 +9,7 @@ const configureCloudinary = async () => {
             api_secret: `${process.env.CLOUDINARY_API_SECRET}`
         });
 
-        if(configured){
+        if (configured) {
             console.log('Cloudinary configured.');
         }
     } catch (error) {
@@ -21,7 +21,7 @@ const uploadOnCloudinary = async (file) => {
     try {
         const uploaded = await cloudinary.uploader.upload(file);
 
-        if(uploaded){
+        if (uploaded) {
             fs.unlinkSync(file);
             return uploaded.secure_url;
         }
@@ -30,4 +30,20 @@ const uploadOnCloudinary = async (file) => {
     }
 }
 
-export { configureCloudinary, uploadOnCloudinary }
+const uploadDocsOnCloudinary = async (file) => {
+    try {
+        const uploaded = await cloudinary.uploader.upload(file, {
+            resource_type: 'auto',
+        });
+
+        if (uploaded) {
+            fs.unlinkSync(file);
+            return uploaded.secure_url;
+        }
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+
+export { configureCloudinary, uploadOnCloudinary, uploadDocsOnCloudinary }
