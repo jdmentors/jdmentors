@@ -50,7 +50,37 @@ const getAService = async (req, res) => {
 
 const getAllServices = async (req, res) => {
     try {
-        const allServices = await Service.find();
+        const allServices = await Service.aggregate([
+            {
+                $lookup: {
+                    from: 'sessions',
+                    localField: '_id',
+                    foreignField: 'service',
+                    as: 'sessions'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$sessions',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $group: {
+                    _id: '$_id',
+                    title: { $first: '$title' },
+                    slug: { $first: '$slug' },
+                    description: { $first: '$description' },
+                    features: { $first: '$features' },
+                    process: { $first: '$process' },
+                    price: { $first: '$price' },
+                    status: { $first: '$status' },
+                    createdAt: { $first: '$createdAt' },
+                    sessionCount: { $sum: { $cond: [{ $ifNull: ["$sessions", false] }, 1, 0] } }
+                }
+            }
+        ]);
+
 
         if (!allServices) {
             return res.status(404).json({ success: false, message: 'No services found' });
@@ -92,7 +122,7 @@ const editService = async (req, res) => {
             return res.status(400).json({ success: false, message: 'All fields are required.' });
         }
 
-        const service = await Service.findByIdAndUpdate(serviceId, {title, slug, description, process, features, price, status});
+        const service = await Service.findByIdAndUpdate(serviceId, { title, slug, description, process, features, price, status });
 
         if (!service) {
             return res.status(500).json({ success: false, message: 'Error occured while updating service' });
@@ -114,7 +144,7 @@ const updateAvailability = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Service ID is required.' });
         }
 
-        const service = await Service.findByIdAndUpdate(serviceId, {status:status}, {new: true});
+        const service = await Service.findByIdAndUpdate(serviceId, { status: status }, { new: true });
 
         if (!service) {
             return res.status(500).json({ success: false, message: 'Error occured while updating service' });

@@ -2,25 +2,26 @@ import User from "../models/user.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import mongoose from "mongoose";
 
 const registerUser = async (req, res) => {
     try {
-        const { fullName, email, phone='', image='', password } = req.body;
+        const { fullName, email, phone = '', image = '', password } = req.body;
 
-        if(!fullName || !email || !password){
-            return res.status(400).json({success:false, message:'All fields are required.'});
+        if (!fullName || !email || !password) {
+            return res.status(400).json({ success: false, message: 'All fields are required.' });
         }
 
         const existingUser = await userExists(email);
 
-        if(existingUser){
-            return res.status(400).json({success:false, message:'Email already exists.'});
+        if (existingUser) {
+            return res.status(400).json({ success: false, message: 'Email already exists.' });
         }
 
-        const createdUser = await User.create({fullName, email, phone, password, image});
+        const createdUser = await User.create({ fullName, email, phone, password, image });
 
-        if(!createdUser){
-            return res.status(500).json({success:false, message:'Could not create user.'});
+        if (!createdUser) {
+            return res.status(500).json({ success: false, message: 'Could not create user.' });
         }
 
         await loginUser(req, res);
@@ -33,25 +34,25 @@ const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        if(!email || !password){
-            return res.status(400).json({success:false, message:'All fields are required.'});
+        if (!email || !password) {
+            return res.status(400).json({ success: false, message: 'All fields are required.' });
         }
 
         const user = await userExists(email);
 
-        if(!user){
-            return res.status(404).json({success:false, message:'No user found with this email.'});
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'No user found with this email.' });
         }
 
         const matchPassword = await bcrypt.compare(password, user.password);
 
-        if(!matchPassword){
-            return res.status(404).json({success:false, message:'No user found with this email.'});
+        if (!matchPassword) {
+            return res.status(404).json({ success: false, message: 'No user found with this email.' });
         }
 
         const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user);
 
-        return res.status(200).cookie('accessToken', accessToken, { httpOnly: true, secure:false, sameSite: 'lax' }).json({success:true, message:'Logged In', data:{user:{id:user._id, fullName:user.fullName, email, phone:user.phone || '', userType:user.userType}, accessToken, refreshToken}});
+        return res.status(200).cookie('accessToken', accessToken, { httpOnly: true, secure: false, sameSite: 'lax' }).json({ success: true, message: 'Logged In', data: { user: { id: user._id, fullName: user.fullName, email, phone: user.phone || '', userType: user.userType }, accessToken, refreshToken } });
     } catch (error) {
         throw new Error(error);
     }
@@ -61,9 +62,9 @@ const logOutUser = async (req, res) => {
     try {
         const user = req.user;
         user.refreshToken = '';
-        user.save({validateBeforeSave:false});
+        user.save({ validateBeforeSave: false });
 
-        return res.status(200).clearCookie('accessToken').json({success:true, message:'Logged Out'});
+        return res.status(200).clearCookie('accessToken').json({ success: true, message: 'Logged Out' });
     } catch (error) {
         throw new Error(error);
     }
@@ -71,9 +72,9 @@ const logOutUser = async (req, res) => {
 
 const userExists = async (email) => {
     try {
-        const user = await User.findOne({email});
+        const user = await User.findOne({ email });
 
-        if(user){
+        if (user) {
             return user;
         }
     } catch (error) {
@@ -99,27 +100,68 @@ const generateAccessAndRefreshToken = async (user) => {
 const refreshAccessToken = async (req, res) => {
     try {
         const refreshToken = req.headers.authorization.split(' ')[1];
-        
+
         const verified = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_KEY);
 
-        if(verified){
+        if (verified) {
             const { id } = await jwt.decode(refreshToken);
             const user = await User.findById(id);
 
-            if(user){
+            if (user) {
                 const accessToken = await user.generateAccessToken();
 
-                return res.status(200).cookie('accessToken', accessToken, { httpOnly: true, secure:false, sameSite: 'lax' }).json({success:true, data:{ accessToken }})
+                return res.status(200).cookie('accessToken', accessToken, { httpOnly: true, secure: false, sameSite: 'lax' }).json({ success: true, data: { accessToken } })
             }
         }
     } catch (error) {
-        return res.status(401).json({success:false, message:'refreshToken'})
+        return res.status(401).json({ success: false, message: 'refreshToken' })
     }
 }
 
 const getAllUsers = async (req, res) => {
     try {
-        const allUsers = await User.find().select("fullName email phone createdAt");
+        const allUsers = await User.aggregate([
+            {
+                $lookup: {
+                    from: 'sessions',
+                    localField: '_id',
+                    foreignField: 'user',
+                    as: 'sessions'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$sessions',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $lookup: {
+                    from: 'services',
+                    localField: 'sessions.service',
+                    foreignField: '_id',
+                    as: 'services'
+                }
+            },
+            {
+                $unwind: {
+                    path: '$services',
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $group: {
+                    _id: '$_id',
+                    fullName: { $first: '$fullName' },
+                    email: { $first: '$email' },
+                    phone: { $first: '$phone' },
+                    createdAt: { $first: '$createdAt' },
+                    sessionCount: { $sum: { $cond: [{ $ifNull: ['$sessions', false] }, 1, 0] } },
+                    totalSpent: { $sum: { $ifNull: ['$services.price', 0] } }
+                }
+            }
+        ]);
+
 
         if (!allUsers) {
             return res.status(404).json({ success: false, message: 'No Users found' });
@@ -139,7 +181,45 @@ const getAUser = async (req, res) => {
             return res.status(400).json({ success: false, message: 'User ID is needed' });
         }
 
-        const user = await User.findOne({_id:userId}).select("fullName email phone createdAt");
+        const user = await User.aggregate([
+            {
+                $match: {
+                    _id: new mongoose.Types.ObjectId(userId)
+                }
+            },
+            {
+                $lookup: {
+                    from: 'sessions',
+                    localField: '_id',
+                    foreignField: 'user',
+                    as: 'sessions'
+                }
+            },
+            { $unwind: '$sessions' },
+            {
+                $lookup: {
+                    from: 'services',
+                    localField: 'sessions.service',
+                    foreignField: '_id',
+                    as: 'service'
+                }
+            },
+            { $unwind: '$service' },
+            {
+                $group: {
+                    _id: '$_id',
+                    fullName: { $first: '$fullName' },
+                    email: { $first: '$email' },
+                    phone: { $first: '$phone' },
+                    createdAt: { $first: '$createdAt' },
+                    sessions: { $push: '$sessions' },
+                    services: { $push: '$service' },
+                    sessionCount: { $sum: 1 },
+                    totalSpent: { $sum: '$service.price' }
+                }
+            }
+        ]);
+
 
         if (!user) {
             return res.status(404).json({ success: false, message: 'No user found' });
@@ -172,18 +252,18 @@ const deleteUser = async (req, res) => {
 }
 
 const updateUser = async (req, res) => {
-    try{
+    try {
         const user = req.user;
         const { fullName, email, phone, image, password } = req.body;
         const uploadedImg = req.files[0];
 
-        if(!fullName || !email || !phone || !password){
-            return res.status(400).json({success:false, message:'All fields are required.'});
+        if (!fullName || !email || !phone || !password) {
+            return res.status(400).json({ success: false, message: 'All fields are required.' });
         }
 
         let image_url;
 
-        if(uploadedImg){
+        if (uploadedImg) {
             image_url = await uploadOnCloudinary(uploadedImg?.path);
         }
 
@@ -195,12 +275,12 @@ const updateUser = async (req, res) => {
         user.password = password;
         user.image = image_url || image;
 
-        await user.save({validateBeforeSave:false});
+        await user.save({ validateBeforeSave: false });
 
         const accessToken = req?.headers?.authorization.split(' ')[1];
 
-        res.status(200).json({success:true, message:'Profile updated', data:{user, accessToken, refreshToken}});
-    }catch(error){
+        res.status(200).json({ success: true, message: 'Profile updated', data: { user, accessToken, refreshToken } });
+    } catch (error) {
         throw new Error(error.message);
     }
 }

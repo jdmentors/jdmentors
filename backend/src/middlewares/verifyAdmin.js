@@ -11,7 +11,6 @@ const verifyAdmin = async (req, res, next) => {
             const { id } = await jwt.decode(token);
 
             const user = await User.findById(id);
-            console.log(user)
             
             if(user && user.userType === 'admin'){
                 req.user = user;

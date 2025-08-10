@@ -7,6 +7,8 @@ import serviceRouter from "./routes/service.route.js";
 import blogRouter from "./routes/blog.route.js";
 import { configureCloudinary } from "./utils/cloudinary.js";
 import sessionRouter from "./routes/session.route.js";
+import verifyAdmin from "./middlewares/verifyAdmin.js";
+import { createAdmin, dashboard } from "./controllers/other.controller.js";
 
 const app = express();
 dbConnect();
@@ -25,5 +27,7 @@ app.use('/api/v1/users', userRouter);
 app.use('/api/v1/services', serviceRouter);
 app.use('/api/v1/blogs', blogRouter);
 app.use('/api/v1/sessions', sessionRouter);
+app.get('/api/v1/dashboard', verifyAdmin, dashboard);
+app.post('/api/v1/admin/register', verifyAdmin, createAdmin);
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

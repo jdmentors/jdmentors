@@ -2,10 +2,11 @@ import { useEffect } from "react";
 import { AdminContainer, AdminSidebar, UserPopUp } from "../../components";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { DollarSign, FileDownIcon, Newspaper, Settings, User, UserRound, VideoIcon } from "lucide-react";
+import { Check, DollarSign, FileDownIcon, Newspaper, Settings, User, UserRound, VideoIcon } from "lucide-react";
 import { Link } from "react-router";
+import useRefreshToken from "../../hooks/useRefreshToken";
 
 const adminBookings = [
     {
@@ -45,26 +46,84 @@ const adminBookings = [
 ]
 
 function AllSessions() {
-    const accessToken = useSelector(state => state.user.user.accessToken);
     const [showUserPopUp, setShowUserPopUp] = useState(false);
-    const [allSessions, setallSessions] = useState(null);
-    // const [adminBookings, setadminBookings] = useState(null);
+    const user = useSelector(state => state.user.user);
+    const [allSessions, setAllSessions] = useState(null);
+    const dispatch = useDispatch();
+    const refreshAccessToken = useRefreshToken();
 
-    // useEffect(() => {
-    //     const getadminBookings = async () => {
-    //         try {
-    //             // const { data } = await axios.get('/api/v1/bookings/user', { headers: { Authorization: `Bearer ${accessToken}` } });
+    useEffect(() => {
+        const getAllSessions = async () => {
+            try {
+                const { data } = await axios.get(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/sessions/all`, { headers: { Authorization: `Bearer ${user.accessToken}` } });
 
-    //             // if (data.success) {
-    //             //     setadminBookings(data.adminBookings);
-    //             // }
-    //         } catch (error) {
-    //             console.error(error);
-    //             toast.error(error.message);
-    //         }
-    //     }
-    //     getadminBookings();
-    // }, [])
+                if (data.success) {
+                    setAllSessions(data.data);
+                }
+            } catch (error) {
+                console.error(error);
+                const message = error?.response?.data?.message;
+                if (message === 'accessToken') {
+                    try {
+                        const newAccessToken = await refreshAccessToken();
+
+                        const { data } = await axios.get(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/sessions/all`, { headers: { Authorization: `Bearer ${newAccessToken}` } });
+
+                        if (data && data.success) {
+                            dispatch(updateUser({ ...all, accessToken: newAccessToken }));
+                            setAllSessions(data.data);
+                        }
+                    } catch (error) {
+                        toast.error(error?.response?.data?.message);
+                    }
+                }
+            }
+        }
+        getAllSessions();
+    }, [])
+
+    const handleStatusUpdate = async (id) => {
+        try {
+            const { data } = await axios.patch(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/sessions/status/${id}`, { headers: { Authorization: `Bearer ${user.accessToken}` } });
+
+            if (data && data.success) {
+                setAllSessions(sessions => {
+                    return sessions.map(session => {
+                        if (session._id === id) {
+                            return { ...session, status: data.data.status }
+                        }
+                        return session;
+                    })
+                })
+                toast.success(data.message);
+            }
+        } catch (error) {
+            console.error(error);
+            const message = error?.response?.data?.message;
+            if (message === 'accessToken') {
+                try {
+                    const newAccessToken = await refreshAccessToken();
+
+                    const { data } = await axios.patch(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/sessions/status/${id}`, { headers: { Authorization: `Bearer ${newAccessToken}` } });
+
+                    if (data && data.success) {
+                        setAllSessions(sessions => {
+                            return sessions.map(session => {
+                                if (session._id === id) {
+                                    return { ...session, status: data.data.status }
+                                }
+                                return session;
+                            })
+                        });
+                        toast.success(data.message);
+                        dispatch(updateUser({ ...all, accessToken: newAccessToken }));
+                    }
+                } catch (error) {
+                    toast.error(error?.response?.data?.message);
+                }
+            }
+        }
+    }
 
     return (
         <section className="flex min-h-[90vh]">
@@ -90,39 +149,52 @@ function AllSessions() {
                         </div>
 
                         <div className="my-5 overflow-x-auto">
-                            <div className="hidden sm:grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr] gap-5 items-center py-3 border-b-2 border-b-blue-100">
+                            <div className="hidden sm:grid grid-cols-[2fr_1fr_1fr_1fr_100px_100px_1fr] gap-5 items-center py-3 border-b-2 border-b-blue-100">
                                 <h5 className="text-lg">Service</h5>
                                 <h5 className="text-lg">User</h5>
-                                <h5 className="text-lg">Duration</h5>
+                                <h5 className="text-lg">Preferred Time</h5>
                                 <h5 className="text-lg">Price</h5>
                                 <h5 className="text-lg">Document</h5>
                                 <h5 className="text-lg">Status</h5>
+                                <h5 className="text-lg">Action</h5>
                             </div>
 
                             {
-                                adminBookings
+                                allSessions
                                 &&
                                 (
                                     <>
                                         <div className="hidden sm:block">
                                             {
-                                                adminBookings.map(booking => (
-                                                    <div key={booking._id} className="md:grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr] gap-5 items-center py-5 text-gray-600">
+                                                allSessions.map(session => (
+                                                    <div key={session._id} className="md:grid grid-cols-[2fr_1fr_1fr_1fr_100px_100px_1fr] gap-5 items-center py-5 text-gray-600">
                                                         <p className="text-gray-800">
-                                                            Personal Statement Review
+                                                            {session.service.title}
                                                         </p>
 
                                                         <p onClick={() => setShowUserPopUp(true)} className="text-blue-600 underline cursor-pointer">
-                                                            Sahid Khan
+                                                            {session.user.fullName}
                                                         </p>
 
-                                                        <p>1 Hour</p>
-                                                        <p>$60</p>
+                                                        {
+                                                            showUserPopUp &&
+                                                            <section className="top-0 left-0 right-0 bottom-0 bg-black/70 z-50 flex items-center justify-center fixed">
+                                                                <UserPopUp id={session.user._id} funToRun={setShowUserPopUp} />
+                                                            </section>
+                                                        }
 
-                                                        <Link to="/" className="flex gap-1 items-center"><FileDownIcon size={18} /> <span className="text-blue-600 hover:underline">file.pdf</span></Link>
+                                                        <p>{new Date(session.dateTime).toDateString() + " " + `(${new Date(session.dateTime).toLocaleTimeString()})`}</p>
+                                                        <p>${session.service.price}</p>
 
+                                                        <Link target="_blank" to={`${session.document}`} className="flex gap-1 items-center"><FileDownIcon size={18} /> <span className="text-blue-600 hover:underline">file</span></Link>
 
-                                                        <p className={`flex items-center gap-1 ${booking.isPaid ? 'text-green-600' : 'text-red-600'}`}><span className={`h-2 w-2 ${booking.isPaid ? 'bg-green-600' : 'bg-red-600'} rounded-full`}></span> <span>{booking.isPaid ? 'Paid' : 'Unpaid'}</span></p>
+                                                        <p className={`flex items-center gap-1 ${session.status ? 'text-green-600' : 'text-red-600'}`}><span className={`h-2 w-2 ${session.status ? 'bg-green-600' : 'bg-red-600'} rounded-full`}></span> <span>{session.status ? 'Done' : 'Pending'}</span></p>
+
+                                                        {
+                                                            !session.status
+                                                            &&
+                                                            <button onClick={() => handleStatusUpdate(session._id)} className="bg-green-600 py-2 px-5 rounded text-white cursor-pointer flex items-center gap-1 max-w-max"><Check size={20} /> <span>Done</span></button>
+                                                        }
 
                                                     </div>
                                                 ))
@@ -130,41 +202,47 @@ function AllSessions() {
                                         </div>
                                         <div className="sm:hidden">
                                             {
-                                                adminBookings.map(booking => (
-                                                    <div key={booking._id} className="flex flex-col gap-3 py-5 text-gray-600 border-b-2 border-b-blue-100">
+                                                allSessions.map(session => (
+                                                    <div key={session._id} className="flex flex-col gap-3 py-5 text-gray-600 border-b-2 border-b-blue-100">
                                                         <div className="flex gap-2">
                                                             <p className="text-gray-800">Service:</p>
                                                             <p className="text-gray-600">
-                                                                Personal Statement Review
+                                                                {session.service.title}
                                                             </p>
                                                         </div>
 
                                                         <div className="flex gap-2">
                                                             <p className="text-gray-800">User:</p>
                                                             <p onClick={() => setShowUserPopUp(true)} className="text-blue-600 underline">
-                                                                Sahid Khan
+                                                                {session.user.fullName}
                                                             </p>
                                                         </div>
 
                                                         <div className="flex gap-2">
-                                                            <p className="text-gray-800">Duration:</p>
-                                                            <p>1 Hour</p>
+                                                            <p className="text-gray-800">Preferred Time:</p>
+                                                            <p>{new Date(session.dateTime).toDateString() + " " + `(${new Date(session.dateTime).toLocaleTimeString()})`}</p>
                                                         </div>
 
                                                         <div className="flex gap-2">
                                                             <p className="text-gray-800">Price:</p>
-                                                            <p>$60</p>
+                                                            <p>${session.service.price}</p>
                                                         </div>
 
                                                         <div className="flex gap-2">
                                                             <p className="text-gray-800">Doc(s):</p>
-                                                            <Link to="/" className="flex gap-1 items-center"><FileDownIcon size={18} /> <span className="text-blue-600 hover:underline">file.pdf</span></Link>
+                                                            <Link target="_blank" to={`${session.document}`} className="flex gap-1 items-center"><FileDownIcon size={18} /> <span className="text-blue-600 hover:underline">file.pdf</span></Link>
                                                         </div>
 
                                                         <div className="flex gap-2">
                                                             <p className="text-gray-800">Status:</p>
-                                                            <p className={`flex items-center gap-1 ${booking.isPaid ? 'text-green-600' : 'text-red-600'}`}><span className={`h-2 w-2 ${booking.isPaid ? 'bg-green-600' : 'bg-red-600'} rounded-full`}></span> <span>{booking.isPaid ? 'Done' : 'Pending'}</span></p>
+                                                            <p className={`flex items-center gap-1 ${session.status ? 'text-green-600' : 'text-red-600'}`}><span className={`h-2 w-2 ${session.status ? 'bg-green-600' : 'bg-red-600'} rounded-full`}></span> <span>{session.status ? 'Done' : 'Pending'}</span></p>
                                                         </div>
+
+                                                        {
+                                                            !session.status
+                                                            &&
+                                                            <button onClick={() => handleStatusUpdate(session._id)} className="bg-green-600 py-2 px-5 rounded text-white cursor-pointer flex items-center gap-1 max-w-max"><Check size={20} /> <span>Done</span></button>
+                                                        }
                                                     </div>
                                                 ))
                                             }

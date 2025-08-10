@@ -2,63 +2,43 @@ import { useEffect } from "react";
 import { UserContainer, UserSidebar } from "../../components";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { File, FileCheck, FileDownIcon, Video } from "lucide-react";
 import { Link } from "react-router";
-
-// const userSessions = [
-//     {
-//         "_id": "67f76839994a731e97d3b8ce",
-//         "user": 1,
-//         "room": 2,
-//         "hotel": 3,
-//         "checkInDate": "2025-04-30T00:00:00.000Z",
-//         "checkOutDate": "2025-05-01T00:00:00.000Z",
-//         "totalPrice": 299,
-//         "guests": 1,
-//         "status": "pending",
-//         "paymentMethod": "Stripe",
-//         "isPaid": false,
-//         "createdAt": "2025-04-10T06:42:01.529Z",
-//         "updatedAt": "2025-04-10T06:43:54.520Z",
-//         "__v": 0
-//     },
-
-//     {
-//         "_id": "47g5g239994a731e97d3b8ce",
-//         "user": 1,
-//         "room": 2,
-//         "hotel": 3,
-//         "checkInDate": "2025-04-30T00:00:00.000Z",
-//         "checkOutDate": "2025-05-01T00:00:00.000Z",
-//         "totalPrice": 299,
-//         "guests": 1,
-//         "status": "pending",
-//         "paymentMethod": "Stripe",
-//         "isPaid": false,
-//         "createdAt": "2025-04-10T06:42:01.529Z",
-//         "updatedAt": "2025-04-10T06:43:54.520Z",
-//         "__v": 0
-//     },
-
-// ]
+import useRefreshToken from "../../hooks/useRefreshToken";
 
 function UserDashboard() {
     const user = useSelector(state => state.user.user);
     const [userSessions, setUserSessions] = useState(null);
+    const dispatch = useDispatch();
+    const refreshAccessToken = useRefreshToken();
 
     useEffect(() => {
         const getUserSessions = async () => {
             try {
-                // const { data } = await axios.get('/api/v1/Sessions/user', { headers: { Authorization: `Bearer ${accessToken}` } });
+                const { data } = await axios.get(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/sessions/user`, { headers: { Authorization: `Bearer ${user.accessToken}` } });
 
-                // if (data.success) {
-                //     setUserSessions(data.userSessions);
-                // }
+                if (data.success) {
+                    setUserSessions(data.data);
+                }
             } catch (error) {
                 console.error(error);
-                toast.error(error.message);
+                const message = error?.response?.data?.message;
+                if (message === 'accessToken') {
+                    try {
+                        const newAccessToken = await refreshAccessToken();
+
+                        const { data } = await axios.get(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/sessions/user`, { headers: { Authorization: `Bearer ${newAccessToken}` } });
+
+                        if (data && data.success) {
+                            dispatch(updateUser({ ...user, accessToken: newAccessToken }));
+                            setUserSessions(data.data);
+                        }
+                    } catch (error) {
+                        toast.error(error?.response?.data?.message);
+                    }
+                }
             }
         }
         getUserSessions();
@@ -80,41 +60,6 @@ function UserDashboard() {
                             <h3 className="text-lg font-semibold text-gray-800">Recent Sessions</h3>
                         </div>
 
-                        {/* <div className="max-w-full overflow-x-auto">
-                            <table className="">
-                                <thead className="border-gray-100 border-y">
-                                    <tr>
-                                        <th className="py-3 font-medium text-gray-600 text-start">Services</th>
-                                        <th className="py-3 font-medium text-gray-600 text-start">Duration</th>
-                                        <th className="py-3 font-medium text-gray-600 text-start">Price</th>
-                                        <th className="py-3 font-medium text-gray-600 text-start">Document</th>
-                                        <th className="py-3 font-medium text-gray-600 text-start">Status</th>
-                                    </tr>
-                                </thead>
-                                    
-                                <tbody className="divide-y divide-gray-100">
-                                    <tr className="">
-                                        <td className=" py-3">
-                                            <div className="flex items-center gap-3">
-                                                <div>
-                                                    <p className="font-medium text-gray-800 text-theme-sm">Personal Statement Review</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        
-                                        <td className=" py-3 text-gray-500 text-theme-sm">1 Hour</td>
-                                        <td className=" py-3 text-gray-500 text-theme-sm">$60</td>
-                                        <td className=" py-3 text-gray-500 text-theme-sm flex items-center gap-2"><FileCheck /> <span className="text-blue-500 hover:underline cursor-pointer">file.pdf</span></td>
-                                        
-                                        <td className=" py-3 text-gray-500 text-theme-sm">
-                                            <span className="inline-flex items-center px-2.5 py-0.5 justify-center gap-1 rounded-full font-medium text-theme-xs bg-success-50 text-green-600">Delivered/Pending
-                                            </span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div> */}
-
                         <div className="my-5 overflow-x-auto">
                             <div className="hidden sm:grid grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-5 items-center py-3 border-b-2 border-b-blue-100">
                                 <h5 className="text-lg">Services</h5>
@@ -131,18 +76,19 @@ function UserDashboard() {
                                     <>
                                         <div className="hidden sm:block">
                                             {
-                                                userSessions.map(booking => (
-                                                    <div key={booking._id} className="md:grid grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-5 items-center py-5 text-gray-600">
-                                                        <Link to="/" className="text-gray-800">
-                                                            Personal Statement Review
+                                                userSessions.map(session => (
+                                                    <div key={session._id} className="md:grid grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-5 items-center py-5 text-gray-600">
+                                                        <Link target="_blank" to={`/checkout/${session.service._id}`} className="text-gray-800">
+                                                            {session.service.title}
                                                         </Link>
 
-                                                        <p>1 pm Aug 10, 2025</p>
-                                                        <p>$60</p>
-                                                        <Link to="/" className="flex gap-1 items-center"><FileDownIcon size={18} /> <span className="text-blue-500 hover:underline">file.pdf</span></Link>
+                                                        <p>{new Date(session.dateTime).toDateString() + " " + `(${new Date(session.dateTime).toLocaleTimeString()})`}</p>
+                                                        <p>${session.service.price}</p>
+
+                                                        <Link target="_blank" to={`${session.document}`} className="flex gap-1 items-center"><FileDownIcon size={18} /> <span className="text-blue-500 hover:underline">file</span></Link>
 
                                                         <div>
-                                                            <p className={`flex items-center gap-1 ${booking.isPaid ? 'text-green-600' : 'text-red-600'}`}><span className={`h-2 w-2 ${booking.isPaid ? 'bg-green-600' : 'bg-red-600'} rounded-full`}></span> <span>{booking.isPaid ? 'Paid' : 'Unpaid'}</span></p>
+                                                            <p className={`flex items-center gap-1 ${session.status ? 'text-green-600' : 'text-red-600'}`}><span className={`h-2 w-2 ${session.status ? 'bg-green-600' : 'bg-red-600'} rounded-full`}></span> <span>{session.status ? 'Done' : 'Pending'}</span></p>
                                                         </div>
                                                     </div>
                                                 ))
@@ -150,33 +96,33 @@ function UserDashboard() {
                                         </div>
                                         <div className="sm:hidden">
                                             {
-                                                userSessions.map(booking => (
-                                                    <div key={booking._id} className="flex flex-col gap-3 py-5 text-gray-600 border-b-2 border-b-blue-100">
+                                                userSessions.map(session => (
+                                                    <div key={session._id} className="flex flex-col gap-3 py-5 text-gray-600 border-b-2 border-b-blue-100">
                                                         <div className="flex gap-2">
                                                             <p className="text-gray-800">Service:</p>
-                                                            <Link to="/" className="text-gray-600">
-                                                                Personal Statement Review
+                                                            <Link target="_blank" to={`/checkout/${session.service._id}`} className="text-gray-600">
+                                                                {session.service.title}
                                                             </Link>
                                                         </div>
 
                                                         <div className="flex gap-2">
                                                             <p className="text-gray-800">Preferred Time:</p>
-                                                            <p>1 pm Aug 10, 2025</p>
+                                                            <p>{new Date(session.dateTime).toDateString() + " " + `(${new Date(session.dateTime).toLocaleTimeString()})`}</p>
                                                         </div>
 
                                                         <div className="flex gap-2">
                                                             <p className="text-gray-800">Price:</p>
-                                                            <p>$60</p>
+                                                            <p>${session.service.price}</p>
                                                         </div>
 
                                                         <div className="flex gap-2">
                                                             <p className="text-gray-800">Doc(s):</p>
-                                                            <Link to="/" className="flex gap-1 items-center"><FileDownIcon size={18} /> <span className="text-blue-500 hover:underline">file.pdf</span></Link>
+                                                            <Link target="_blank" to={`${session.document}`} className="flex gap-1 items-center"><FileDownIcon size={18} /> <span className="text-blue-500 hover:underline">file</span></Link>
                                                         </div>
 
                                                         <div className="flex gap-2">
                                                             <p className="text-gray-800">Status:</p>
-                                                            <p className={`flex items-center gap-1 ${booking.isPaid ? 'text-green-600' : 'text-red-600'}`}><span className={`h-2 w-2 ${booking.isPaid ? 'bg-green-600' : 'bg-red-600'} rounded-full`}></span> <span>{booking.isPaid ? 'Paid' : 'Unpaid'}</span></p>
+                                                            <p className={`flex items-center gap-1 ${session.status ? 'text-green-600' : 'text-red-600'}`}><span className={`h-2 w-2 ${session.status ? 'bg-green-600' : 'bg-red-600'} rounded-full`}></span> <span>{session.status ? 'Done' : 'Pending'}</span></p>
                                                         </div>
                                                     </div>
                                                 ))

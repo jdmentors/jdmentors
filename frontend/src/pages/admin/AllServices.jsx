@@ -137,8 +137,8 @@ function AllServices() {
                                                             ${service.price}/hr
                                                         </p>
 
-                                                        <p>41</p>
-                                                        <p>$1540</p>
+                                                        <p>{service.sessionCount}</p>
+                                                        <p>${service.sessionCount * service.price}</p>
                                                         <label className="relative cursor-pointer">
                                                             <input type="checkbox" checked={service.status} onChange={(e) => handleUpdateAvailability(service._id, e)} className="sr-only peer" />
 

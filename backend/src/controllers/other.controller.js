@@ -1,0 +1,75 @@
+import User from "../models/user.model.js";
+import Blog from "../models/blog.model.js";
+import Service from "../models/service.model.js";
+import Session from "../models/session.model.js";
+import { userExists } from "./user.controller.js";
+
+const dashboard = async (req, res) => {
+    try {
+        const [userCount, blogCount, serviceCount, sessionCount, adminCount, revenue] = await Promise.all([
+            User.countDocuments(),
+            Blog.countDocuments(),
+            Service.countDocuments(),
+            Session.countDocuments(),
+            User.countDocuments({ userType: 'admin' }),
+            Session.aggregate([
+                {
+                    $lookup: {
+                        from: 'services',
+                        localField: 'service',
+                        foreignField: '_id',
+                        as: 'services'
+                    }
+                },
+                { $unwind: '$services' },
+                {
+                    $group: {
+                        _id: null,
+                        totalPrice: { $sum: '$services.price' }
+                    }
+                }
+            ])
+        ]);
+
+        return res.status(200).json({
+            success: true,
+            data: {
+                userCount,
+                blogCount,
+                serviceCount,
+                sessionCount,
+                adminCount,
+                revenue
+            }
+        });
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+const createAdmin = async (req, res) => {
+    try {
+        const { fullName, email, phone = '', image = '', password, userType='admin' } = req.body;
+
+        if (!fullName || !email || !password) {
+            return res.status(400).json({ success: false, message: 'All fields are required.' });
+        }
+
+        const existingUser = await userExists(email);
+
+        if (existingUser) {
+            return res.status(400).json({ success: false, message: 'Email already exists.' });
+        }
+
+        const createdUser = await User.create({ fullName, email, phone, password, image, userType });
+
+        return res.status(200).json({success: true, message: 'Admin created'});
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+export {
+    dashboard,
+    createAdmin
+}

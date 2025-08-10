@@ -64,7 +64,7 @@ function AllUsers() {
                 <div className="my-10 max-w-full">
                     <div className="overflow-hidden rounded-2xl border-2 border-blue-100 bg-white px-4 pb-3 pt-4 sm:px-6">
                         <div className="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between">
-                            <h3 className="text-lg font-semibold text-gray-800">Recent Sessions</h3>
+                            <h3 className="text-lg font-semibold text-gray-800">All Users</h3>
                         </div>
 
                         <div className="my-5 overflow-x-auto">
@@ -96,8 +96,8 @@ function AllUsers() {
 
                                                         <Link to={`tel:${user.phone}`} className="text-blue-600 underline">{user.phone}</Link>
 
-                                                        <p>12</p>
-                                                        <p>$840</p>
+                                                        <p>{user.sessionCount}</p>
+                                                        <p>${user.totalSpent}</p>
                                                         <p>{new Date(user.createdAt).toDateString()}</p>
 
                                                         <button onClick={() => handleDeleteUser(user._id)} className="bg-red-600 px-4 py-3 rounded-md text-white max-w-max cursor-pointer"><Trash /></button>
