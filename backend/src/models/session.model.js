@@ -22,7 +22,12 @@ const sessionSchema = new Schema({
         type: Boolean,
         required: true,
         default: false
-    }
+    },
+    payment: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
 }, {timestamps: true});
 
 const Session = model('Session', sessionSchema);

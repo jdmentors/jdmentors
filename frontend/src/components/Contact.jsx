@@ -1,9 +1,9 @@
 import { Container } from "../components";
 import { useForm } from "react-hook-form";
-import { Link, useLocation } from "react-router";
+import { Link } from "react-router";
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Clock, Mail, Phone } from "lucide-react";
 
 function Contact() {
@@ -12,30 +12,29 @@ function Contact() {
             name:'',
             email:'',
             phone:'',
-            service:'select',
+            service:'',
             message:'',
         }
     });
-    const { pathname } = useLocation();
+
     const [sending, setSending] = useState(false);
 
     const submitHandler = async (formData) => {
         try {
-            console.log(formData);
             setSending(true);
-            // setSending(true);
-            // const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_NAME}/api/v1/contact`, {name:formData.name, email:formData.email, phone:formData.phone, service:formData.service || 'User Query', message:formData.message});
+            const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/emails/contact`, {name:formData.name, email:formData.email, phone:formData.phone, service:formData.service, message:formData.message});
 
-            // if(data && data.success){
-            //     setSending(false);
-            //     toast.success(data.message);
-            //     reset();
-            //     window.scrollTo({ top: 0, behavior: 'smooth' });
-            // }else{
-            //     toast.error(data.message);
-            // }
+            if(data && data.success){
+                setSending(false);
+                toast.success(data.message);
+                reset();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }else{
+                toast.error(data.message);
+            }
         } catch (error) {
             console.error(error);
+            setSending(false);
         }
     }
     return (
@@ -129,15 +128,7 @@ function Contact() {
                                 Service Interested In
                             </label>
 
-                            <select {...register('service', { required: true })} id="service" className="flex h-10 w-full rounded-md border border-blue-100 bg-background px-3 py-2 text-base focus:outline-1 focus:outline-blue-200 md:text-sm mt-2">
-                                <option value="select">Select Service</option>
-                                <option value="Personal Statement Review">Personal Statement Review</option>
-                                <option value="Addendum Consultation">Addendum Consultation</option>
-                                <option value="Application Strategy Session">Application Strategy Session</option>
-                                <option value="Package Deal">Package Deal</option>
-                                <option value="Package Deal">Package Deal (All Services)</option>
-                                <option value="Not Sure - Need Guidance">Not Sure - Need Guidance</option>
-                            </select>
+                            <input type="text" className="flex h-10 w-full rounded-md border border-blue-100 bg-background px-3 py-2 text-base focus:outline-1 focus:outline-blue-200 md:text-sm mt-2" id="service" placeholder="e.g. Addendum Consultation" {...register('service', { required: true })} />
                         </div>
                         <div>
                             <label className="text-sm font-medium leading-none text-blue-950" htmlFor="message">

@@ -34,6 +34,7 @@ import UserPopUp from "./UserPopUp";
 import Protected from "./Protected";
 import AllServices from "./AllServices";
 import AllBlogs from "./AllBlogs";
+import AdminRoute from "./admin/AdminRoute";
 
 export {
     Header,
@@ -72,4 +73,5 @@ export {
     Protected,
     AllServices,
     AllBlogs,
+    AdminRoute
 }

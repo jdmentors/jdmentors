@@ -19,6 +19,8 @@ import AllSessions from "./admin/AllSessions";
 import ResetPassword from "./ResetPassword";
 import EditService from "./admin/EditService";
 import EditBlog from "./admin/EditBlog";
+import CheckOutSuccess from "./CheckOutSuccess";
+import CheckOutCancel from "./CheckOutCancel";
 
 export {
     Home,
@@ -42,4 +44,6 @@ export {
     ResetPassword,
     EditService,
     EditBlog,
+    CheckOutSuccess,
+    CheckOutCancel
 }
