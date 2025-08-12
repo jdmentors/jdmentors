@@ -13,7 +13,7 @@ function AdminHeader(){
             </Link>
 
             <div className="z-50 flex items-center gap-5">
-                <img src={user.image ? user.image : userImg} alt="adminImg" className="h-9 w-9 sm:h-12 sm:w-12 object-cover rounded-full border-2 border-blue-100 cursor-pointer" onClick={() => navigate('/admin/profile')} />
+                <img src={user.image ? user.image : userImg} loading="lazy" alt="adminImg" className="h-9 w-9 sm:h-12 sm:w-12 object-cover rounded-full border-2 border-blue-100 cursor-pointer" onClick={() => navigate('/admin/profile')} />
             </div>
         </header>
     );

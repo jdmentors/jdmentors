@@ -4,7 +4,7 @@ function TweetCard({card}) {
     return (
         <div className="p-4 border border-blue-100 rounded-lg mx-4 shadow shadow-blue-100 hover:shadow-lg transition-all duration-200 w-72 shrink-0">
             <div className="flex gap-2">
-                <img className="size-10 rounded-full" src={card.image} alt="User Image" />
+                <img className="size-10 rounded-full" loading="lazy" src={card.image} alt="User Image" />
                 <div className="flex flex-col">
                     <div className="flex items-center gap-1">
                         <p>{card.name}</p>

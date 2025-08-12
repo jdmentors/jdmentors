@@ -4,11 +4,11 @@ import { Container } from "./";
 
 function AboutUs() {
     return (
-        <section className="mt-14">
+        <section className="mt-14 md:mt-18">
             <Container>
                 <div className="grid md:grid-cols-5 lg:grid-cols-8 gap-8 md:gap-16 items-end justify-between">
                     <div className="relative md:col-span-2 lg:col-span-3">
-                        <img src={aboutUs} alt="Professional garage with modern equipment" className="rounded-md shadow-2xl shadow-blue-200 w-full max-h-60 sm:max-h-96 md:h-120 lg:max-h-110 object-cover" />
+                        <img src={aboutUs} loading="lazy" alt="aboutUs" className="rounded-md shadow-2xl shadow-blue-200 w-full max-h-60 sm:max-h-96 md:h-120 lg:max-h-110 object-cover" />
                         <div className="absolute -bottom-6 -right-6 bg-white p-6 rounded-xl shadow-lg shadow-blue-200 hidden sm:block">
                             <div className="text-center">
                                 <div className="text-3xl font-bold text-blue-600">100+</div>

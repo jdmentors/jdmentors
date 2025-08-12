@@ -1,4 +1,4 @@
-import { AdminContainer, AdminSidebar } from "../../components";
+import { AdminContainer, AdminSidebar, LoadingSpinner } from "../../components";
 import { Pencil, Plus, Trash } from "lucide-react";
 import { banner, user } from "../../assets";
 import { Link } from "react-router";
@@ -47,25 +47,31 @@ function AllBlogs() {
                         setAllBlogs(prevblogs => prevblogs.filter(blog => blog._id.toString() !== id.toString()));
                     }
                 } catch (error) {
-                    toast.error(error?.response?.data?.message);
+                    console.error(error);
                 }
+            }else{
+                toast.error(message);
             }
         }
     }
 
     const handleUpdateAvailability = async (id, e) => {
+        const availabilityStatus = e.target.checked;
         try {
-            const { data } = await axios.patch(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/blogs/availability/${id}`, { status: e.target.checked }, { headers: { Authorization: `Bearer ${user.accessToken}` } });
+            const { data } = await axios.patch(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/blogs/availability/${id}`, { status: availabilityStatus }, { headers: { Authorization: `Bearer ${user.accessToken}` } });
 
             if (data && data.success) {
                 toast.success(data.message);
-                setAllBlogs(blogs =>
-                    blogs.map(blog =>
-                        blog._id === id
-                            ? { ...blog, status: data.data.status }
-                            : blog
-                    )
-                );
+
+                setAllBlogs(blogs => {
+                    return blogs.map(blog => {
+                        if (blog._id.toString() === id.toString()) {
+                            return { ...blog, status: availabilityStatus }
+                        } else {
+                            return blog;
+                        }
+                    })
+                })
             }
         } catch (error) {
             const message = error?.response?.data?.message;
@@ -73,23 +79,27 @@ function AllBlogs() {
                 try {
                     const newAccessToken = await refreshAccessToken();
 
-                    const { data } = await axios.patch(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/blogs/availability/${id}`, { status: e.target.checked }, { headers: { Authorization: `Bearer ${newAccessToken}` } });
+                    const { data } = await axios.patch(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/blogs/availability/${id}`, { status: availabilityStatus }, { headers: { Authorization: `Bearer ${newAccessToken}` } });
 
                     if (data && data.success) {
                         toast.success(data.message);
                         dispatch(updateUser({ ...user, accessToken: newAccessToken }));
-                        setAllBlogs(blogs =>
-                            blogs.map(blog =>
-                                blog._id === id
-                                    ? { ...blog, status: data.data.status }
-                                    : blog
-                            )
-                        );
 
+                        setAllBlogs(blogs => {
+                            return blogs.map(blog => {
+                                if (blog._id.toString() === id.toString()) {
+                                    return { ...blog, status: availabilityStatus }
+                                } else {
+                                    return blog;
+                                }
+                            })
+                        })
                     }
                 } catch (error) {
-                    toast.error(error?.response?.data?.message);
+                    console.error(error);
                 }
+            }else{
+                toast.error(message);
             }
         }
     }
@@ -125,14 +135,14 @@ function AllBlogs() {
 
                             {
                                 allBlogs
-                                &&
+                                ?
                                 (
                                     <>
                                         <div className="hidden sm:block">
                                             {
                                                 allBlogs.map(blog => (
                                                     <div key={blog._id} className="md:grid grid-cols-[175px_1fr_2fr_75px_1fr] gap-5 items-center py-5 text-gray-600">
-                                                        <img src={blog.image || banner} alt="blogImg" className="w-40 h-24 object-cover rounded" />
+                                                        <img src={blog.image || banner} loading="lazy" alt="blogImg" className="w-40 h-24 object-cover rounded" />
 
                                                         <p className="">
                                                             {blog.title}
@@ -202,6 +212,8 @@ function AllBlogs() {
                                         </div>
                                     </>
                                 )
+                                :
+                                <LoadingSpinner />
                             }
                         </div>
                     </div>

@@ -20,14 +20,16 @@ function ForgotPasswordForm({isLoginActive, setIsLoginActive, isForgotPasswordAc
             setIsSending(true);
 
             console.log(formData);
-            // const { data } = await axios.post('/api/v1/users/forgot-password', {email:formData.email});
+            const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/users/forgot-password`, {email:formData.email});
 
-            // if(data.success){
-            //     toast.success(data.message);
-            // }
+            if(data && data.success){
+                toast.success(data.message);
+                setIsSending(false);
+            }
         } catch (error) {
-            console.error(error);
-            toast.error(error.response.data.message);
+            const message = error.response.data.message;
+            toast.error(message);
+            setIsSending(false);
         }
     }
 

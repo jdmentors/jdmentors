@@ -1,49 +1,13 @@
 import { useEffect } from "react";
-import { AdminContainer, AdminSidebar, UserPopUp } from "../../components";
+import { AdminContainer, AdminSidebar, LoadingSpinner, UserPopUp } from "../../components";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { Check, DollarSign, FileDownIcon, Newspaper, Settings, User, UserRound, VideoIcon } from "lucide-react";
+import { Check, FileDownIcon } from "lucide-react";
 import { Link } from "react-router";
 import useRefreshToken from "../../hooks/useRefreshToken";
-
-const adminBookings = [
-    {
-        "_id": "67f76839994a731e97d3b8ce",
-        "user": 'Sahid Khan',
-        "room": 2,
-        "hotel": 3,
-        "checkInDate": "2025-04-30T00:00:00.000Z",
-        "checkOutDate": "2025-05-01T00:00:00.000Z",
-        "totalPrice": 299,
-        "guests": 1,
-        "status": "pending",
-        "paymentMethod": "Stripe",
-        "isPaid": false,
-        "createdAt": "2025-04-10T06:42:01.529Z",
-        "updatedAt": "2025-04-10T06:43:54.520Z",
-        "__v": 0
-    },
-
-    {
-        "_id": "47g5g239994a731e97d3b8ce",
-        "user": 'Sana',
-        "room": 2,
-        "hotel": 3,
-        "checkInDate": "2025-04-30T00:00:00.000Z",
-        "checkOutDate": "2025-05-01T00:00:00.000Z",
-        "totalPrice": 299,
-        "guests": 1,
-        "status": "pending",
-        "paymentMethod": "Stripe",
-        "isPaid": false,
-        "createdAt": "2025-04-10T06:42:01.529Z",
-        "updatedAt": "2025-04-10T06:43:54.520Z",
-        "__v": 0
-    },
-
-]
+import { updateUser } from "../../features/forms/UserAuthSlice.js";
 
 function AllSessions() {
     const [showUserPopUp, setShowUserPopUp] = useState(false);
@@ -51,6 +15,7 @@ function AllSessions() {
     const [allSessions, setAllSessions] = useState(null);
     const dispatch = useDispatch();
     const refreshAccessToken = useRefreshToken();
+    const [userPopUpId, setUserPopUpId] = useState(null);
 
     useEffect(() => {
         const getAllSessions = async () => {
@@ -61,7 +26,6 @@ function AllSessions() {
                     setAllSessions(data.data);
                 }
             } catch (error) {
-                console.error(error);
                 const message = error?.response?.data?.message;
                 if (message === 'accessToken') {
                     try {
@@ -70,11 +34,11 @@ function AllSessions() {
                         const { data } = await axios.get(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/sessions/all`, { headers: { Authorization: `Bearer ${newAccessToken}` } });
 
                         if (data && data.success) {
-                            dispatch(updateUser({ ...all, accessToken: newAccessToken }));
+                            dispatch(updateUser({ ...user, accessToken: newAccessToken }));
                             setAllSessions(data.data);
                         }
                     } catch (error) {
-                        toast.error(error?.response?.data?.message);
+                        console.error(error);
                     }
                 }
             }
@@ -98,7 +62,6 @@ function AllSessions() {
                 toast.success(data.message);
             }
         } catch (error) {
-            console.error(error);
             const message = error?.response?.data?.message;
             if (message === 'accessToken') {
                 try {
@@ -116,13 +79,18 @@ function AllSessions() {
                             })
                         });
                         toast.success(data.message);
-                        dispatch(updateUser({ ...all, accessToken: newAccessToken }));
+                        dispatch(updateUser({ ...user, accessToken: newAccessToken }));
                     }
                 } catch (error) {
-                    toast.error(error?.response?.data?.message);
+                    console.error(error);
                 }
             }
         }
+    }
+
+    const handleShowUserPopUp = (id) => {
+        setUserPopUpId(id);
+        setShowUserPopUp(true);
     }
 
     return (
@@ -130,7 +98,7 @@ function AllSessions() {
             {
                 showUserPopUp &&
                 <section className="top-0 left-0 right-0 bottom-0 bg-black/70 z-50 flex items-center justify-center fixed">
-                    <UserPopUp funToRun={setShowUserPopUp} />
+                    <UserPopUp id={userPopUpId} funToRun={setShowUserPopUp} />
                 </section>
             }
 
@@ -149,11 +117,11 @@ function AllSessions() {
                         </div>
 
                         <div className="my-5 overflow-x-auto">
-                            <div className="hidden sm:grid grid-cols-[2fr_1fr_1fr_1fr_100px_100px_1fr] gap-5 items-center py-3 border-b-2 border-b-blue-100">
+                            <div className="hidden sm:grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-5 items-center py-3 border-b-2 border-b-blue-100">
                                 <h5 className="text-lg">Service</h5>
                                 <h5 className="text-lg">User</h5>
                                 <h5 className="text-lg">Preferred Time</h5>
-                                <h5 className="text-lg">Price</h5>
+                                <h5 className="text-lg">Payment</h5>
                                 <h5 className="text-lg">Document</h5>
                                 <h5 className="text-lg">Status</h5>
                                 <h5 className="text-lg">Action</h5>
@@ -161,30 +129,24 @@ function AllSessions() {
 
                             {
                                 allSessions
-                                &&
+                                ?
                                 (
                                     <>
                                         <div className="hidden sm:block">
                                             {
                                                 allSessions.map(session => (
-                                                    <div key={session._id} className="md:grid grid-cols-[2fr_1fr_1fr_1fr_100px_100px_1fr] gap-5 items-center py-5 text-gray-600">
+                                                    <div key={session._id} className="md:grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-5 items-center py-5 text-gray-600">
                                                         <p className="text-gray-800">
                                                             {session.service.title}
                                                         </p>
 
-                                                        <p onClick={() => setShowUserPopUp(true)} className="text-blue-600 underline cursor-pointer">
+                                                        <p onClick={() => handleShowUserPopUp(session.user._id)} className="text-blue-600 underline cursor-pointer">
                                                             {session.user.fullName}
                                                         </p>
 
-                                                        {
-                                                            showUserPopUp &&
-                                                            <section className="top-0 left-0 right-0 bottom-0 bg-black/70 z-50 flex items-center justify-center fixed">
-                                                                <UserPopUp id={session.user._id} funToRun={setShowUserPopUp} />
-                                                            </section>
-                                                        }
-
                                                         <p>{new Date(session.dateTime).toDateString() + " " + `(${new Date(session.dateTime).toLocaleTimeString()})`}</p>
-                                                        <p>${session.service.price}</p>
+
+                                                        <p className={`flex items-center gap-1 ${session.payment ? 'text-green-600' : 'text-red-600'}`}><span className={`h-2 w-2 ${!session.payment && 'bg-red-600'} rounded-full`}></span> <span>{session.payment ? `$${session.service.price}` : 'Pending'}</span></p>
 
                                                         <Link target="_blank" to={`${session.document}`} className="flex gap-1 items-center"><FileDownIcon size={18} /> <span className="text-blue-600 hover:underline">file</span></Link>
 
@@ -213,7 +175,7 @@ function AllSessions() {
 
                                                         <div className="flex gap-2">
                                                             <p className="text-gray-800">User:</p>
-                                                            <p onClick={() => setShowUserPopUp(true)} className="text-blue-600 underline">
+                                                            <p onClick={() => handleShowUserPopUp(session.user._id)} className="text-blue-600 underline">
                                                                 {session.user.fullName}
                                                             </p>
                                                         </div>
@@ -249,6 +211,8 @@ function AllSessions() {
                                         </div>
                                     </>
                                 )
+                                :
+                                <LoadingSpinner />
                             }
                         </div>
                     </div>

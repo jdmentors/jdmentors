@@ -27,7 +27,7 @@ const useRefreshToken = () => {
                 dispatch(toggleShowUserAuthForm(true));
                 navigate('/');
             } else {
-                throw new Error(error);
+                console.error(error);
             }
         }
     };

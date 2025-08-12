@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { AdminContainer, AdminSidebar, UserPopUp } from "../../components";
+import { AdminContainer, AdminSidebar, LoadingSpinner, UserPopUp } from "../../components";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,7 +26,6 @@ function AdminDashboard() {
                     setAllSessions(data.data);
                 }
             } catch (error) {
-                console.error(error);
                 const message = error?.response?.data?.message;
                 if (message === 'accessToken') {
                     try {
@@ -35,11 +34,11 @@ function AdminDashboard() {
                         const { data } = await axios.get(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/sessions/all`, { headers: { Authorization: `Bearer ${newAccessToken}` } });
 
                         if (data && data.success) {
-                            dispatch(updateUser({ ...all, accessToken: newAccessToken }));
+                            dispatch(updateUser({ ...user, accessToken: newAccessToken }));
                             setAllSessions(data.data);
                         }
                     } catch (error) {
-                        toast.error(error?.response?.data?.message);
+                        console.error(error);
                     }
                 }
             }
@@ -56,7 +55,6 @@ function AdminDashboard() {
                     setDashboardData(data.data);
                 }
             } catch (error) {
-                console.error(error);
                 const message = error?.response?.data?.message;
                 if (message === 'accessToken') {
                     try {
@@ -65,11 +63,11 @@ function AdminDashboard() {
                         const { data } = await axios.get(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/dashboard`, { headers: { Authorization: `Bearer ${newAccessToken}` } });
 
                         if (data && data.success) {
-                            dispatch(updateUser({ ...all, accessToken: newAccessToken }));
+                            dispatch(updateUser({ ...user, accessToken: newAccessToken }));
                             setDashboardData(data.data);
                         }
                     } catch (error) {
-                        toast.error(error?.response?.data?.message);
+                        console.error(error);
                     }
                 }
             }
@@ -93,7 +91,6 @@ function AdminDashboard() {
                 toast.success(data.message);
             }
         } catch (error) {
-            console.error(error);
             const message = error?.response?.data?.message;
             if (message === 'accessToken') {
                 try {
@@ -111,10 +108,10 @@ function AdminDashboard() {
                             })
                         });
                         toast.success(data.message);
-                        dispatch(updateUser({ ...all, accessToken: newAccessToken }));
+                        dispatch(updateUser({ ...user, accessToken: newAccessToken }));
                     }
                 } catch (error) {
-                    toast.error(error?.response?.data?.message);
+                    console.error(error?.response?.data?.message);
                 }
             }
         }
@@ -134,7 +131,7 @@ function AdminDashboard() {
                 {/* Stats section */}
                 {
                     dashboardData
-                    &&
+                    ?
                     (
                         <div className="my-10 max-w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-14">
                             <div className="flex justify-between gap-10 lg:gap-5 bg-blue-50 items-center border-2 border-blue-100 rounded-xl p-7">
@@ -204,6 +201,8 @@ function AdminDashboard() {
                             </div>
                         </div>
                     )
+                    :
+                    <LoadingSpinner />
                 }
 
                 <div className="my-10 max-w-full">
@@ -213,11 +212,11 @@ function AdminDashboard() {
                         </div>
 
                         <div className="my-5 overflow-x-auto">
-                            <div className="hidden sm:grid grid-cols-[2fr_1fr_1fr_1fr_100px_100px_1fr] gap-5 items-center py-3 border-b-2 border-b-blue-100">
+                            <div className="hidden sm:grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-5 items-center py-3 border-b-2 border-b-blue-100">
                                 <h5 className="text-lg">Service</h5>
                                 <h5 className="text-lg">User</h5>
                                 <h5 className="text-lg">Preferred Time</h5>
-                                <h5 className="text-lg">Price</h5>
+                                <h5 className="text-lg">Payment</h5>
                                 <h5 className="text-lg">Document</h5>
                                 <h5 className="text-lg">Status</h5>
                                 <h5 className="text-lg">Action</h5>
@@ -225,30 +224,24 @@ function AdminDashboard() {
 
                             {
                                 allSessions
-                                &&
+                                ?
                                 (
                                     <>
                                         <div className="hidden sm:block">
                                             {
                                                 allSessions.map(session => (
-                                                    <div key={session._id} className="md:grid grid-cols-[2fr_1fr_1fr_1fr_100px_100px_1fr] gap-5 items-center py-5 text-gray-600">
+                                                    <div key={session._id} className="md:grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-5 items-center py-5 text-gray-600">
                                                         <p className="text-gray-800">
                                                             {session.service.title}
                                                         </p>
 
-                                                        <p onClick={() => setShowUserPopUp(true)} className="text-blue-600 underline cursor-pointer">
+                                                        <p onClick={() => handleShowUserPopUp(session.user._id)} className="text-blue-600 underline cursor-pointer">
                                                             {session.user.fullName}
                                                         </p>
 
-                                                        {
-                                                            showUserPopUp &&
-                                                            <section className="top-0 left-0 right-0 bottom-0 bg-black/70 z-50 flex items-center justify-center fixed">
-                                                                <UserPopUp id={session.user._id} funToRun={setShowUserPopUp} />
-                                                            </section>
-                                                        }
-
                                                         <p>{new Date(session.dateTime).toDateString() + " " + `(${new Date(session.dateTime).toLocaleTimeString()})`}</p>
-                                                        <p>${session.service.price}</p>
+
+                                                        <p className={`flex items-center gap-1 ${session.payment ? 'text-green-600' : 'text-red-600'}`}><span className={`h-2 w-2 ${!session.payment && 'bg-red-600'} rounded-full`}></span> <span>{session.payment ? `$${session.service.price}` : 'Pending'}</span></p>
 
                                                         <Link target="_blank" to={`${session.document}`} className="flex gap-1 items-center"><FileDownIcon size={18} /> <span className="text-blue-600 hover:underline">file</span></Link>
 
@@ -277,7 +270,7 @@ function AdminDashboard() {
 
                                                         <div className="flex gap-2">
                                                             <p className="text-gray-800">User:</p>
-                                                            <p onClick={() => setShowUserPopUp(true)} className="text-blue-600 underline">
+                                                            <p onClick={() => handleShowUserPopUp(session.user._id)} className="text-blue-600 underline">
                                                                 {session.user.fullName}
                                                             </p>
                                                         </div>
@@ -313,6 +306,8 @@ function AdminDashboard() {
                                         </div>
                                     </>
                                 )
+                                :
+                                <LoadingSpinner />
                             }
                         </div>
                     </div>

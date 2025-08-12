@@ -1,12 +1,13 @@
 import { useEffect } from "react";
-import { UserContainer, UserSidebar } from "../../components";
+import { LoadingSpinner, UserContainer, UserSidebar } from "../../components";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { File, FileCheck, FileDownIcon, Video } from "lucide-react";
+import { FileDownIcon } from "lucide-react";
 import { Link } from "react-router";
 import useRefreshToken from "../../hooks/useRefreshToken";
+import { updateUser } from "../../features/forms/UserAuthSlice.js";
 
 function UserDashboard() {
     const user = useSelector(state => state.user.user);
@@ -23,7 +24,6 @@ function UserDashboard() {
                     setUserSessions(data.data);
                 }
             } catch (error) {
-                console.error(error);
                 const message = error?.response?.data?.message;
                 if (message === 'accessToken') {
                     try {
@@ -36,8 +36,11 @@ function UserDashboard() {
                             setUserSessions(data.data);
                         }
                     } catch (error) {
-                        toast.error(error?.response?.data?.message);
+                        const message = error?.response?.data?.message;
+                        toast.error(message);
                     }
+                }else{
+                    toast.error(message);
                 }
             }
         }
@@ -71,7 +74,7 @@ function UserDashboard() {
 
                             {
                                 userSessions
-                                &&
+                                ?
                                 (
                                     <>
                                         <div className="hidden sm:block">
@@ -130,6 +133,8 @@ function UserDashboard() {
                                         </div>
                                     </>
                                 )
+                                :
+                                <LoadingSpinner />
                             }
                         </div>
                     </div>

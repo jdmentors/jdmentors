@@ -1,7 +1,7 @@
 import { banner } from "../assets";
 import { Container } from "./";
 import { Link, useNavigate } from "react-router";
-import { CheckCircle, CheckCircle2, CheckCircleIcon, Clock, FileText, Laptop, Phone, Shield, Video } from "lucide-react";
+import { Clock, FileText, Laptop, Phone, Shield, Video } from "lucide-react";
 
 function Hero() {
     const navigate = useNavigate();
@@ -21,13 +21,13 @@ function Hero() {
                         <p className="text-lg text-white z-40 leading-relaxed">Personalized 1-on-1 consultations to strengthen your law school applications for non-T14 schools. Expert guidance on personal statements and addendums to make your application stand out.</p>
 
                         <div className="flex gap-4 flex-wrap">
-                            <Link to='/contact' className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700">
+                            <Link to='/services' className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700">
                                 <Video size={24} strokeWidth={1.5} />
 
                                 <span>Book Consultation</span>
                             </Link>
 
-                            <Link to='#contact' className={`inline-flex items-center justify-center gap-1 whitespace-nowrap h-10 bg-white text-blue-600 hover:bg-blue-600 hover:text-white px-4 py-4 font-semibold rounded-md transition-all duration-300 cursor-pointer`}>
+                            <Link to='/contact' className={`inline-flex items-center justify-center gap-1 whitespace-nowrap h-10 bg-white text-blue-600 hover:bg-blue-600 hover:text-white px-4 py-4 font-semibold rounded-md transition-all duration-300 cursor-pointer`}>
                                 <Phone size={18} strokeWidth={1.5} />
                                 Contact Us
                             </Link>

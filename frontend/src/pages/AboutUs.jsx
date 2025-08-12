@@ -46,7 +46,7 @@ function AboutUs() {
 
                 <div className="grid grid-cols-1 gap-5">
                     <div className="flex items-stretch">
-                        <img src={aboutUs} alt="About Us" className="h-60 sm:h-80 lg:h-105 md:h-96 xl:h-96 w-full object-cover rounded-2xl" />
+                        <img src={aboutUs} loading="lazy" alt="About Us" className="h-60 sm:h-80 lg:h-105 md:h-96 xl:h-96 w-full object-cover rounded-2xl" />
                     </div>
                     <div className="bg-white grid grid-cols-2 gap-8 p-10 rounded-2xl">
                         {
@@ -84,7 +84,7 @@ function AboutUs() {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                         <div className="h-80 rounded-2xl overflow-hidden relative">
-                            <img src={daniel} alt="consultant" className="w-full h-full object-cover" />
+                            <img src={daniel} loading="lazy" alt="consultant" className="w-full h-full object-cover" />
                             <div className="absolute py-2 rounded-xl bg-white bottom-5 w-10/12 text-center right-1/2 translate-x-1/2 text-sm">
                                 <p className="text-base font-semibold">Alan Parker</p>
                                 <p className="text-gray-600">Consultant</p>
@@ -92,7 +92,7 @@ function AboutUs() {
                         </div>
 
                         <div className="h-80 rounded-2xl overflow-hidden relative">
-                            <img src={michael} alt="consultant" className="w-full h-full object-cover" />
+                            <img src={michael} loading="lazy" alt="consultant" className="w-full h-full object-cover" />
                             <div className="absolute py-2 rounded-xl bg-white bottom-5 w-10/12 text-center right-1/2 translate-x-1/2 text-sm">
                                 <p className="text-base font-semibold">Daniel Spears</p>
                                 <p className="text-gray-600">Consultant</p>
@@ -100,7 +100,7 @@ function AboutUs() {
                         </div>
 
                         <div className="h-80 rounded-2xl overflow-hidden relative">
-                            <img src={sarah} alt="consultant" className="w-full h-full object-cover" />
+                            <img src={sarah} loading="lazy" alt="consultant" className="w-full h-full object-cover" />
                             <div className="absolute py-2 rounded-xl bg-white bottom-5 w-10/12 text-center right-1/2 translate-x-1/2 text-sm">
                                 <p className="text-base font-semibold">Jean Mcalin</p>
                                 <p className="text-gray-600">Consultant</p>
@@ -108,7 +108,7 @@ function AboutUs() {
                         </div>
 
                         <div className="h-80 rounded-2xl overflow-hidden relative">
-                            <img src={priya} alt="consultant" className="w-full h-full object-cover" />
+                            <img src={priya} loading="lazy" alt="consultant" className="w-full h-full object-cover" />
                             <div className="absolute py-2 rounded-xl bg-white bottom-5 w-10/12 text-center right-1/2 translate-x-1/2 text-sm">
                                 <p className="text-base font-semibold">Brenda Sydney</p>
                                 <p className="text-gray-600">Consultant</p>

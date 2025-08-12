@@ -6,14 +6,16 @@ import { useDispatch, useSelector } from "react-redux";
 import useRefreshToken from "../../hooks/useRefreshToken";
 import { updateUser } from "../../features/forms/UserAuthSlice.js";
 import { useNavigate } from "react-router";
+import { useState } from "react";
 
 function AddServiceForm({ service }) {
     const user = useSelector(state => state.user.user);
     const refreshAccessToken = useRefreshToken();
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [isPublishing, setIsPublishing] = useState(false);
 
-    const { register, handleSubmit, control, watch, setValue, getValues, reset } = useForm({
+    const { register, handleSubmit, control, watch, setValue, formState: { errors }, reset } = useForm({
         defaultValues: {
             title: service?.title || "",
             slug: service?.slug || "",
@@ -27,63 +29,72 @@ function AddServiceForm({ service }) {
 
     const publishService = async (serviceData) => {
         try {
-            const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/services/create`, {title:serviceData.title, slug:serviceData.slug, description:serviceData.description, price:serviceData.price, process:serviceData.process || '', features:serviceData.features || '', status:serviceData.status}, {headers: {Authorization: `Bearer ${user.accessToken}`}});
+            setIsPublishing(true);
+            const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/services/create`, { title: serviceData.title, slug: serviceData.slug, description: serviceData.description, price: serviceData.price, process: serviceData.process || '', features: serviceData.features || '', status: serviceData.status }, { headers: { Authorization: `Bearer ${user.accessToken}` } });
 
-            if(data && data.success){
+            if (data && data.success) {
                 toast.success(data.message);
+                setIsPublishing(false);
                 reset();
             }
         } catch (error) {
             const message = error?.response?.data?.message;
-            if(message === 'accessToken'){
+            if (message === 'accessToken') {
                 try {
                     const newAccessToken = await refreshAccessToken();
 
-                    const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/services/create`, {title:serviceData.title, slug:serviceData.slug, description:serviceData.description, price:serviceData.price, process:serviceData.process || '', features:serviceData.features || '', status:serviceData.status}, {headers: {Authorization: `Bearer ${newAccessToken}`}});
+                    const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/services/create`, { title: serviceData.title, slug: serviceData.slug, description: serviceData.description, price: serviceData.price, process: serviceData.process || '', features: serviceData.features || '', status: serviceData.status }, { headers: { Authorization: `Bearer ${newAccessToken}` } });
 
-                    if(data && data.success){
+                    if (data && data.success) {
                         toast.success(data.message);
-                        dispatch(updateUser({...user, accessToken:newAccessToken}));
+                        dispatch(updateUser({ ...user, accessToken: newAccessToken }));
                         reset();
+                        setIsPublishing(false);
                     }
                 } catch (error) {
-                    toast.error(error?.response?.data?.message);
+                    const message = error?.response?.data?.message;
+                    toast.error(message);
+                    setIsPublishing(false);
                 }
-            }
-
-            if(message == 'Service already exists with this title'){
+            }else{
                 toast.error(message);
+                setIsPublishing(false);
             }
         }
     }
 
     const editService = async (serviceData) => {
         try {
-            const { data } = await axios.put(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/services/edit/${service._id}`, {title:serviceData.title, slug:serviceData.slug, description:serviceData.description, price:serviceData.price, process:serviceData.process || '', features:serviceData.features || '', status:serviceData.status}, {headers: {Authorization: `Bearer ${user.accessToken}`}});
+            setIsPublishing(true);
 
-            if(data && data.success){
+            const { data } = await axios.put(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/services/edit/${service._id}`, { title: serviceData.title, slug: serviceData.slug, description: serviceData.description, price: serviceData.price, process: serviceData.process || '', features: serviceData.features || '', status: serviceData.status }, { headers: { Authorization: `Bearer ${user.accessToken}` } });
+
+            if (data && data.success) {
                 toast.success(data.message);
                 navigate('/admin/services');
+                setIsPublishing(false);
             }
         } catch (error) {
             const message = error?.response?.data?.message;
-            if(message === 'accessToken'){
+            if (message === 'accessToken') {
                 try {
                     const newAccessToken = await refreshAccessToken();
 
-                    const { data } = await axios.put(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/services/edit/${service._id}`, {title:serviceData.title, slug:serviceData.slug, description:serviceData.description, price:serviceData.price, process:serviceData.process || '', features:serviceData.features || '', status:serviceData.status}, {headers: {Authorization: `Bearer ${newAccessToken}`}});
+                    const { data } = await axios.put(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/services/edit/${service._id}`, { title: serviceData.title, slug: serviceData.slug, description: serviceData.description, price: serviceData.price, process: serviceData.process || '', features: serviceData.features || '', status: serviceData.status }, { headers: { Authorization: `Bearer ${newAccessToken}` } });
 
-                    if(data && data.success){
+                    if (data && data.success) {
                         toast.success(data.message);
-                        dispatch(updateUser({...user, accessToken:newAccessToken}));
+                        dispatch(updateUser({ ...user, accessToken: newAccessToken }));
+                        setIsPublishing(false);
                     }
                 } catch (error) {
-                    toast.error(error?.response?.data?.message);
+                    const message = error?.response?.data?.message;
+                    toast.error(message);
+                    setIsPublishing(false);
                 }
-            }
-
-            if(message == 'Service already exists with this title'){
+            }else{
                 toast.error(message);
+                setIsPublishing(false);
             }
         }
     }
@@ -111,6 +122,7 @@ function AddServiceForm({ service }) {
                     <div className="flex flex-col gap-2">
                         <label className="text-gray-700" htmlFor="title">Title:</label>
                         <input className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="title" type="text" {...register('title', { required: true })} placeholder="Enter service title here..." />
+                        {errors.title && <p className="text-sm text-orange-500 font-light">Title is required.</p>}
                     </div>
 
                     <br />
@@ -118,6 +130,7 @@ function AddServiceForm({ service }) {
                     <div className="flex flex-col gap-2">
                         <label className="text-gray-700" htmlFor="slug">Slug:</label>
                         <input className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="slug" type="text" onInput={(e) => setValue('slug', slugTransform(e.target.value), { shouldValidate: true })} {...register('slug', { required: true })} placeholder="Enter service slug here..." />
+                        {errors.slug && <p className="text-sm text-orange-500 font-light">Slug is required.</p>}
                     </div>
 
                     <br />
@@ -125,6 +138,7 @@ function AddServiceForm({ service }) {
                     <div className="flex flex-col gap-2">
                         <label className="text-gray-700" htmlFor="description">Description:</label>
                         <textarea rows={6} className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="description" {...register('description', { required: true })} placeholder="Enter service description here..." />
+                        {errors.description && <p className="text-sm text-orange-500 font-light">Description is required.</p>}
                     </div>
 
                     <br />
@@ -134,6 +148,7 @@ function AddServiceForm({ service }) {
                         <input className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="features" type="text" {...register(`features[0]`, { required: true })} placeholder="Enter service features here..." />
                         <input className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="features" type="text" {...register(`features[1]`, { required: true })} placeholder="Enter service features here..." />
                         <input className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="features" type="text" {...register(`features[2]`, { required: true })} placeholder="Enter service features here..." />
+                        {errors.features && <p className="text-sm text-orange-500 font-light">Features are required.</p>}
                     </div>
 
                     <br />
@@ -141,6 +156,7 @@ function AddServiceForm({ service }) {
                     <div className="flex flex-col gap-2">
                         <label className="text-gray-700" htmlFor="process">Process:</label>
                         <textarea rows={4} className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="process" {...register('process', { required: true })} placeholder="Enter service process here..." />
+                        {errors.process && <p className="text-sm text-orange-500 font-light">Process is required.</p>}
                     </div>
 
                     <br />
@@ -149,6 +165,7 @@ function AddServiceForm({ service }) {
                         <div className="flex flex-col gap-2">
                             <label className="text-gray-700" htmlFor="price">Price:</label>
                             <input className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="price" type="number" {...register('price', { required: true })} placeholder="Enter service price here..." />
+                            {errors.price && <p className="text-sm text-orange-500 font-light">Price is required.</p>}
                         </div>
 
                         <div className="flex flex-col gap-2">
@@ -157,12 +174,23 @@ function AddServiceForm({ service }) {
                                 <option value={true}>Active</option>
                                 <option value={false}>Inactive</option>
                             </select>
+                            {errors.status && <p className="text-sm text-orange-500 font-light">Status is required.</p>}
                         </div>
                     </div>
 
                     <br />
 
-                    <button type="submit" className="p-2 w-full rounded-md text-white bg-blue-600 cursor-pointer shadow-lg shadow-blue-200">Publish</button>
+                    <button className="p-2 w-full rounded-md text-white bg-blue-600 cursor-pointer shadow-lg shadow-blue-200" type="submit">
+                        {
+                            !isPublishing ? 'Publish' :
+                                (<span className="flex space-x-1 items-center justify-center py-2">
+                                    <span className="w-2.5 h-2.5 bg-white rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+                                    <span className="w-2.5 h-2.5 bg-white rounded-full animate-bounce [animation-delay:-0.2s]"></span>
+                                    <span className="w-2.5 h-2.5 bg-white rounded-full animate-bounce [animation-delay:-0.1s]"></span>
+                                    <span className="w-2.5 h-2.5 bg-white rounded-full animate-bounce"></span>
+                                </span>)
+                        }
+                    </button>
                 </div>
             </div>
         </form>

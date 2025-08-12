@@ -150,7 +150,7 @@ const updateAvailability = async (req, res) => {
             return res.status(500).json({ success: false, message: 'Error occured while updating service' });
         }
 
-        return res.status(200).json({ success: true, message: 'Service updated', data: service });
+        return res.status(200).json({ success: true, message: 'Service availability updated', data: service });
     } catch (error) {
         return res.status(500).json({ success: false, message: 'Service updation failed' });
     }

@@ -13,10 +13,11 @@ function Footer() {
     ];
 
     const ourServices = [
-        { name: 'Personal Statement Review', href: '/services/personal-statement-review' },
-        { name: 'Addendum Consultation', href: '/services/addendum-consultation' },
-        { name: 'Application Strategy', href: '/services/application-strategy' },
-        { name: 'Interview Preparation', href: '/services/interview-preparation' },
+        { name: 'Personal Statement Review', href: '/services' },
+        { name: 'Addendum Consultation', href: '/services' },
+        { name: 'Application Strategy', href: '/services' },
+        { name: 'Interview Preparation', href: '/services' },
+        { name: 'Other Services', href: '/services' },
     ];
 
     return (

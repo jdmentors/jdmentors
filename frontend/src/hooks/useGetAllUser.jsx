@@ -1,7 +1,7 @@
 import axios from "axios";
-import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import useRefreshToken from "./useRefreshToken";
+import { updateUser } from "../features/forms/UserAuthSlice.js";
 
 function useGetAllUsers(){
     const user = useSelector(state => state.user.user);
@@ -16,8 +16,6 @@ function useGetAllUsers(){
                 return data.data;
             }
         } catch (error) {
-            console.error(error);
-            toast.error(error?.response?.data?.message);
             const message = error?.response?.data?.message;
 
             if (message === 'accessToken') {
@@ -31,7 +29,7 @@ function useGetAllUsers(){
                         return data.data;
                     }
                 } catch (error) {
-                    toast.error(error?.response?.data?.message);
+                    console.error(error);
                 }
             }
         }

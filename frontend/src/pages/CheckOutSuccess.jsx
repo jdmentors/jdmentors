@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router";
 import { useEffect } from "react";
 import axios from "axios";
 import { useState } from "react";
+import { LoadingSpinner } from "../components";
 
 function CheckOutSuccess() {
     const { sessionId } = useParams();
@@ -44,7 +45,7 @@ function CheckOutSuccess() {
 
                     {
                         session
-                        &&
+                        ?
                         (
                             <section>
                                 <h3 className="font-semibold text-blue-950">Booking Summary</h3>
@@ -78,6 +79,8 @@ function CheckOutSuccess() {
                                 </div>
                             </section>
                         )
+                        :
+                        <LoadingSpinner />
                     }
 
                     <Link to={`/`} className="border-2 border-blue-100 rounded-md py-2 px-5">Back To Home</Link>

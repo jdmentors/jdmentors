@@ -1,13 +1,13 @@
 import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASSWORD,
-  },
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD,
+    },
 });
 
 const contactEmail = async (name, email, phone, service, message) => {
@@ -30,7 +30,7 @@ const contactEmail = async (name, email, phone, service, message) => {
                     `,
         });
 
-        if(info) return true;
+        if (info) return true;
     } catch (error) {
         throw new Error(error);
     }
@@ -54,7 +54,7 @@ const orderAdminEmail = async (fullName, phone, email, service, document, dateTi
                     `,
         });
 
-        if(info) return true;
+        if (info) return true;
     } catch (error) {
         throw new Error(error);
     }
@@ -75,7 +75,7 @@ const orderUserEmail = async (email, service, document, dateTime, price) => {
                     `,
         });
 
-        if(info) return true;
+        if (info) return true;
     } catch (error) {
         throw new Error(error);
     }

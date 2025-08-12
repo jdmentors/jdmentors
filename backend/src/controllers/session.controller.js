@@ -13,7 +13,8 @@ const createSession = async (req, res) => {
 
         const user = req.user;
 
-        const uploaded = await uploadDocsOnCloudinary(document?.path);
+        // const uploaded = await uploadDocsOnCloudinary(document?.path);
+        const uploaded = await uploadDocsOnCloudinary(document);
 
         if (!uploaded) {
             return res.status(500).json({ success: false, message: 'Failed to upload doc.' });
@@ -27,7 +28,7 @@ const createSession = async (req, res) => {
 
         return res.status(200).json({ success: true, message: 'Redirecting to payment', data: session });
     } catch (error) {
-        throw new Error(error.message);
+        throw new Error(error);
     }
 }
 
@@ -49,7 +50,7 @@ const getSessionsOfUser = async (req, res) => {
 
 const getAllSessions = async (req, res) => {
     try {
-        const sessions = await Session.find().populate("service user");
+        const sessions = await Session.find().populate("service").populate("user");
 
         if (!sessions) {
             return res.status(500).json({ success: false, message: 'Could not find the sessions.' });
@@ -75,7 +76,7 @@ const updateSessionStatus = async (req, res) => {
             return res.status(500).json({ success: false, message: 'Failed to update status.' });
         }
 
-        return res.status(200).json({ success: true, message: 'Status updated', data: session });
+        return res.status(200).json({ success: true, message: 'Status marked as done', data: session });
     } catch (error) {
         throw new Error(error);
     }

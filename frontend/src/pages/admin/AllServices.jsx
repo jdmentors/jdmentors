@@ -1,4 +1,4 @@
-import { AdminContainer, AdminSidebar } from "../../components";
+import { AdminContainer, AdminSidebar, LoadingSpinner } from "../../components";
 import { Pencil, Plus, Trash } from "lucide-react";
 import { user } from "../../assets";
 import { Link } from "react-router";
@@ -9,6 +9,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import useRefreshToken from "../../hooks/useRefreshToken"
+import { updateUser } from "../../features/forms/UserAuthSlice.js";
 
 function AllServices() {
     const [allServices, setAllServices] = useState(null);
@@ -46,49 +47,56 @@ function AllServices() {
                         setAllServices(prevServices => prevServices.filter(service => service._id.toString() !== id.toString()));
                     }
                 } catch (error) {
-                    toast.error(error?.response?.data?.message);
+                    console.error(error?.response?.data?.message);
                 }
             }
         }
     }
 
     const handleUpdateAvailability = async (id, e) => {
+        const availabilityStatus = e.target.checked;
         try {
-            const { data } = await axios.patch(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/services/availability/${id}`, { status: e.target.checked }, { headers: { Authorization: `Bearer ${user.accessToken}` } });
+            const { data } = await axios.patch(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/services/availability/${id}`, { status: availabilityStatus }, { headers: { Authorization: `Bearer ${user.accessToken}` } });
 
             if (data && data.success) {
                 toast.success(data.message);
-                setAllServices(services =>
-                    services.map(service =>
-                        service._id === id
-                            ? { ...service, status: data.data.status }
-                            : service
-                    )
-                );
+                setAllServices(services => {
+                    return services.map(service => {
+                        if (service._id.toString() === id.toString()) {
+                            return { ...service, status: availabilityStatus }
+                        } else {
+                            return service;
+                        }
+                    })
+                })
             }
         } catch (error) {
             const message = error?.response?.data?.message;
+
             if (message === 'accessToken') {
                 try {
                     const newAccessToken = await refreshAccessToken();
 
-                    const { data } = await axios.patch(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/services/availability/${id}`, { status: e.target.checked }, { headers: { Authorization: `Bearer ${newAccessToken}` } });
+                    const { data } = await axios.patch(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/services/availability/${id}`, { status: availabilityStatus }, { headers: { Authorization: `Bearer ${newAccessToken}` } });
 
                     if (data && data.success) {
                         toast.success(data.message);
                         dispatch(updateUser({ ...user, accessToken: newAccessToken }));
-                        setAllServices(services =>
-                            services.map(service =>
-                                service._id === id
-                                    ? { ...service, status: data.data.status }
-                                    : service
-                            )
-                        );
-
+                        setAllServices(services => {
+                            return services.map(service => {
+                                if (service._id.toString() === id.toString()) {
+                                    return { ...service, status: availabilityStatus }
+                                } else {
+                                    return service;
+                                }
+                            })
+                        })
                     }
                 } catch (error) {
-                    toast.error(error?.response?.data?.message);
+                    console.error(error);
                 }
+            }else{
+                toast.error(message);
             }
         }
     }
@@ -118,13 +126,13 @@ function AllServices() {
                                 <h5 className="text-lg">Rate</h5>
                                 <h5 className="text-lg">Sessions</h5>
                                 <h5 className="text-lg">Revenue</h5>
-                                <h5 className="text-lg">Status</h5>
+                                <h5 className="text-lg">Availability</h5>
                                 <h5 className="text-lg">Action</h5>
                             </div>
 
                             {
                                 allServices
-                                &&
+                                ?
                                 (
                                     <>
                                         <div className="hidden sm:block">
@@ -183,7 +191,7 @@ function AllServices() {
                                                         </div>
 
                                                         <div className="flex gap-4">
-                                                            <p className="text-gray-800">Status:</p>
+                                                            <p className="text-gray-800">Availability:</p>
                                                             <label className="relative cursor-pointer">
                                                                 <input type="checkbox" checked={service.status} onChange={(e) => handleUpdateAvailability(service._id, e)} className="sr-only peer" />
 
@@ -207,6 +215,8 @@ function AllServices() {
                                         </div>
                                     </>
                                 )
+                                :
+                                <LoadingSpinner />
                             }
                         </div>
                     </div>

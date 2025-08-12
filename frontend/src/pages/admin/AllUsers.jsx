@@ -1,4 +1,4 @@
-import { AdminContainer, AdminSidebar } from "../../components";
+import { AdminContainer, AdminSidebar, LoadingSpinner } from "../../components";
 import { Trash } from "lucide-react";
 import { Link } from "react-router";
 import { useState } from "react";
@@ -46,11 +46,12 @@ function AllUsers() {
                         setAllUsers(prevUsers => prevUsers.filter(user => user._id.toString() !== id.toString()));
                     }
                 } catch (error) {
-                    toast.error(error?.response?.data?.message);
+                    console.error(error);
                 }
             }
         }
     }
+
     return (
         <section className="flex min-h-[90vh]">
             <AdminSidebar />
@@ -81,7 +82,7 @@ function AllUsers() {
 
                             {
                                 allUsers
-                                &&
+                                ?
                                 (
                                     <>
                                         <div className="hidden sm:block">
@@ -152,6 +153,8 @@ function AllUsers() {
                                         </div>
                                     </>
                                 )
+                                :
+                                <LoadingSpinner />
                             }
                         </div>
                     </div>

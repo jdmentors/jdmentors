@@ -35,6 +35,8 @@ import Protected from "./Protected";
 import AllServices from "./AllServices";
 import AllBlogs from "./AllBlogs";
 import AdminRoute from "./admin/AdminRoute";
+import LoadingSpinner from "./LoadingSpinner";
+import AboutUs from '../components/AboutUs';
 
 export {
     Header,
@@ -73,5 +75,7 @@ export {
     Protected,
     AllServices,
     AllBlogs,
-    AdminRoute
+    AdminRoute,
+    LoadingSpinner,
+    AboutUs,
 }

@@ -1,6 +1,5 @@
 import { DollarSign, Laptop, Mail, Phone, User, UserPlus, X } from "lucide-react";
 import { Link } from "react-router";
-import { user as UserImg } from "../assets";
 import { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
@@ -29,7 +28,7 @@ function UserPopUp({ funToRun, id }) {
         (
             <div className="text-gray-600 shadow-2xl shadow-blue-300/60 w-4/5 sm:w-sm bg-white rounded-xl overflow-hidden">
                 <div className="px-5 py-3 flex justify-between items-center bg-blue-600 text-white">
-                    <p className="text-lg">Sahid Khan</p>
+                    <p className="text-lg">{user[0].fullName}</p>
                     <X onClick={() => funToRun(false)} className="cursor-pointer" />
                 </div>
 

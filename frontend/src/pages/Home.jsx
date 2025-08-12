@@ -1,9 +1,14 @@
 import { daniel, emily, michael, omar, priya, sarah } from "../assets";
-import { CallToAction, Container, Hero, FAQ, Testimonial, Stat, BlogCard, AllServices, AllBlogs } from "../components";
+import { CallToAction, Container, Hero, FAQ, Stat, AboutUs, LoadingSpinner } from "../components";
 import Marquee from "react-fast-marquee";
-import AboutUs from "../components/AboutUs";
 import { Link } from "react-router";
 import { ArrowRight } from "lucide-react";
+import { lazy } from "react";
+import { Suspense } from "react";
+
+const AllServices = lazy(() => import('../components/AllServices'));
+const Testimonial = lazy(() => import('../components/Testimonial'));
+const AllBlogs = lazy(() => import('../components/AllBlogs'));
 
 const faqs = [
     {
@@ -106,9 +111,11 @@ function Home() {
                     <div>
 
                         <h2 className="text-3xl font-bold text-blue-950">Our Specialized Services</h2>
-                        <p className="md:text-lg text-blue-950 mt-3 mb-8">Tailored support to make your law school application stand out.</p>
+                        <p className="md:text-lg text-blue-950 mt-3 mb-10">Tailored support to make your law school application stand out.</p>
 
-                        <AllServices limit={3} />
+                        <Suspense fallback={<LoadingSpinner />}>
+                            <AllServices limit={3} />
+                        </Suspense>
 
                         <div className="flex justify-center mt-10">
                             <Link className="py-2.5 px-6 rounded-md bg-blue-600 text-white inline-flex items-center gap-2" to="/services">All Services <ArrowRight /></Link>
@@ -121,22 +128,24 @@ function Home() {
             <AboutUs />
 
             {/* Testimonials section */}
-            <section className="mt-12">
+            <section className="mt-12 md:mt-16">
                 <Container>
                     <div>
 
                         <h2 className="text-3xl font-bold text-blue-950">Success Stories</h2>
                         <p className="md:text-lg text-blue-950 my-3">Hear from students who achieved their law school dreams</p>
 
-                        <div>
-                            <Marquee speed={40} pauseOnHover={true} gradient={true} gradientColor="#EFF6FF" gradientWidth={50} className="flex items-stretch py-1 overflow-y-hidden">
-                                {
-                                    testimonials.map(testimonial => (
-                                        <Testimonial key={testimonial.name} name={testimonial.name} school={testimonial.school} review={testimonial.review} image={testimonial.image} />
-                                    ))
-                                }
-                            </Marquee>
-                        </div>
+                        <Suspense fallback={<LoadingSpinner />}>
+                            <div>
+                                <Marquee speed={40} pauseOnHover={true} gradient={true} gradientColor="#EFF6FF" gradientWidth={50} className="flex items-stretch py-1 overflow-y-hidden">
+                                    {
+                                        testimonials.map(testimonial => (
+                                            <Testimonial key={testimonial.name} name={testimonial.name} school={testimonial.school} review={testimonial.review} image={testimonial.image} />
+                                        ))
+                                    }
+                                </Marquee>
+                            </div>
+                        </Suspense>
                     </div>
                 </Container>
             </section>
@@ -146,17 +155,11 @@ function Home() {
                 <Container>
                     <div>
                         <h2 className="text-3xl font-bold text-blue-950">Insights for Law School Success</h2>
-                        <p className="text-blue-950 my-4">Whether you're perfecting your personal statement or navigating addendums, our blog delivers the guidance you need—one post at a time.</p>
+                        <p className="text-blue-950 mt-4 mb-8">Whether you're perfecting your personal statement or navigating addendums, our blog delivers the guidance you need—one post at a time.</p>
 
-                        {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 mt-8">
-                            {
-                                Array(3).fill('').map((_, i) => (
-                                    <BlogCard key={i} />
-                                ))
-                            }
-                        </div> */}
-
-                        <AllBlogs limit={3} />
+                        <Suspense fallback={<LoadingSpinner />}>
+                            <AllBlogs limit={3} />
+                        </Suspense>
 
                         <div className="flex justify-center mt-10">
                             <Link className="py-2.5 px-6 rounded-md bg-blue-600 text-white inline-flex items-center gap-2" to="/blogs">More Posts <ArrowRight /></Link>

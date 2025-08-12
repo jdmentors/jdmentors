@@ -1,5 +1,4 @@
 import axios from "axios";
-import toast from "react-hot-toast";
 
 function useGetAllBlogs(){
     const fetchedBlogs = async () => {
@@ -11,7 +10,6 @@ function useGetAllBlogs(){
             }
         } catch (error) {
             console.error(error);
-            toast.error(error?.response?.data?.message);
         }
     }
 

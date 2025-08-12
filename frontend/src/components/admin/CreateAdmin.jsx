@@ -2,13 +2,13 @@ import { AdminSidebar, AdminContainer } from "../";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { EyeIcon, EyeOff, Lock, Plus } from "lucide-react";
+import { EyeIcon, EyeOff, Lock } from "lucide-react";
 import { useSelector } from "react-redux";
 import useRefreshToken from "../../hooks/useRefreshToken";
 import { useState } from "react";
 
 function CreateAdmin() {
-    const { register, handleSubmit, reset } = useForm({
+    const { register, handleSubmit, reset, formState: {errors} } = useForm({
         defaultValues: {
             fullName: '',
             email: '',
@@ -27,7 +27,7 @@ function CreateAdmin() {
         try {
             setIsRegistering(true);
 
-            const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/admin/register`, { fullName: formData.fullName, email: formData.email, phone: formData.phone, password: formData.password, userType: 'admin' }, { withCredentials: true, headers: {Authorization: `Bearer ${user.accessToken}`} });
+            const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/admin/register`, { fullName: formData.fullName, email: formData.email, phone: formData.phone, password: formData.password, userType: 'admin' }, { withCredentials: true, headers: { Authorization: `Bearer ${user.accessToken}` } });
 
             if (data.success) {
                 setIsRegistering(false);
@@ -35,18 +35,26 @@ function CreateAdmin() {
                 toast.success(data.message);
             }
         } catch (error) {
-            console.error(error.message);
-            if (error?.response?.data?.message === 'accessToken') {
-                const newAccessToken = await refreshAccessToken();
+            const message = error?.response?.data?.message;
+            if (message == 'accessToken') {
+                try {
+                    const newAccessToken = await refreshAccessToken();
 
-                const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/admin/register`, { fullName: formData.fullName, email: formData.email, phone: formData.phone, password: formData.password, userType: 'admin' }, { withCredentials: true, headers: {Authorization: `Bearer ${newAccessToken}`} });
+                    const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/admin/register`, { fullName: formData.fullName, email: formData.email, phone: formData.phone, password: formData.password, userType: 'admin' }, { withCredentials: true, headers: { Authorization: `Bearer ${newAccessToken}` } });
 
-                if (data && data.success) {
-                    reset();
-                    toast.success(data.message);
+                    if (data && data.success) {
+                        reset();
+                        toast.success(data.message);
+                        setIsRegistering(false);
+                    }
+                } catch (error) {
+                    const message = error?.response?.data?.message;
+                    toast.error(message);
+                    setIsRegistering(false);
                 }
             } else {
-                throw new Error(error);
+                toast.error(message);
+                setIsRegistering(false);
             }
         }
     }
@@ -72,16 +80,19 @@ function CreateAdmin() {
                                         <div className="flex flex-col gap-2">
                                             <label className="text-gray-700" htmlFor="fullName">Full Name:</label>
                                             <input className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="fullName" type="text" {...register('fullName', { required: true })} placeholder="Enter fullName here..." />
+                                            {errors.fullName && <p className="text-sm text-orange-500 font-light">Full Name is required.</p>}
                                         </div>
 
                                         <div className="flex flex-col gap-2">
                                             <label className="text-gray-700" htmlFor="email">Email:</label>
                                             <input className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="email" type="email" {...register('email', { required: true })} placeholder="Enter email here..." />
+                                            {errors.email && <p className="text-sm text-orange-500 font-light">Email is required.</p>}
                                         </div>
 
                                         <div className="flex flex-col gap-2">
                                             <label className="text-gray-700" htmlFor="phone">Phone:</label>
                                             <input className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="phone" type="tel" {...register('phone', { required: true })} placeholder="Enter blog phone here..." />
+                                            {errors.phone && <p className="text-sm text-orange-500 font-light">Phone is required.</p>}
                                         </div>
 
                                         <div className="text-gray-600 grid grid-cols-1 my-2">
@@ -94,12 +105,20 @@ function CreateAdmin() {
                                                     }
                                                 </span>
                                             </div>
+                                            {errors.password && <p className="text-sm text-orange-500 font-light">Password is required.</p>}
                                         </div>
                                     </div>
                                     <div className="w-full rounded bg-blue-600 mt-4 text-white text">
-                                        <button type="submit" className="w-full p-2 cursor-pointer flex gap-1 items-center justify-center">
-                                            <Plus />
-                                            <span className="mx-2">Create Admin</span>
+                                        <button className="p-2 w-full rounded-md text-white bg-blue-600 cursor-pointer shadow-lg shadow-blue-200" type="submit">
+                                            {
+                                                !isRegistering ? 'Create Admin' :
+                                                    (<span className="flex space-x-1 items-center justify-center py-2">
+                                                        <span className="w-2.5 h-2.5 bg-white rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+                                                        <span className="w-2.5 h-2.5 bg-white rounded-full animate-bounce [animation-delay:-0.2s]"></span>
+                                                        <span className="w-2.5 h-2.5 bg-white rounded-full animate-bounce [animation-delay:-0.1s]"></span>
+                                                        <span className="w-2.5 h-2.5 bg-white rounded-full animate-bounce"></span>
+                                                    </span>)
+                                            }
                                         </button>
                                     </div>
                                 </form>

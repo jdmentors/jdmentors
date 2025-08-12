@@ -1,5 +1,4 @@
 import axios from "axios";
-import toast from "react-hot-toast";
 
 function useGetAllServices(){
     const fetchedServices = async () => {
@@ -11,7 +10,6 @@ function useGetAllServices(){
             }
         } catch (error) {
             console.error(error);
-            toast.error(error?.response?.data?.message);
         }
     }
 

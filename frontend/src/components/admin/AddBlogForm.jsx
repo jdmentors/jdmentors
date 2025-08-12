@@ -16,7 +16,7 @@ function AddBlogForm({ blog }) {
     const [isPublishing, setIsPublishing] = useState(false);
     const dispatch = useDispatch();
 
-    const { register, handleSubmit, control, watch, setValue, getValues, reset } = useForm({
+    const { register, handleSubmit, control, watch, setValue, getValues, reset, formState: {errors} } = useForm({
         defaultValues: {
             title: blog?.title || "",
             slug: blog?.slug || "",
@@ -43,13 +43,14 @@ function AddBlogForm({ blog }) {
             if (data && data.success) {
                 toast.success(data.message);
                 setIsPublishing(false);
-                // navigate(`/blogs/${blogData.slug}`);
                 reset();
             }
         } catch (error) {
             const message = error?.response?.data?.message;
+            console.log(message)
             if (message === 'accessToken') {
                 try {
+                    console.log(blogData);
                     const newAccessToken = await refreshAccessToken();
 
                     const formData = new FormData();
@@ -58,7 +59,7 @@ function AddBlogForm({ blog }) {
                     formData.append('slug', blogData.slug);
                     formData.append('description', blogData.description);
                     formData.append('content', blogData.content);
-                    formData.append('image', blogData.image);
+                    formData.append('image', blogData.image[0]);
                     formData.append('status', blogData.status);
 
                     const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/blogs/create`, formData, { headers: { Authorization: `Bearer ${newAccessToken}` } });
@@ -67,21 +68,22 @@ function AddBlogForm({ blog }) {
                         toast.success(data.message);
                         dispatch(updateUser({ ...user, accessToken: newAccessToken }));
                         reset();
+                        setIsPublishing(false);
                     }
                 } catch (error) {
-                    toast.error(error?.response?.data?.message);
+                    const message = error?.response?.data?.message;
+                    toast.error(message);
+                    setIsPublishing(false);
                 }
-            }
-
-            if (message == 'Blog already exists with this title') {
+            }else{
                 toast.error(message);
             }
+            setIsPublishing(false);
         }
     }
 
     const editBlog = async (blogData) => {
         try {
-            console.log(blogData)
             const formData = new FormData();
             setIsPublishing(true);
             formData.append('title', blogData.title);
@@ -96,7 +98,6 @@ function AddBlogForm({ blog }) {
             if (data && data.success) {
                 toast.success(data.message);
                 setIsPublishing(false);
-                // reset();
                 navigate('/admin/blogs');
             }
         } catch (error) {
@@ -104,7 +105,6 @@ function AddBlogForm({ blog }) {
             if (message === 'accessToken') {
                 try {
                     const formData = new FormData();
-                    setIsPublishing(true);
                     formData.append('title', blogData.title);
                     formData.append('slug', blogData.slug);
                     formData.append('description', blogData.description);
@@ -118,18 +118,19 @@ function AddBlogForm({ blog }) {
 
                     if (data && data.success) {
                         toast.success(data.message);
-                        // reset();
                         setIsPublishing(false);
                         dispatch(updateUser({ ...user, accessToken: newAccessToken }));
                         navigate('/admin/blogs');
                     }
                 } catch (error) {
-                    toast.error(error?.response?.data?.message);
+                    console.error(error);
+                    const message = error?.response?.data?.message;
+                    toast.error(message);
+                    setIsPublishing(false);
                 }
-            }
-
-            if (message == 'Blog already exists with this title') {
+            }else{
                 toast.error(message);
+                setIsPublishing(false);
             }
         }
     }
@@ -157,6 +158,7 @@ function AddBlogForm({ blog }) {
                     <div className="flex flex-col gap-2">
                         <label className="text-gray-700" htmlFor="title">Title:</label>
                         <input className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="title" type="text" {...register('title', { required: true })} placeholder="Enter blog title here..." />
+                        {errors.title && <p className="text-sm text-orange-500 font-light">Title is required.</p>}
                     </div>
 
                     <br />
@@ -164,6 +166,7 @@ function AddBlogForm({ blog }) {
                     <div className="flex flex-col gap-2">
                         <label className="text-gray-700" htmlFor="slug">Slug:</label>
                         <input className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="slug" type="text" onInput={(e) => setValue('slug', slugTransform(e.target.value), { shouldValidate: true })} {...register('slug', { required: true })} placeholder="Enter blog slug here..." />
+                        {errors.slug && <p className="text-sm text-orange-500 font-light">Slug is required.</p>}
                     </div>
 
                     <br />
@@ -171,17 +174,20 @@ function AddBlogForm({ blog }) {
                     <div className="flex flex-col gap-2">
                         <label className="text-gray-700" htmlFor="description">Description:</label>
                         <textarea rows={6} className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="description" {...register('description', { required: true })} placeholder="Enter blog description here..." />
+                        {errors.description && <p className="text-sm text-orange-500 font-light">Description is required.</p>}
                     </div>
 
                     <br />
 
-                    <RTE label="Content:" name="content" defaultValue={getValues("content")} control={control} />
+                    <RTE label="Content:" {...register('content', { required: true })} defaultValue={getValues("content")} control={control} />
+                    {errors.content && <p className="text-sm text-orange-500 font-light">Content is required.</p>}
                 </div>
 
                 <div className="border-2 border-blue-100 rounded-xl col-span-1 p-3 md:p-10 md:col-span-2 bg-blue-50">
                     <div className="flex flex-col gap-2">
                         <label className="text-gray-700" htmlFor="image">Image:</label>
                         <input className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 cursor-pointer w-full" id="image" type="file" accept="image/png, image/jpg, image/jpeg, image/webp" label="Featured Image:" {...register('image', { required: !blog })} />
+                        {errors.image && <p className="text-sm text-orange-500 font-light">Image is required.</p>}
                     </div>
 
                     <br />
@@ -192,6 +198,7 @@ function AddBlogForm({ blog }) {
                             <option value={true}>Active</option>
                             <option value={false}>Inactive</option>
                         </select>
+                        {errors.status && <p className="text-sm text-orange-500 font-light">Status is required.</p>}
                     </div>
 
                     <br />

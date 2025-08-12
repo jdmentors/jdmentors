@@ -3,12 +3,11 @@ import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { toggleIsUserLoggedIn, toggleShowUserAuthForm, updateUser } from "../features/forms/UserAuthSlice.js";
+import { updateUser } from "../features/forms/UserAuthSlice.js";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router";
 import { useState } from "react";
 import { user as userImg } from "../assets/index.js";
-import { Camera, UserPen } from "lucide-react";
+import { Camera } from "lucide-react";
 import useRefreshToken from "../hooks/useRefreshToken.jsx";
 
 function Profile() {
@@ -27,7 +26,6 @@ function Profile() {
     });
 
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     const handleUpdateProfile = async (profileData) => {
         try {
@@ -54,7 +52,6 @@ function Profile() {
                 setIsUpdating(false);
             }
         } catch (error) {
-            console.error(error.message);
             const message = error?.response?.data?.message;
             if (message === 'accessToken') {
                 try {
@@ -79,8 +76,13 @@ function Profile() {
                         setIsUpdating(false);
                     }
                 } catch (error) {
+                    console.error(error);
                     toast.error(error?.response?.data?.message);
+                    setIsUpdating(false);
                 }
+            }else{
+                setIsUpdating(false);
+                toast.error(message);
             }
         }
     }
@@ -112,7 +114,7 @@ function Profile() {
                                                 <label className="w-full h-full relative group">
                                                     <input type="file" {...register('image')} hidden />
 
-                                                    <img src={image?.[0] instanceof File ? URL.createObjectURL(image[0]) : user.image ? user.image : userImg} alt="user image" className="w-full h-full object-cover cursor-pointer peer" />
+                                                    <img src={image?.[0] instanceof File ? URL.createObjectURL(image[0]) : user.image ? user.image : userImg} loading="lazy" alt="user image" className="w-full h-full object-cover cursor-pointer peer" />
 
                                                     <div className="absolute top-1/2 left-1/2 -translate-1/2 h-full w-full bg-gray-800/40 group-hover:flex items-center justify-center hidden cursor-pointer">
                                                         <div>

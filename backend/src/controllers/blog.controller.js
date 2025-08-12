@@ -97,7 +97,7 @@ const updateAvailability = async (req, res) => {
             return res.status(500).json({ success: false, message: 'Error occured while updating blog' });
         }
 
-        return res.status(200).json({ success: true, message: 'Blog updated', data: blog });
+        return res.status(200).json({ success: true, message: 'Blog availability updated', data: blog });
     } catch (error) {
         return res.status(500).json({ success: false, message: 'blog updation failed' });
     }

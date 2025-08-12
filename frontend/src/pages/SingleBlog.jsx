@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router";
 import { aboutUs, omar } from "../assets";
-import { CallToAction, Container } from "../components";
+import { CallToAction, Container, LoadingSpinner } from "../components";
 import { Shield, Video } from "lucide-react";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -37,19 +37,20 @@ function SingleBlog() {
                             <section className="">
                                 <h1 className="text-3xl md:text-4xl font-semibold my-5 text-blue-950">{blog.title}</h1>
 
-                                <div className="my-5 text-gray-600 flex gap-5 items-center text-sm">
+                                <div className="mt-5 mb-8 text-gray-600 flex gap-5 items-center text-sm">
                                     <div className="inline-flex gap-3 items-center font-semibold">
-                                        <img src={omar} alt="author" className="h-10 w-10 object-cover rounded-full border border-blue-200" />
+                                        <img src={omar} loading="lazy" alt="author" className="h-10 w-10 object-cover rounded-full border border-blue-200" />
                                         <p><Link to="/blogs">{blog.user.fullName}</Link></p>
                                     </div>
 
                                     <p>{new Date(blog.createdAt).toDateString()}</p>
                                 </div>
 
-                                <div className="flex flex-col lg:flex-row lg:gap-10 items-start">
+                                {/* <div className="w-full flex flex-col lg:flex-row lg:gap-10 items-start"> */}
+                                <div className="w-full grid grid-cols-1 lg:grid-cols-7 lg:gap-12 items-start">
 
-                                    <div>
-                                        <img src={blog.image || aboutUs} alt="postImage" className="w-full h-60 sm:h-96 lg:h-105 xl:h-120 object-cover rounded-xl" />
+                                    <div className="lg:col-span-5">
+                                        <img src={blog.image || aboutUs} loading="lazy" alt="postImage" className="min-w-full h-60 sm:h-96 lg:h-105 xl:h-125 object-cover rounded-xl" />
 
                                         <div className="my-8 text-gray-700">
                                             <p>{blog.description}</p>
@@ -62,7 +63,7 @@ function SingleBlog() {
                                         </div>
                                     </div>
 
-                                    <section className="rounded-xl overflow-hidden bg-blue-100 text-blue-950 sticky top-20 shadow-lg shadow-blue-200">
+                                    <section className="lg:col-span-2 rounded-xl overflow-hidden bg-blue-100 text-blue-950 sticky top-20 shadow-lg shadow-blue-200">
                                         <div className="flex flex-col items-center justify-center text-center p-6.5 ">
                                             <div className="flex items-center justify-center bg-white px-3 py-1.5 shadow gap-1 rounded-full text-xs">
                                                 <Shield size={18} className="text-blue-950" />
@@ -96,7 +97,7 @@ function SingleBlog() {
                             </section>
                         )
                         :
-                        ''
+                        <LoadingSpinner height={'575px'} />
                 }
             </Container>
         </section>

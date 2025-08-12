@@ -3,11 +3,22 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App.jsx';
 import { BrowserRouter, Route, Routes } from "react-router";
-import { AboutUs, AddBlog, AddService, AdminDashboard, AdminLayout, AllBlogs, AllServices, AllSessions, AllUsers, Blogs, Checkout, CheckOutCancel, CheckOutSuccess, Contact, EditBlog, EditService, Home, ResetPassword, Services, SingleBlog, Testimonials, UserDashboard, UserLayout } from './pages';
+import { AddBlog, AddService, AdminDashboard, AdminLayout, AllBlogs, AllServices, AllSessions, AllUsers, EditBlog, EditService, Home, ResetPassword, UserDashboard, UserLayout } from './pages';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from './app/store.js';
 import { Provider } from 'react-redux';
-import { AdminRoute, CreateAdmin, Profile, Protected } from './components/index.js';
+import { AdminRoute, CreateAdmin, LoadingSpinner, Profile, Protected } from './components/index.js';
+import { lazy, Suspense } from 'react';
+
+const Contact = lazy(() => import('./pages/Contact'));
+const Services = lazy(() => import('./pages/Services'));
+const AboutUs = lazy(() => import('./pages/AboutUs'));
+const Blogs = lazy(() => import('./pages/Blogs'));
+const SingleBlog = lazy(() => import('./pages/SingleBlog'));
+const Testimonials = lazy(() => import('./pages/Testimonials'));
+const Checkout = lazy(() => import('./pages/Checkout'));
+const CheckOutSuccess = lazy(() => import('./pages/CheckOutSuccess'));
+const CheckOutCancel = lazy(() => import('./pages/CheckOutCancel'));
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>
@@ -17,16 +28,25 @@ createRoot(document.getElementById('root')).render(
                     <Routes>
                         <Route path='/' element={<App />}>
                             <Route path='' element={<Home />} />
-                            <Route path='/checkout-success/:sessionId' element={<CheckOutSuccess />} />
-                            <Route path='/checkout-cancel' element={<CheckOutCancel />} />
-                            <Route path='/checkout/:serviceId' element={<Checkout />} />
-                            <Route path='/contact' element={<Contact />} />
-                            <Route path='/services' element={<Services />} />
-                            <Route path='/testimonials' element={<Testimonials />} />
-                            <Route path='/about' element={<AboutUs />} />
+                            <Route path='/checkout-success/:sessionId' element={<Suspense fallback={<LoadingSpinner height={'850px'} />}><CheckOutSuccess /></Suspense>} />
+
+                            <Route path='/checkout-cancel' element={<Suspense fallback={<LoadingSpinner height={'850px'} />}><CheckOutCancel /></Suspense>} />
+
+                            <Route path='/checkout/:serviceId' element={<Suspense fallback={<LoadingSpinner height={'850px'} />}><Checkout /></Suspense>} />
+
+                            <Route path='/contact' element={<Suspense fallback={<LoadingSpinner height={'850px'} />}><Contact /></Suspense>} />
+
+                            <Route path='/services' element={<Suspense fallback={<LoadingSpinner height={'725px'} />}><Services /></Suspense>} />
+
+                            <Route path='/testimonials' element={<Suspense fallback={<LoadingSpinner height={"850px"} />}><Testimonials /></Suspense>} />
+
+                            <Route path='/about' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><AboutUs /></Suspense>} />
+
                             <Route path='/reset-password' element={<ResetPassword />} />
-                            <Route path='/blogs' element={<Blogs />} />
-                            <Route path='/blogs/:slug' element={<SingleBlog />} />
+
+                            <Route path='/blogs' element={<Suspense fallback={<LoadingSpinner height={'850px'} />}><Blogs /></Suspense>} />
+
+                            <Route path='/blogs/:slug' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><SingleBlog /></Suspense>} />
                         </Route>
 
                         <Route path='/user' element={<UserLayout />}>

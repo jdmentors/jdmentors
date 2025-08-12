@@ -1,5 +1,6 @@
 import { v2 as cloudinary } from 'cloudinary';
 import fs from "fs";
+import path from 'path';
 
 const configureCloudinary = async () => {
     try {
@@ -32,12 +33,18 @@ const uploadOnCloudinary = async (file) => {
 
 const uploadDocsOnCloudinary = async (file) => {
     try {
-        const uploaded = await cloudinary.uploader.upload(file, {
-            resource_type: 'auto',
+        const originalName = path.parse(file.originalname).name;
+        const extension = path.parse(file.originalname).ext;
+
+        const uploaded = await cloudinary.uploader.upload(file.path, {
+            resource_type: 'raw',
+            use_filename: true,
+            unique_filename: false,
+            public_id: `${originalName}-${Date.now()}${extension}`
         });
 
         if (uploaded) {
-            fs.unlinkSync(file);
+            fs.unlinkSync(file.path);
             return uploaded.secure_url;
         }
     } catch (error) {

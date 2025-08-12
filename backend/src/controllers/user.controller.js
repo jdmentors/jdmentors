@@ -285,6 +285,26 @@ const updateUser = async (req, res) => {
     }
 }
 
+// const forgotPassword = async (req, res) => {
+//     try {
+//         const { email } = req.body;
+
+//         if (!email) {
+//             return res.status(400).json({ success: false, message: 'Email is needed' });
+//         }
+
+//         const user = await userExists(email);
+
+//         if (!user) {
+//             return res.status(404).json({ success: false, message: 'No user found with this email.' });
+//         }
+
+//         return res.status(200).json({ success: true, message: 'User found', data: user });
+//     } catch (error) {
+//         return res.status(500).json({ success: false, message: 'Failed to get user' });
+//     }
+// }
+
 export {
     registerUser,
     loginUser,

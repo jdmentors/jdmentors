@@ -22,7 +22,7 @@ function CallToAction(){
                 </p>
                 
                 <div className="flex gap-3 flex-wrap items-center justify-center my-4">
-                    <button onClick={() => navigate('/contact')} type="button" className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md font-medium h-12 px-8 bg-blue-600 hover:bg-blue-700 cursor-pointer"> 
+                    <button onClick={() => navigate('/services')} type="button" className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md font-medium h-12 px-8 bg-blue-600 hover:bg-blue-700 cursor-pointer"> 
                     Book Consultation
 
                     <Video strokeWidth={1.5} />

@@ -33,19 +33,25 @@ function AdminSidebar() {
                 toast.success(data.message);
             }
         } catch (error) {
-            if (error?.response?.data?.message === 'accessToken') {
-                const newAccessToken = await refreshAccessToken();
+            const message = error?.response?.data?.message;
+            if (message === 'accessToken') {
+                try {
+                    const newAccessToken = await refreshAccessToken();
 
-                const { data } = await axios.get(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/users/logout`, { headers: { Authorization: `Bearer ${newAccessToken}` } });
+                    const { data } = await axios.get(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/users/logout`, { headers: { Authorization: `Bearer ${newAccessToken}` } });
 
-                if (data && data.success) {
-                    dispatch(toggleIsUserLoggedIn(false));
-                    dispatch(updateUser({}));
-                    navigate('/');
-                    toast.success(data.message);
+                    if (data && data.success) {
+                        dispatch(toggleIsUserLoggedIn(false));
+                        dispatch(updateUser({}));
+                        navigate('/');
+                        toast.success(data.message);
+                    }
+                } catch (error) {
+                    const message = error?.response?.data?.message;
+                    toast.error(message);
                 }
             } else {
-                throw new Error(error);
+                toast.error(message);
             }
         }
     }
