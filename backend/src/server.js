@@ -12,6 +12,7 @@ import { createAdmin, dashboard, sendContactEmail, sendOrderEmail } from "./cont
 import Stripe from "stripe";
 import axios from "axios";
 import compression from "compression";
+import Session from "./models/session.model.js";
 
 const app = express();
 app.use(compression());
@@ -35,8 +36,8 @@ const corsOptions = {
     }
   },
   credentials: true,
-  methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
-  allowedHeaders: ['Content-Type','Authorization'],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
 app.use(cors(corsOptions));
@@ -52,34 +53,65 @@ app.get('/api/v1/dashboard', verifyAdmin, dashboard);
 app.post('/api/v1/admin/register', verifyAdmin, createAdmin);
 
 app.post('/create-checkout-session', async (req, res) => {
-    const { sessionId } = req.body;
+  const { sessionId } = req.body;
 
-    const { data } = await axios.get(`${process.env.BACKEND_URL}/api/v1/sessions/single/${sessionId}`);
+  const { data } = await axios.get(`${process.env.BACKEND_URL}/api/v1/sessions/single/${sessionId}`);
 
-    if(!data){
-        res.status(500).json({success: false, message: 'Session not found'});
+  if (!data) {
+    return res.status(500).json({ success: false, message: 'Session not found' });
+  }
+
+  const session = await stripe.checkout.sessions.create({
+    line_items: [
+      {
+        price_data: {
+          currency: 'usd',
+          product_data: {
+            name: `${data.data.service.title}`,
+          },
+          unit_amount: Number(data.data.service.price) * 100,
+        },
+        quantity: 1,
+      },
+    ],
+    mode: 'payment',
+    success_url: `${process.env.FRONTEND_URL}/checkout-success/${sessionId}`,
+    cancel_url: `${process.env.FRONTEND_URL}/checkout-cancel`,
+    client_reference_id: sessionId
+  });
+
+  res.json({ url: session.url });
+});
+
+app.post(
+  '/stripe-webhook',
+  bodyParser.raw({ type: 'application/json' }),
+  async (req, res) => {
+    const sig = req.headers['stripe-signature'];
+
+    let event;
+    try {
+      event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+    } catch (err) {
+      console.log('Webhook signature verification failed:', err.message);
+      return res.status(400).send(`Webhook Error: ${err.message}`);
     }
 
-    const session = await stripe.checkout.sessions.create({
-        line_items: [
-            {
-                price_data: {
-                    currency: 'usd',
-                    product_data: {
-                        name: `${data.data.service.title}`,
-                    },
-                    unit_amount: Number(data.data.service.price) * 100,
-                },
-                quantity: 1,
-            },
-        ],
-        mode: 'payment',
-        success_url: `${process.env.FRONTEND_URL}/checkout-success/${sessionId}`,
-        cancel_url: `${process.env.FRONTEND_URL}/checkout-cancel`,
-    });
+    if (event.type === 'checkout.session.completed') {
+      const session = event.data.object;
+      const sessionId = session.client_reference_id;
 
-    res.json({url: session.url});
-});
+      try {
+        const updated = await Session.findByIdAndUpdate(sessionId, { payment: true }, { new: true });
+        console.log('Payment updated for session:', sessionId, updated);
+      } catch (err) {
+        console.error('Error updating payment:', err);
+      }
+    }
+
+    res.sendStatus(200);
+  }
+);
 
 app.post('/api/v1/emails/order', sendOrderEmail);
 app.post('/api/v1/emails/contact', sendContactEmail);
