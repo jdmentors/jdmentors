@@ -21,7 +21,7 @@ const configureCloudinary = async () => {
 
 const uploadOnCloudinary = (fileBuffer) => {
   return new Promise((resolve, reject) => {
-    const stream = cloudinary.v2.uploader.upload_stream(
+    const stream = cloudinary.uploader.upload_stream(
       { resource_type: 'image' },
       (error, result) => {
         if (error) {
@@ -43,7 +43,7 @@ const uploadDocsOnCloudinary = (file) => {
 
     const publicId = `${originalName}-${Date.now()}${extension}`;
 
-    const stream = cloudinary.v2.uploader.upload_stream(
+    const stream = cloudinary.uploader.upload_stream(
       {
         resource_type: 'raw',
         use_filename: true,
