@@ -54,7 +54,7 @@ const loginUser = async (req, res) => {
 
         const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user);
 
-        return res.status(200).cookie('accessToken', accessToken, { httpOnly: true, secure: false, sameSite: 'lax' }).json({ success: true, message: 'Logged In', data: { user: { id: user._id, fullName: user.fullName, email, phone: user.phone || '', userType: user.userType }, accessToken, refreshToken } });
+        return res.status(200).cookie('accessToken', accessToken, { httpOnly: true, secure: false, sameSite: 'lax' }).json({ success: true, message: 'Logged In', data: { user: { id: user._id, fullName: user.fullName, email, phone: user.phone || '', image: user.image || '', userType: user.userType }, accessToken, refreshToken } });
     } catch (error) {
         throw new Error(error);
     }
