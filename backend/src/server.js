@@ -22,6 +22,41 @@ configureCloudinary();
 
 const stripe = Stripe(`${process.env.STRIPE_SECRET_KEY}`);
 const PORT = process.env.PORT || 3000;
+
+app.post(
+  "/stripe-webhook",
+  express.raw({ type: "application/json" }),
+  async (req, res) => {
+    const sig = req.headers["stripe-signature"];
+    let event;
+
+    try {
+      event = stripe.webhooks.constructEvent(
+        req.body,
+        sig,
+        process.env.STRIPE_WEBHOOK_SECRET
+      );
+    } catch (err) {
+      console.log("Webhook signature verification failed:", err.message);
+      return res.status(400).send(`Webhook Error: ${err.message}`);
+    }
+
+    if (event.type === "checkout.session.completed") {
+      const session = event.data.object;
+      const sessionId = session.client_reference_id;
+
+      try {
+        await Session.findByIdAndUpdate(sessionId, { payment: true }, { new: true });
+        console.log("Payment updated for session:", sessionId);
+      } catch (err) {
+        console.error("Error updating payment:", err);
+      }
+    }
+
+    res.sendStatus(200);
+  }
+);
+
 app.use(express.json({ limit: '16kb' }));
 app.use(express.urlencoded({ limit: '16kb' }));
 
@@ -83,40 +118,6 @@ app.post('/create-checkout-session', async (req, res) => {
 
   res.json({ url: session.url });
 });
-
-app.post(
-  "/stripe-webhook",
-  express.raw({ type: "application/json" }), // <--- raw body
-  async (req, res) => {
-    const sig = req.headers["stripe-signature"];
-    let event;
-
-    try {
-      event = stripe.webhooks.constructEvent(
-        req.body, // raw buffer
-        sig,
-        process.env.STRIPE_WEBHOOK_SECRET
-      );
-    } catch (err) {
-      console.log("Webhook signature verification failed:", err.message);
-      return res.status(400).send(`Webhook Error: ${err.message}`);
-    }
-
-    if (event.type === "checkout.session.completed") {
-      const session = event.data.object;
-      const sessionId = session.client_reference_id;
-
-      try {
-        await Session.findByIdAndUpdate(sessionId, { payment: true }, { new: true });
-        console.log("Payment updated for session:", sessionId);
-      } catch (err) {
-        console.error("Error updating payment:", err);
-      }
-    }
-
-    res.sendStatus(200); // acknowledge
-  }
-);
 
 app.post('/api/v1/emails/order', sendOrderEmail);
 app.post('/api/v1/emails/contact', sendContactEmail);
