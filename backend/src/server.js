@@ -22,15 +22,15 @@ const stripe = Stripe(`${process.env.STRIPE_SECRET_KEY}`);
 const PORT = process.env.PORT || 3000;
 app.use(express.json({ limit: '16kb' }));
 app.use(express.urlencoded({ limit: '16kb' }));
-app.use(cors({
-  origin: ['https://www.jdmentors.com', 'http://localhost:5173'],
-  credentials: true
-}));
 
-app.options('*', cors({
+const corsOptions = {
   origin: ['https://www.jdmentors.com', 'http://localhost:5173'],
-  credentials: true
-}));
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+
+app.options('*', cors(corsOptions));
 
 app.get('/api/v1/health', (req, res) => {
   res.status(200).json({ status: 'ok' });
