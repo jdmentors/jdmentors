@@ -2,6 +2,7 @@ import { Router } from "express";
 import verifyAdmin from "../middlewares/verifyAdmin.js";
 import { createBlog, deleteBlog, editBlog, getABlog, getAllBlogs, updateAvailability } from "../controllers/blog.controller.js";
 import upload from "../utils/multer.js";
+import cors from "cors";
 
 const blogRouter = Router();
 
