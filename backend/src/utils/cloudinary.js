@@ -1,6 +1,7 @@
 import { v2 as cloudinary } from 'cloudinary';
 import fs from "fs";
 import path from 'path';
+import streamifier from 'streamifier';
 
 const configureCloudinary = async () => {
     try {
@@ -18,39 +19,49 @@ const configureCloudinary = async () => {
     }
 }
 
-const uploadOnCloudinary = async (file) => {
-    try {
-        const uploaded = await cloudinary.uploader.upload(file);
-
-        if (uploaded) {
-            fs.unlinkSync(file);
-            return uploaded.secure_url;
+const uploadOnCloudinary = (fileBuffer) => {
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.v2.uploader.upload_stream(
+      { resource_type: 'image' },
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result.secure_url);
         }
-    } catch (error) {
-        throw new Error(error);
-    }
-}
+      }
+    );
 
-const uploadDocsOnCloudinary = async (file) => {
-    try {
-        const originalName = path.parse(file.originalname).name;
-        const extension = path.parse(file.originalname).ext;
+    streamifier.createReadStream(fileBuffer).pipe(stream);
+  });
+};
 
-        const uploaded = await cloudinary.uploader.upload(file.path, {
-            resource_type: 'raw',
-            use_filename: true,
-            unique_filename: false,
-            public_id: `${originalName}-${Date.now()}${extension}`
-        });
+const uploadDocsOnCloudinary = (file) => {
+  return new Promise((resolve, reject) => {
+    const originalName = path.parse(file.originalname).name;
+    const extension = path.parse(file.originalname).ext;
 
-        if (uploaded) {
-            fs.unlinkSync(file.path);
-            return uploaded.secure_url;
+    const publicId = `${originalName}-${Date.now()}${extension}`;
+
+    const stream = cloudinary.v2.uploader.upload_stream(
+      {
+        resource_type: 'raw',
+        use_filename: true,
+        unique_filename: false,
+        public_id: publicId,
+      },
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result.secure_url);
         }
-    } catch (error) {
-        throw new Error(error);
-    }
-}
+      }
+    );
+
+    streamifier.createReadStream(file.buffer).pipe(stream);
+  });
+};
 
 
 export { configureCloudinary, uploadOnCloudinary, uploadDocsOnCloudinary }
