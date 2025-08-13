@@ -266,7 +266,7 @@ const updateUser = async (req, res) => {
         let image_url;
 
         if (uploadedImg) {
-            image_url = await uploadOnCloudinary(uploadedImg?.path);
+            image_url = await uploadOnCloudinary(uploadedImg?.buffer);
         }
 
         const refreshToken = user.refreshToken;
