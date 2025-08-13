@@ -30,8 +30,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.options('*', cors(corsOptions));
-
 app.get('/api/v1/health', (req, res) => {
   res.status(200).json({ status: 'ok' });
 });
