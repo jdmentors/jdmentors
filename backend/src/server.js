@@ -85,32 +85,36 @@ app.post('/create-checkout-session', async (req, res) => {
 });
 
 app.post(
-  '/stripe-webhook',
-  bodyParser.raw({ type: 'application/json' }),
+  "/stripe-webhook",
+  express.raw({ type: "application/json" }), // <--- raw body
   async (req, res) => {
-    const sig = req.headers['stripe-signature'];
-
+    const sig = req.headers["stripe-signature"];
     let event;
+
     try {
-      event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+      event = stripe.webhooks.constructEvent(
+        req.body, // raw buffer
+        sig,
+        process.env.STRIPE_WEBHOOK_SECRET
+      );
     } catch (err) {
-      console.log('Webhook signature verification failed:', err.message);
+      console.log("Webhook signature verification failed:", err.message);
       return res.status(400).send(`Webhook Error: ${err.message}`);
     }
 
-    if (event.type === 'checkout.session.completed') {
+    if (event.type === "checkout.session.completed") {
       const session = event.data.object;
       const sessionId = session.client_reference_id;
 
       try {
-        const updated = await Session.findByIdAndUpdate(sessionId, { payment: true }, { new: true });
-        console.log('Payment updated for session:', sessionId, updated);
+        await Session.findByIdAndUpdate(sessionId, { payment: true }, { new: true });
+        console.log("Payment updated for session:", sessionId);
       } catch (err) {
-        console.error('Error updating payment:', err);
+        console.error("Error updating payment:", err);
       }
     }
 
-    res.sendStatus(200);
+    res.sendStatus(200); // acknowledge
   }
 );
 
