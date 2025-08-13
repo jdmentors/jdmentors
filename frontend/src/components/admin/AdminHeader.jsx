@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router";
-import { darkLogo, omar } from "../../assets";
+import { darkLogo } from "../../assets";
 import { useSelector } from "react-redux";
 import { user as userImg } from "../../assets";
 

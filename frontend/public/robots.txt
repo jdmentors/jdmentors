@@ -1,0 +1,9 @@
+User-agent: *
+Disallow: /admin
+Disallow: /user
+Disallow: /secure
+Disallow: /checkout
+Disallow: /checkout-success
+Disallow: /checkout-cancel
+Disallow: /terms-conditions
+Disallow: /privacy-policy

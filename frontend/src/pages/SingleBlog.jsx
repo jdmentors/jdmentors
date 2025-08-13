@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router";
-import { aboutUs, omar } from "../assets";
+import { aboutUs, user as userImg } from "../assets";
 import { CallToAction, Container, LoadingSpinner } from "../components";
 import { Shield, Video } from "lucide-react";
 import { useState } from "react";
@@ -39,7 +39,7 @@ function SingleBlog() {
 
                                 <div className="mt-5 mb-8 text-gray-600 flex gap-5 items-center text-sm">
                                     <div className="inline-flex gap-3 items-center font-semibold">
-                                        <img src={omar} loading="lazy" alt="author" className="h-10 w-10 object-cover rounded-full border border-blue-200" />
+                                        <img src={blog.user.image || userImg} loading="lazy" alt="author" className="h-10 w-10 object-cover rounded-full border border-blue-200" />
                                         <p><Link to="/blogs">{blog.user.fullName}</Link></p>
                                     </div>
 

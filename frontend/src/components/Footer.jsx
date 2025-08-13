@@ -1,7 +1,7 @@
 import { Link, NavLink } from "react-router";
 import Container from "./Container";
 import { logo } from "../assets";
-import { Facebook, Instagram, Linkedin, Mail, Phone, Twitter } from "lucide-react";
+import { Instagram, Mail, Phone } from "lucide-react";
 
 
 function Footer() {
@@ -33,20 +33,8 @@ function Footer() {
                         </p>
                         <div className='flex items-center gap-3 mt-4'>
                                 {/* Instagram */}
-                                <Link to="/">
+                                <Link to="https://www.instagram.com/jd.mentors" target="_blank">
                                     <Instagram strokeWidth={1.25} />
-                                </Link>
-
-                                <Link to="/">
-                                    <Facebook strokeWidth={1} />
-                                </Link>
-
-                                <Link to="/">
-                                    <Linkedin strokeWidth={1} />
-                                </Link>
-
-                                <Link to="/">
-                                    <Twitter strokeWidth={1}/>
                                 </Link>
                         </div>
                     </div>
@@ -89,7 +77,7 @@ function Footer() {
                             <li className="flex items-center gap-2">
                                 <Phone size={18} />
 
-                                <Link className="hover:underline" to='tel:+35799777281'>(+1)997842XXXX</Link>
+                                <Link className="hover:underline" to='tel:+13476992020'>(347) 699-2020</Link>
                             </li>
 
                             <li className="flex items-center gap-2">
@@ -100,7 +88,9 @@ function Footer() {
                         </ul>
                     </div>
                 </div>
+
                 <hr className='border-gray-300 mt-8' />
+
                 <div className='flex flex-col md:flex-row gap-2 items-center justify-between py-5'>
                     <p>© {new Date().getFullYear()} &nbsp;
                         <Link to="/">
@@ -108,6 +98,10 @@ function Footer() {
                         </Link>. 
                         &nbsp; All rights reserved. &nbsp;
                     </p>
+                    <div className="flex flex-row gap-2 items-center">
+                        <Link to={'/terms-conditions'}>Terms</Link>
+                        <Link to={'/privacy-policy'}>Privacy</Link>
+                    </div>
                 </div>
             </Container>
         </footer>

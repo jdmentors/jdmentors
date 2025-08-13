@@ -57,7 +57,7 @@ function Contact() {
                                     <h3 className="font-semibold text-gray-900 mb-1 text-lg">
                                         Phone
                                     </h3>
-                                    <Link to='tel:+199774444' className="text-blue-950 hover:underline">(+1) 99 7828XXXX</Link>
+                                    <Link to='tel:+13476992020' className="text-blue-950 hover:underline">(347) 699-2020</Link>
                                     <p className="text-sm text-gray-500">
                                         24/7 Emergency Service
                                     </p>

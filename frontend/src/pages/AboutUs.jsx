@@ -1,5 +1,5 @@
 import { Verified } from "lucide-react";
-import { aboutUs, daniel, michael, priya, sarah } from "../assets";
+import { aboutUs } from "../assets";
 import { CallToAction, Container } from "../components";
 
 const stats = [
@@ -78,7 +78,7 @@ function AboutUs() {
                     </div>
                 </section>
 
-                <section className="bg-white p-8 md:p-12 lg:p-14 rounded-2xl mb-16">
+                {/* <section className="bg-white p-8 md:p-12 lg:p-14 rounded-2xl mb-16">
                     <h5 className="font-semibold text-blue-600">Meet Our Team</h5>
                     <h2 className="text-2xl md:text-3xl font-semibold my-5 text-blue-950">Meet Our Dedicated Team of Consultants</h2>
 
@@ -115,7 +115,7 @@ function AboutUs() {
                             </div>
                         </div>
                     </div>
-                </section>
+                </section> */}
             </Container>
             <CallToAction />
         </section>

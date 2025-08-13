@@ -21,6 +21,10 @@ import EditService from "./admin/EditService";
 import EditBlog from "./admin/EditBlog";
 import CheckOutSuccess from "./CheckOutSuccess";
 import CheckOutCancel from "./CheckOutCancel";
+import AdminLogin from "./admin/AdminLogin";
+import AdminLogForm from "../components/admin/AdminLogForm";
+import PrivacyPolicy from "./PrivacyPolicy";
+import TermsAndConditions from "./TermsAndConditions";
 
 export {
     Home,
@@ -45,5 +49,9 @@ export {
     EditService,
     EditBlog,
     CheckOutSuccess,
-    CheckOutCancel
+    CheckOutCancel,
+    AdminLogin,
+    AdminLogForm,
+    PrivacyPolicy,
+    TermsAndConditions,
 }

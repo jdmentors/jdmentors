@@ -36,10 +36,11 @@ function UserRegForm({isLoginActive, setIsLoginActive}){
                 dispatch(toggleShowUserAuthForm(false));
                 navigate('/user/dashboard');
                 toast.success(data.message);
+                setIsRegistering(false);
             }
         } catch (error) {
-            console.error(error.message);
             toast.error(error.response.data.message);
+            setIsRegistering(false);
         }
     }
 

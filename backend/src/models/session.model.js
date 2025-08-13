@@ -4,7 +4,8 @@ const sessionSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User',
-        required: true
+        required: true,
+        index: true
     },
     service: {
         type: Schema.Types.ObjectId,

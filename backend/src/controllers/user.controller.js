@@ -32,13 +32,15 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { email, password, userType='user' } = req.body;
 
-        if (!email || !password) {
+        if (!email || !password || !userType) {
             return res.status(400).json({ success: false, message: 'All fields are required.' });
         }
 
-        const user = await userExists(email);
+        // const user = await userExists(email);
+
+        const user = await User.findOne({email, userType});
 
         if (!user) {
             return res.status(404).json({ success: false, message: 'No user found with this email.' });
@@ -47,7 +49,7 @@ const loginUser = async (req, res) => {
         const matchPassword = await bcrypt.compare(password, user.password);
 
         if (!matchPassword) {
-            return res.status(404).json({ success: false, message: 'No user found with this email.' });
+            return res.status(404).json({ success: false, message: 'Wrong password' });
         }
 
         const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user);

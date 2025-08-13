@@ -1,4 +1,3 @@
-import { daniel, emily, michael, omar, priya, sarah } from "../assets";
 import { CallToAction, Container, Hero, FAQ, Stat, AboutUs, LoadingSpinner } from "../components";
 import Marquee from "react-fast-marquee";
 import { Link } from "react-router";
@@ -34,37 +33,31 @@ const testimonials = [
         name: 'Sarah J.',
         review: 'The personal statement review was transformative. My consultant helped me find the perfect narrative thread that tied my experiences together in a way that made admissions committees take notice. I got into my top choice with a scholarship!',
         school: 'Accepted to Boston College Law',
-        image: sarah
     },
     {
         name: 'Michael T.',
         review: 'I was really worried about explaining my low GPA from freshman year. The addendum consultation helped me frame it as a growth experience rather than an excuse. The final product was concise and effective—I got into all three schools I applied to!',
         school: 'Accepted to UC Hastings',
-        image: michael
     },
     {
         name: 'Priya K.',
         review: "The 1-on-1 sessions were invaluable. My consultant didn't just edit my essay—they helped me discover what made my story unique. The final personal statement was something I was truly proud of, and it clearly resonated with admissions committees.",
         school: 'Accepted to Fordham Law',
-        image: priya
     },
     {
         name: 'Daniel R.',
         review: "As a non-traditional applicant, I felt unsure about how to position my work experience. My consultant helped me connect it directly to the skills law schools look for. The result was a powerful narrative I couldn’t have written alone.",
         school: 'Accepted to Loyola Law School',
-        image: daniel
     },
     {
         name: 'Emily C.',
         review: "I had no idea how important the personal statement was until I went through this process. The feedback was sharp, honest, and encouraging. I ended up with an essay that reflected my voice perfectly—and I got into multiple schools.",
         school: 'Accepted to Brooklyn Law School',
-        image: emily
     },
     {
         name: 'Omar S.',
         review: "What stood out was how personalized the help was. My consultant asked the right questions and pushed me to go deeper with my story. It felt like they genuinely cared about my success. I’m incredibly grateful and would suggest the platform to all.",
         school: 'Accepted to UMiami Law',
-        image: omar
     }
 ];
 
@@ -140,7 +133,7 @@ function Home() {
                                 <Marquee speed={40} pauseOnHover={true} gradient={true} gradientColor="#EFF6FF" gradientWidth={50} className="flex items-stretch py-1 overflow-y-hidden">
                                     {
                                         testimonials.map(testimonial => (
-                                            <Testimonial key={testimonial.name} name={testimonial.name} school={testimonial.school} review={testimonial.review} image={testimonial.image} />
+                                            <Testimonial key={testimonial.name} name={testimonial.name} school={testimonial.school} review={testimonial.review} />
                                         ))
                                     }
                                 </Marquee>

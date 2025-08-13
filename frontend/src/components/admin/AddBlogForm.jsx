@@ -172,7 +172,7 @@ function AddBlogForm({ blog }) {
                     <br />
 
                     <div className="flex flex-col gap-2">
-                        <label className="text-gray-700" htmlFor="description">Description:</label>
+                        <label className="text-gray-700" htmlFor="description">Description: <span className="text-sm">(No longer than 25 words or 150 characters)</span></label>
                         <textarea rows={6} className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="description" {...register('description', { required: true })} placeholder="Enter blog description here..." />
                         {errors.description && <p className="text-sm text-orange-500 font-light">Description is required.</p>}
                     </div>
