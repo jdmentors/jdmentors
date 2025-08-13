@@ -22,12 +22,24 @@ const stripe = Stripe(`${process.env.STRIPE_SECRET_KEY}`);
 const PORT = process.env.PORT || 3000;
 app.use(express.json({ limit: '16kb' }));
 app.use(express.urlencoded({ limit: '16kb' }));
-app.use(cors({
-  origin: (origin, callback) => {
-    callback(null, origin || true);
+
+const allowedOrigins = ['https://www.jdmentors.com', 'http://localhost:5173'];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true); // allow non-browser requests like Postman
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
   },
   credentials: true,
-}));
+  methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
+  allowedHeaders: ['Content-Type','Authorization'],
+};
+
+app.use(cors(corsOptions));
 
 app.get('/api/v1/health', (req, res) => {
   res.status(200).json({ status: 'ok' });
