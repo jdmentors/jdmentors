@@ -6,7 +6,7 @@ import upload from "../utils/multer.js";
 const blogRouter = Router();
 
 blogRouter.post('/create', verifyAdmin, upload.single('image'), createBlog);
-blogRouter.put('/edit/:blogId',  editBlog);
+blogRouter.put('/edit/:blogId', upload.any(), editBlog);
 blogRouter.get('/single/:slug', getABlog);
 blogRouter.get('/all', getAllBlogs);
 blogRouter.delete('/delete/:blogId', verifyAdmin, deleteBlog);
