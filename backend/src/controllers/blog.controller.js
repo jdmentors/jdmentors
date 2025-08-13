@@ -113,7 +113,7 @@ const editBlog = async (req, res) => {
         let uploaded;
 
         if(uploadedImg){
-            uploaded = await uploadOnCloudinary(uploadedImg.path);
+            uploaded = await uploadOnCloudinary(uploadedImg.buffer);
         }
 
         if (!title || !slug || !description || !content) {
