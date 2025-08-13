@@ -23,7 +23,7 @@ const createBlog = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Blog already exists with this title' });
         }
 
-        const uploaded = await uploadOnCloudinary(image.path);
+        const uploaded = await uploadOnCloudinary(image.buffer);
 
         if(!uploaded){
             throw new Error('Could not upload on cloudinary.');
