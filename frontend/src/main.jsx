@@ -18,6 +18,7 @@ const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const TermsAndConditions = lazy(() => import('./pages/TermsAndConditions'));
 const SingleBlog = lazy(() => import('./pages/SingleBlog'));
 const Testimonials = lazy(() => import('./pages/Testimonials'));
+const PageNotFound = lazy(() => import('./pages/PageNotFound'));
 const Checkout = lazy(() => import('./pages/Checkout'));
 const CheckOutSuccess = lazy(() => import('./pages/CheckOutSuccess'));
 const CheckOutCancel = lazy(() => import('./pages/CheckOutCancel'));
@@ -57,7 +58,7 @@ createRoot(document.getElementById('root')).render(
 
                             <Route path='/about' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><AboutUs /></Suspense>} />
 
-                            {/* <Route path='/reset-password' element={<ResetPassword />} /> */}
+                            <Route path='*' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><PageNotFound /></Suspense>} />
 
                             <Route path='/blogs' element={<Suspense fallback={<LoadingSpinner height={'850px'} />}><Blogs /></Suspense>} />
 

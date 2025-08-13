@@ -11,8 +11,10 @@ import verifyAdmin from "./middlewares/verifyAdmin.js";
 import { createAdmin, dashboard, sendContactEmail, sendOrderEmail } from "./controllers/other.controller.js";
 import Stripe from "stripe";
 import axios from "axios";
+import compression from "compression";
 
 const app = express();
+app.use(compression());
 dbConnect();
 configureCloudinary();
 
@@ -27,7 +29,9 @@ app.use(cors({
   credentials: true,
 }));
 
-app.get('/', (req, res) => res.send('Welcome Back!!'));
+app.get('/api/v1/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/services', serviceRouter);
 app.use('/api/v1/blogs', blogRouter);

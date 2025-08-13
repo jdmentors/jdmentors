@@ -182,12 +182,12 @@ function AllServices() {
 
                                                         <div className="flex gap-4">
                                                             <p className="text-gray-800">Sessions:</p>
-                                                            <p>12</p>
+                                                            <p>{service.sessionCount}</p>
                                                         </div>
 
                                                         <div className="flex gap-4">
                                                             <p className="text-gray-800">Revenue:</p>
-                                                            <p>$840</p>
+                                                            <p>${service.sessionCount * service.price}</p>
                                                         </div>
 
                                                         <div className="flex gap-4">

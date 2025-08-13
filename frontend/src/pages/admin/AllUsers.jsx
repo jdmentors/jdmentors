@@ -69,14 +69,14 @@ function AllUsers() {
                         </div>
 
                         <div className="my-5 overflow-x-auto">
-                            <div className="hidden sm:grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-5 items-center py-3 border-b-2 border-b-blue-100">
+                            <div className="hidden sm:grid grid-cols-[1fr_2fr_1fr_1fr_1fr_1fr] gap-5 items-center py-3 border-b-2 border-b-blue-100">
                                 {/* <h5 className="text-lg">Image</h5> */}
                                 <h5 className="text-lg">Name</h5>
                                 <h5 className="text-lg">Email</h5>
                                 <h5 className="text-lg">Phone</h5>
                                 <h5 className="text-lg">Session</h5>
                                 <h5 className="text-lg">Spent</h5>
-                                <h5 className="text-lg">Member Since</h5>
+                                {/* <h5 className="text-lg">Member Since</h5> */}
                                 <h5 className="text-lg">Action</h5>
                             </div>
 
@@ -88,7 +88,7 @@ function AllUsers() {
                                         <div className="hidden sm:block">
                                             {
                                                 allUsers.map(user => (
-                                                    <div key={user._id} className="md:grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-5 items-center py-5 text-gray-600">
+                                                    <div key={user._id} className="md:grid grid-cols-[1fr_2fr_1fr_1fr_1fr_1fr] gap-5 items-center py-5 text-gray-600">
                                                         {/* <img src={user} alt="" className="h-9 w-9 sm:h-12 sm:w-12 object-cover rounded-full border-2 border-blue-100" /> */}
 
                                                         <p>{user.fullName}</p>
@@ -99,7 +99,7 @@ function AllUsers() {
 
                                                         <p>{user.sessionCount}</p>
                                                         <p>${user.totalSpent}</p>
-                                                        <p>{new Date(user.createdAt).toDateString()}</p>
+                                                        {/* <p>{new Date(user.createdAt).toDateString()}</p> */}
 
                                                         <button onClick={() => handleDeleteUser(user._id)} className="bg-red-600 px-4 py-3 rounded-md text-white max-w-max cursor-pointer"><Trash /></button>
                                                     </div>
@@ -129,18 +129,18 @@ function AllUsers() {
 
                                                         <div className="flex gap-4">
                                                             <p className="text-gray-800">Sessions:</p>
-                                                            <p>12</p>
+                                                            <p>{user.sessionCount}</p>
                                                         </div>
 
                                                         <div className="flex gap-4">
                                                             <p className="text-gray-800">Spent:</p>
-                                                            <p>$840</p>
+                                                            <p>${user.totalSpent}</p>
                                                         </div>
 
-                                                        <div className="flex gap-4">
+                                                        {/* <div className="flex gap-4">
                                                             <p className="text-gray-800">Member Since:</p>
                                                             <p>July 25, 2025</p>
-                                                        </div>
+                                                        </div> */}
 
                                                         <div className="flex gap-4">
                                                             <p className="text-gray-800">Actions:</p>

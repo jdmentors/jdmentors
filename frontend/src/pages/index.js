@@ -25,6 +25,7 @@ import AdminLogin from "./admin/AdminLogin";
 import AdminLogForm from "../components/admin/AdminLogForm";
 import PrivacyPolicy from "./PrivacyPolicy";
 import TermsAndConditions from "./TermsAndConditions";
+import PageNotFound from "./PageNotFound";
 
 export {
     Home,
@@ -54,4 +55,5 @@ export {
     AdminLogForm,
     PrivacyPolicy,
     TermsAndConditions,
+    PageNotFound
 }

@@ -36,7 +36,7 @@ const getSessionsOfUser = async (req, res) => {
     try {
         const user = req.user;
 
-        const sessions = await Session.find({ user: user._id }).populate("service");
+        const sessions = await Session.find({ user: user._id }).populate("service").sort({ createdAt: -1 });
 
         if (!sessions) {
             return res.status(500).json({ success: false, message: 'Could not find the sessions.' });
@@ -50,7 +50,7 @@ const getSessionsOfUser = async (req, res) => {
 
 const getAllSessions = async (req, res) => {
     try {
-        const sessions = await Session.find().populate("service").populate("user");
+        const sessions = await Session.find().populate("service").populate("user").sort({ createdAt: -1 });
 
         if (!sessions) {
             return res.status(500).json({ success: false, message: 'Could not find the sessions.' });
