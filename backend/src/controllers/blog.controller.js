@@ -108,19 +108,19 @@ const editBlog = async (req, res) => {
         const { title, slug, description, content, image='', status } = req.body;
 
         const { blogId } = req.params;
-        // const uploadedImg = req.files[0];
+        const uploadedImg = req.files[0];
 
-        // let uploaded;
+        let uploaded;
 
-        // if(uploadedImg){
-        //     uploaded = await uploadOnCloudinary(uploadedImg.path);
-        // }
+        if(uploadedImg){
+            uploaded = await uploadOnCloudinary(uploadedImg.path);
+        }
 
         if (!title || !slug || !description || !content) {
             return res.status(400).json({ success: false, message: 'All fields are required.' });
         }
 
-        const blog = await Blog.findByIdAndUpdate(blogId, {title, slug, description, content, image:  image, status});
+        const blog = await Blog.findByIdAndUpdate(blogId, {title, slug, description, content, image: uploaded || image, status});
 
         if (!blog) {
             return res.status(500).json({ success: false, message: 'Error occured while updating blog' });
