@@ -8,6 +8,7 @@ import { FileDownIcon } from "lucide-react";
 import { Link } from "react-router";
 import useRefreshToken from "../../hooks/useRefreshToken";
 import { updateUser } from "../../features/forms/UserAuthSlice.js";
+import cleanFileName from "../../hooks/CleanFileName.jsx";
 
 function UserDashboard() {
     const user = useSelector(state => state.user.user);
@@ -46,6 +47,7 @@ function UserDashboard() {
         }
         getUserSessions();
     }, [])
+
     return (
         <section className="flex min-h-[70vh]">
             <UserSidebar />
@@ -53,7 +55,7 @@ function UserDashboard() {
             <UserContainer>
                 <div className="max-w-full">
                     <h2 className="text-3xl md:text-4xl font-bold my-5 text-blue-950">Dashboard</h2>
-                    <p className="text-gray-600">Monitor your consultations and docs-all in one place. Stay updated with real-time insights to ensure smooth operations.</p>
+                    <p className="text-gray-600">Easily track your consultations and documents in one place.</p>
                 </div>
 
                 <div className="my-10 max-w-full">
@@ -88,7 +90,7 @@ function UserDashboard() {
 
                                                             <p className={`flex items-center gap-1 ${session.payment ? 'text-green-600' : 'text-red-600'}`}><span className={`h-2 w-2 ${!session.payment && 'bg-red-600'} rounded-full`}></span> <span>{session.payment ? `$${session.service.price}` : 'Pending'}</span></p>
 
-                                                            <Link target="_blank" to={`${session.document}`} className="flex gap-1 items-center"><FileDownIcon size={18} /> <span className="text-blue-600 hover:underline">file</span></Link>
+                                                            <Link target="_blank" to={`${session.document}`} className="flex gap-1 items-center"><FileDownIcon size={18} /> <span className="text-blue-600 hover:underline">{cleanFileName(decodeURIComponent(session.document))}</span></Link>
 
                                                             <p className={`flex items-center gap-1 ${session.status ? 'text-green-600' : 'text-red-600'}`}><span className={`h-2 w-2 ${session.status ? 'bg-green-600' : 'bg-red-600'} rounded-full`}></span> <span>{session.status ? 'Done' : 'Pending'}</span></p>
 
@@ -119,7 +121,7 @@ function UserDashboard() {
 
                                                             <div className="flex gap-2">
                                                                 <p className="text-gray-800">Doc(s):</p>
-                                                                <Link target="_blank" to={`${session.document}`} className="flex gap-1 items-center"><FileDownIcon size={18} /> <span className="text-blue-600 hover:underline">file</span></Link>
+                                                                <Link target="_blank" to={`${session.document}`} className="flex gap-1 items-center"><FileDownIcon size={18} /> <span className="text-blue-600 hover:underline">{cleanFileName(decodeURIComponent(session.document))}</span></Link>
                                                             </div>
 
                                                             <div className="flex gap-2">

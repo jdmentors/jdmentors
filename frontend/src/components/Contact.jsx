@@ -59,7 +59,7 @@ function Contact() {
                                     </h3>
                                     <Link to='tel:+13476992020' className="text-blue-950 hover:underline">(347) 699-2020</Link>
                                     <p className="text-sm text-gray-500">
-                                        24/7 Emergency Service
+                                        We respond within 24 hours
                                     </p>
                                 </div>
                             </div>
@@ -72,9 +72,9 @@ function Contact() {
                                     <h3 className="font-semibold text-gray-900 mb-1 text-lg">
                                         Email
                                     </h3>
-                                    <Link to='mailto:support@jdmentors.com' className="text-blue-950 break-all hover:underline">support@jdmentors.com</Link>
+                                    <Link to='mailto:contact@jdmentors.com' className="text-blue-950 break-all hover:underline">contact@jdmentors.com</Link>
                                     <p className="text-sm text-gray-500">
-                                        We respond within 24 hour
+                                        We respond within 24 hours
                                     </p>
                                 </div>
                             </div>
@@ -89,7 +89,7 @@ function Contact() {
                                     </h3>
                                     <p className="text-blue-950">
                                         Mon - Fri: 9:00 AM - 6:00 PM EST <br />
-                                        Sat: 10:00 AM - 2:00 PM EST
+                                        Sat - Sun: 10:00 AM - 6:00 PM EST
                                     </p>
                                     <p className="text-sm text-gray-500">
                                         Emergency service available 24/7
@@ -121,7 +121,7 @@ function Contact() {
                             <label className="text-sm font-medium leading-none text-blue-950" htmlFor="phone">
                                 Phone
                                 *</label>
-                            <input type="tel" className="flex h-10 w-full rounded-md border border-blue-100 bg-background px-3 py-2 text-base focus:outline-1 focus:outline-blue-200 md:text-sm mt-2" id="phone" placeholder="(+1) 99 8XXXXX" {...register('phone', { required: true })} />
+                            <input type="tel" className="flex h-10 w-full rounded-md border border-blue-100 bg-background px-3 py-2 text-base focus:outline-1 focus:outline-blue-200 md:text-sm mt-2" id="phone" placeholder="(+1) 917-XXX-XXXX" {...register('phone', { required: true })} />
                         </div>
                         <div>
                             <label className="text-sm font-medium leading-none text-blue-950" htmlFor="service">

@@ -1,4 +1,4 @@
-import { CalendarDays, Check, File, LockKeyholeIcon, UserCheck2 } from "lucide-react";
+import { CalendarDays, Check, File, LockKeyholeIcon, Mail, Phone, User, UserCheck2 } from "lucide-react";
 import { Container, FileInput, LoadingSpinner } from "../components";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -12,11 +12,13 @@ import useRefreshToken from "../hooks/useRefreshToken";
 import { updateUser } from "../features/forms/UserAuthSlice.js";
 
 function Checkout() {
+    const user = useSelector(state => state.user.user);
+
     const { register, handleSubmit, reset } = useForm({
         defaultValues: {
-            // fullName: user.fullName || '',
-            // email: user.email || '',
-            // phone: user.phone || '',
+            fullName: user.fullName || '',
+            email: user.email || '',
+            phone: user.phone || '',
             dateTime: '',
             document: '',
         }
@@ -27,7 +29,6 @@ function Checkout() {
     const formRef = useRef();
     const [service, setService] = useState(null);
     const refreshAccessToken = useRefreshToken();
-    const user = useSelector(state => state.user.user);
     const dispatch = useDispatch();
 
     const { serviceId } = useParams();
@@ -52,14 +53,14 @@ function Checkout() {
             setIsBooking(true);
             const formData = new FormData();
 
-            // formData.append('fullName', userData.fullName);
-            // formData.append('email', userData.email);
-            // formData.append('phone', userData.phone);
+            formData.append('fullName', userData.fullName);
+            formData.append('email', userData.email);
+            formData.append('phone', userData.phone);
             formData.append('dateTime', userData.dateTime);
             formData.append('service', serviceId);
             formData.append('document', userData.document[0]);
 
-            const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/sessions/create`, formData, { headers: { Authorization: `Bearer ${user.accessToken}` } });
+            const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/sessions/create`, formData);
 
             if (data && data.success) {
                 toast.success(data.message);
@@ -84,14 +85,14 @@ function Checkout() {
 
                     const formData = new FormData();
 
-                    // formData.append('fullName', userData.fullName);
-                    // formData.append('email', userData.email);
-                    // formData.append('phone', userData.phone);
+                    formData.append('fullName', userData.fullName);
+                    formData.append('email', userData.email);
+                    formData.append('phone', userData.phone);
                     formData.append('dateTime', userData.dateTime);
                     formData.append('service', serviceId);
                     formData.append('document', userData.document[0]);
 
-                    const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/sessions/create`, formData, { headers: { Authorization: `Bearer ${newAccessToken}` } });
+                    const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/sessions/create`, formData);
 
                     if (data && data.success) {
                         toast.success(data.message);
@@ -131,7 +132,7 @@ function Checkout() {
                     <div className="my-8">
                         <h5 className="font-semibold text-blue-950">Customer Information</h5>
                         <form ref={formRef} onSubmit={handleSubmit(checkoutHandler)} className="border border-blue-100 p-5 rounded-md my-5 shadow-lg shadow-blue-100">
-                            {/* <div className="grid md:grid-cols-2 md:gap-3">
+                            <div className="grid md:grid-cols-2 md:gap-3">
                                 <div className="text-gray-600 grid grid-cols-1 my-2 md:my-3">
                                     <label className="flex items-center gap-1 text-sm" htmlFor='fullName'><User size={18} /> <span>Full Name *</span></label>
                                     <input id="fullName" type="text" placeholder="e.g. Alan Parker" className="text-black border-2 border-blue-100 py-1.5 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200" {...register('fullName', { required: true })} />
@@ -141,24 +142,24 @@ function Checkout() {
                                     <label className="flex items-center gap-1 text-sm" htmlFor='email'><Mail size={18} /> <span>E-Mail *</span></label>
                                     <input id="email" type="email" placeholder="name@example.com" className="text-black border-2 border-blue-100 py-1.5 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200" {...register('email', { required: true })} />
                                 </div>
-                            </div> */}
+                            </div>
 
-                            {/* <div className="grid md:grid-cols-2 md:gap-3">
+                            <div className="grid md:grid-cols-2 md:gap-3">
                                 <div className="text-gray-600 grid grid-cols-1 my-2 md:my-3">
-                                    <label className="flex items-center gap-1 text-sm" htmlFor='phone'><Phone size={18} /> <span>Phone</span></label>
-                                    <input id="phone" type="tel" placeholder="+1 9985XXXX" className="text-black border-2 border-blue-100 py-1.5 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200" {...register('phone', { required: false })} />
+                                    <label className="flex items-center gap-1 text-sm" htmlFor='phone'><Phone size={18} /> <span>Phone *</span></label>
+                                    <input id="phone" type="tel" placeholder="(+1) 917-XXX-XXXX" className="text-black border-2 border-blue-100 py-1.5 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200" {...register('phone', { required: true })} />
                                 </div>
 
                                 <div className="text-gray-600 grid grid-cols-1 my-2 md:my-3">
-                                    <label className="flex items-center gap-1 text-sm" htmlFor='dateTime'><CalendarDays size={18} /> <span>Preferred Date & Time</span></label>
-                                    <input id="dateTime" type="datetime-local" className="text-black border-2 border-blue-100 py-1.5 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200" {...register('dateTime', { required: false })} />
+                                    <label className="flex items-center gap-1 text-sm" htmlFor='dateTime'><CalendarDays size={18} /> <span>Preferred Date & Time *</span></label>
+                                    <input id="dateTime" type="datetime-local" className="text-black border-2 border-blue-100 py-1.5 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200" {...register('dateTime', { required: true })} />
                                 </div>
-                            </div> */}
+                            </div>
 
-                            <div className="text-gray-600 grid grid-cols-1 my-2 md:my-3">
+                            {/* <div className="text-gray-600 grid grid-cols-1 my-2 md:my-3">
                                 <label className="flex items-center gap-1 text-sm" htmlFor='dateTime'><CalendarDays size={18} /> <span>Preferred Date & Time</span></label>
                                 <input id="dateTime" type="datetime-local" className="text-black border-2 border-blue-100 py-1.5 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200" {...register('dateTime', { required: false })} />
-                            </div>
+                            </div> */}
 
                             <div className="text-gray-600 grid grid-cols-1 my-2 md:my-3">
                                 <label className="flex items-center gap-1 text-sm"><File size={18} /> <span>Document to be reviewed *</span></label>

@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { useState } from "react";
 import { LoadingSpinner } from "../components";
+import cleanFileName from "../hooks/CleanFileName";
 
 function CheckOutSuccess() {
     const { sessionId } = useParams();
@@ -19,7 +20,7 @@ function CheckOutSuccess() {
                     setSession(data.data);
                     const sessionData = data.data;
                     try {
-                        const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/emails/order`, {fullName: sessionData.user.fullName, email: sessionData.user.email, phone: sessionData.user.phone, service: sessionData.service.title, document: sessionData.document, dateTime: sessionData.dateTime, price: sessionData.service.price});
+                        const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/emails/order`, {fullName: sessionData.fullName, email: sessionData.email, phone: sessionData.phone, service: sessionData.service.title, document: sessionData.document, dateTime: sessionData.dateTime, price: sessionData.service.price, sessionId: sessionData._id});
                     } catch (error) {
                         console.error(error);
                     }
@@ -29,7 +30,7 @@ function CheckOutSuccess() {
             }
         }
         getSession();
-    }, [])
+    }, [sessionId])
 
     return (
         <section className="my-32">
@@ -40,9 +41,8 @@ function CheckOutSuccess() {
                         Thank You For Your Booking
                     </h2>
                     <p className="text-gray-600 mb-8">
-                        We've received your order. We'll reach out to you soon. Keep checking your mail.
+                        We've received your order. We'll reach out to you soon. Please keep an eye on your email.
                     </p>
-
                     {
                         session
                         ?
@@ -71,9 +71,9 @@ function CheckOutSuccess() {
                                         }
                                     </ul>
 
-                                    <div className="mt-5 text-gray-600">
+                                    <div className="mt-5 text-gray-600 flex flex-col gap-3">
                                         <p className="flex justify-between">Preferred Time: <span>{new Date(session.dateTime).toDateString()}</span></p>
-                                        <p className="flex justify-between">Document: <Link target="_blank" to={session.document} className="text-blue-600 underline">File</Link></p>
+                                        <p className="flex justify-between">Document: <Link target="_blank" to={session.document} className="text-blue-600 underline">{cleanFileName(decodeURIComponent(session.document))}</Link></p>
                                         <p className="flex justify-between">Total Price: <span className="font-semibold text-xl text-black">${session.service.price}</span></p>
                                     </div>
                                 </div>
@@ -85,8 +85,6 @@ function CheckOutSuccess() {
 
                     <Link to={`/`} className="border-2 border-blue-100 rounded-md py-2 px-5">Back To Home</Link>
                 </div>
-
-
             </Container>
         </section>
     );

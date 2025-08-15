@@ -1,6 +1,6 @@
-import { Link, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import { aboutUs, user as userImg } from "../assets";
-import { CallToAction, Container, LoadingSpinner } from "../components";
+import { Container, LoadingSpinner } from "../components";
 import { Shield, Video } from "lucide-react";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -10,6 +10,7 @@ import parse from 'html-react-parser';
 function SingleBlog() {
     const [blog, setBlog] = useState(null);
     const { slug } = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getABlog = async () => {
@@ -55,9 +56,7 @@ function SingleBlog() {
                                         <div className="my-8 text-gray-700">
                                             <p>{blog.description}</p>
 
-                                            <br />
-
-                                            <div>
+                                            <div className="prose prose-lg">
                                                 {parse(blog.content)}
                                             </div>
                                         </div>
@@ -81,7 +80,7 @@ function SingleBlog() {
                                             </p>
 
                                             <div className="flex gap-3 flex-wrap items-center justify-center my-4">
-                                                <button onClick={() => navigate('/contact')} type="button" className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md font-medium h-12 px-8 bg-blue-600 hover:bg-blue-700 cursor-pointer">
+                                                <button onClick={() => navigate('/services')} type="button" className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md font-medium h-12 px-8 bg-blue-600 hover:bg-blue-700 cursor-pointer">
                                                     Book Consultation
 
                                                     <Video strokeWidth={1.5} />

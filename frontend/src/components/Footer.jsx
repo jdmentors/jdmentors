@@ -8,8 +8,8 @@ function Footer() {
     const quickLinks = [
         { name: 'About', href: '/about' },
         { name: 'Blogs', href: '/blogs' },
-        { name: 'Contact', href: '/contact' },
         { name: 'Testimonials', href: '/testimonials' },
+         { name: 'Check Session Status', href: '/session-status' },
     ];
 
     const ourServices = [
