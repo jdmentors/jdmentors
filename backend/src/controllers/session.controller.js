@@ -3,24 +3,21 @@ import { uploadDocsOnCloudinary } from "../utils/cloudinary.js";
 
 const createSession = async (req, res) => {
     try {
-        const { dateTime = '', service } = req.body;
+        const { fullName, email, phone, dateTime = '', service } = req.body;
 
         const document = req.file;
 
-        if (!service || !document) {
+        if (!service || !document || !fullName || !email || !phone) {
             return res.status(400).json({ success: false, message: 'All fields are required.' });
         }
 
-        const user = req.user;
-
-        // const uploaded = await uploadDocsOnCloudinary(document?.path);
         const uploaded = await uploadDocsOnCloudinary(document);
 
         if (!uploaded) {
             return res.status(500).json({ success: false, message: 'Failed to upload doc.' });
         }
 
-        const session = await Session.create({ user: user._id, service, dateTime, document: uploaded || '' });
+        const session = await Session.create({ fullName, email, phone, service, dateTime, document: uploaded || '' });
 
         if (!session) {
             return res.status(500).json({ success: false, message: 'Failed to book session.' });
@@ -36,7 +33,7 @@ const getSessionsOfUser = async (req, res) => {
     try {
         const user = req.user;
 
-        const sessions = await Session.find({ user: user._id }).populate("service").sort({ createdAt: -1 });
+        const sessions = await Session.find({ email: user.email }).populate("service").sort({ createdAt: -1 });
 
         if (!sessions) {
             return res.status(500).json({ success: false, message: 'Could not find the sessions.' });
@@ -50,7 +47,7 @@ const getSessionsOfUser = async (req, res) => {
 
 const getAllSessions = async (req, res) => {
     try {
-        const sessions = await Session.find().populate("service").populate("user").sort({ createdAt: -1 });
+        const sessions = await Session.find().populate("service").sort({ createdAt: -1 });
 
         if (!sessions) {
             return res.status(500).json({ success: false, message: 'Could not find the sessions.' });
@@ -87,13 +84,10 @@ const getASession = async (req, res) => {
         const { sessionId } = req.params;
 
         const session = await Session.findById(sessionId)
+            .select('fullName email phone dateTime document status payment createAt')
             .populate({
                 path: 'service',
                 select: 'title price description features'
-            })
-            .populate({
-                path: 'user',
-                select: 'fullName email phone'
             });
 
         if (!session) {

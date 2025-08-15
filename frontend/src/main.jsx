@@ -21,6 +21,7 @@ const Testimonials = lazy(() => import('./pages/Testimonials'));
 const PageNotFound = lazy(() => import('./pages/PageNotFound'));
 const Checkout = lazy(() => import('./pages/Checkout'));
 const CheckOutSuccess = lazy(() => import('./pages/CheckOutSuccess'));
+const SessionStatus = lazy(() => import('./pages/SessionStatus'));
 const CheckOutCancel = lazy(() => import('./pages/CheckOutCancel'));
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
 const AllSessions = lazy(() => import('./pages/admin/AllSessions'));
@@ -45,6 +46,8 @@ createRoot(document.getElementById('root')).render(
                         <Route path='/' element={<App />}>
                             <Route path='' element={<Home />} />
                             <Route path='/checkout-success/:sessionId' element={<Suspense fallback={<LoadingSpinner height={'850px'} />}><CheckOutSuccess /></Suspense>} />
+
+                            <Route path='/session-status' element={<Suspense fallback={<LoadingSpinner height={'850px'} />}><SessionStatus /></Suspense>} />
 
                             <Route path='/checkout-cancel' element={<Suspense fallback={<LoadingSpinner height={'850px'} />}><CheckOutCancel /></Suspense>} />
 

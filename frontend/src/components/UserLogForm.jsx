@@ -34,7 +34,7 @@ function UserLogForm({ isLoginActive, setIsLoginActive, isForgotPasswordActive, 
                 dispatch(toggleShowUserAuthForm(false));
                 dispatch(updateUser({...data.data.user, accessToken, refreshToken}));
                 toast.success(data.message);
-                navigate('/user/dashboard');
+                // navigate('/user/dashboard');
                 setIsLogging(false);
             }
         } catch (error) {
@@ -83,7 +83,7 @@ function UserLogForm({ isLoginActive, setIsLoginActive, isForgotPasswordActive, 
 
                 <p className="text-sm font-light text-gray-600">Don't have an account? <span to="" className="underline text-blue-500 cursor-pointer" onClick={() => setIsLoginActive(false)}>Sign up</span></p>
 
-                {/* <button onClick={() => dispatch(toggleShowUserAuthForm(false))} className="w-full mt-5 bg-blue-950 py-2 text-white rounded cursor-pointer my-2 font-light">Continue as Guest</button> */}
+                <button onClick={() => dispatch(toggleShowUserAuthForm(false))} className="w-full mt-5 bg-blue-950 py-2 text-white rounded cursor-pointer my-2 font-light">Continue as Guest</button>
             </form>
         </section>
     );

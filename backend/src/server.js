@@ -13,7 +13,6 @@ import Stripe from "stripe";
 import axios from "axios";
 import compression from "compression";
 import Session from "./models/session.model.js";
-import bodyParser from 'body-parser';
 
 const app = express();
 app.use(compression());

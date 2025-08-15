@@ -1,11 +1,21 @@
 import { model, Schema } from "mongoose";
 
 const sessionSchema = new Schema({
-    user: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
+    fullName: {
+        type: String,
         required: true,
+        trim: true
+    },
+    email: {
+        type: String,
+        required: true,
+        trim: true,
         index: true
+    },
+    phone: {
+        type: String,
+        required: true,
+        trim: true
     },
     service: {
         type: Schema.Types.ObjectId,

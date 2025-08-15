@@ -34,7 +34,7 @@ function UserRegForm({isLoginActive, setIsLoginActive}){
                 dispatch(updateUser({...data.data.user, accessToken}));
                 dispatch(toggleIsUserLoggedIn(true));
                 dispatch(toggleShowUserAuthForm(false));
-                navigate('/user/dashboard');
+                // navigate('/user/dashboard');
                 toast.success(data.message);
                 setIsRegistering(false);
             }
@@ -90,7 +90,7 @@ function UserRegForm({isLoginActive, setIsLoginActive}){
 
                 <p className="text-sm font-light text-gray-600">Already have an account? <span to="" className="underline text-blue-600 cursor-pointer" onClick={() => setIsLoginActive(true)}>Login</span></p>
 
-                {/* <button className="w-full mt-5 bg-blue-950 py-2 text-white rounded cursor-pointer my-2 font-light">Continue as Guest</button> */}
+                <button onClick={() => dispatch(toggleShowUserAuthForm(false))} className="w-full mt-5 bg-blue-950 py-2 text-white rounded cursor-pointer my-2 font-light">Continue as Guest</button>
             </form>
         </section>
     );

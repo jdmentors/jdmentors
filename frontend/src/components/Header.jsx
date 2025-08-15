@@ -91,10 +91,10 @@ function Header() {
                         </li>
                         }
                         <li className="py-2">
-                            <Link to='#contact' className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700">
+                            <Link to='tel:+13476992020' className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700">
                                 <Phone size={18} />
 
-                                +357 99 777281
+                                (347) 699-2020
                             </Link>
                         </li>
                     </ul>

@@ -8,6 +8,7 @@ import { Check, FileDownIcon } from "lucide-react";
 import { Link } from "react-router";
 import useRefreshToken from "../../hooks/useRefreshToken";
 import { updateUser } from "../../features/forms/UserAuthSlice.js";
+import cleanFileName from "../../hooks/CleanFileName.jsx";
 
 function AllSessions() {
     const [showUserPopUp, setShowUserPopUp] = useState(false);
@@ -15,7 +16,7 @@ function AllSessions() {
     const [allSessions, setAllSessions] = useState(null);
     const dispatch = useDispatch();
     const refreshAccessToken = useRefreshToken();
-    const [userPopUpId, setUserPopUpId] = useState(null);
+    const [userPopUpEmail, setUserPopUpEmail] = useState(null);
 
     useEffect(() => {
         const getAllSessions = async () => {
@@ -88,8 +89,8 @@ function AllSessions() {
         }
     }
 
-    const handleShowUserPopUp = (id) => {
-        setUserPopUpId(id);
+    const handleShowUserPopUp = (email) => {
+        setUserPopUpEmail(email);
         setShowUserPopUp(true);
     }
 
@@ -98,7 +99,7 @@ function AllSessions() {
             {
                 showUserPopUp &&
                 <section className="top-0 left-0 right-0 bottom-0 bg-black/70 z-50 flex items-center justify-center fixed">
-                    <UserPopUp id={userPopUpId} funToRun={setShowUserPopUp} />
+                    <UserPopUp email={userPopUpEmail} funToRun={setShowUserPopUp} />
                 </section>
             }
 
@@ -140,15 +141,15 @@ function AllSessions() {
                                                             {session.service.title}
                                                         </p>
 
-                                                        <p onClick={() => handleShowUserPopUp(session.user._id)} className="text-blue-600 underline cursor-pointer">
-                                                            {session.user.fullName}
+                                                        <p>
+                                                            {session.fullName}
                                                         </p>
 
                                                         <p>{new Date(session.dateTime).toDateString() + " " + `(${new Date(session.dateTime).toLocaleTimeString()})`}</p>
 
                                                         <p className={`flex items-center gap-1 ${session.payment ? 'text-green-600' : 'text-red-600'}`}><span className={`h-2 w-2 ${!session.payment && 'bg-red-600'} rounded-full`}></span> <span>{session.payment ? `$${session.service.price}` : 'Pending'}</span></p>
 
-                                                        <Link target="_blank" to={`${session.document}`} className="flex gap-1 items-center"><FileDownIcon size={18} /> <span className="text-blue-600 hover:underline">file</span></Link>
+                                                        <Link target="_blank" to={`${session.document}`} className="flex gap-1 items-center"><FileDownIcon size={18} /> <span className="text-blue-600 hover:underline">{cleanFileName(decodeURIComponent(session.document))}</span></Link>
 
                                                         <p className={`flex items-center gap-1 ${session.status ? 'text-green-600' : 'text-red-600'}`}><span className={`h-2 w-2 ${session.status ? 'bg-green-600' : 'bg-red-600'} rounded-full`}></span> <span>{session.status ? 'Done' : 'Pending'}</span></p>
 
@@ -175,8 +176,8 @@ function AllSessions() {
 
                                                         <div className="flex gap-2">
                                                             <p className="text-gray-800">User:</p>
-                                                            <p onClick={() => handleShowUserPopUp(session.user._id)} className="text-blue-600 underline">
-                                                                {session.user.fullName}
+                                                            <p>
+                                                                {session.fullName}
                                                             </p>
                                                         </div>
 
@@ -192,7 +193,7 @@ function AllSessions() {
 
                                                         <div className="flex gap-2">
                                                             <p className="text-gray-800">Doc(s):</p>
-                                                            <Link target="_blank" to={`${session.document}`} className="flex gap-1 items-center"><FileDownIcon size={18} /> <span className="text-blue-600 hover:underline">file.pdf</span></Link>
+                                                            <Link target="_blank" to={`${session.document}`} className="flex gap-1 items-center"><FileDownIcon size={18} /> <span className="text-blue-600 hover:underline">{cleanFileName(decodeURIComponent(session.document))}</span></Link>
                                                         </div>
 
                                                         <div className="flex gap-2">

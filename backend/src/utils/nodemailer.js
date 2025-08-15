@@ -36,7 +36,7 @@ const contactEmail = async (name, email, phone, service, message) => {
     }
 }
 
-const orderAdminEmail = async (fullName, phone, email, service, document, dateTime, price) => {
+const orderAdminEmail = async (fullName, phone, email, service, document, dateTime = 'No Date', price) => {
     try {
         const info = await transporter.sendMail({
             from: `"JD Mentors" <${process.env.EMAIL_USER}>`,
@@ -60,8 +60,14 @@ const orderAdminEmail = async (fullName, phone, email, service, document, dateTi
     }
 }
 
-const orderUserEmail = async (email, service, document, dateTime, price) => {
+const orderUserEmail = async (email, service, document, dateTime, price, sessionId) => {
     try {
+        const formattedDate = dateTime
+            ? (dateTime instanceof Date
+                ? dateTime.toLocaleString()
+                : new Date(dateTime).toLocaleString())
+            : "N/A";
+
         const info = await transporter.sendMail({
             from: `"JD Mentors" <${process.env.EMAIL_USER}>`,
             to: `${email}`,
@@ -71,7 +77,10 @@ const orderUserEmail = async (email, service, document, dateTime, price) => {
                     <p><b>Service:</b> ${service}</p>
                     <p><b>Amount:</b> $${price}</p>
                     <p><b>Document:</b> ${document}</p>
-                    <p><b>Preferred Time:</b> ${new Date(dateTime).toLocaleString()}</p>
+                    <p><b>Preferred Time:</b> ${formattedDate}</p>
+                    <p><b>Session ID:</b> ${sessionId}</p><br />
+                    <p>To check the status of your session, please visit <a href='${process.env.FRONTEND_URL}/session-status'>${process.env.FRONTEND_URL}/session-status</a> and search the above session ID.</p><br />
+                    <p>If you registered, then you can simply login to your account and visist the user dashboard page or can also use the above method.</p>
                     `,
         });
 

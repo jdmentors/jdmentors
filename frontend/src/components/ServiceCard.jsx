@@ -14,6 +14,7 @@ function ServiceCard({_id, title, description, features, price, process}) {
                 navigate(`/checkout/${_id}`);
             }else{
                 dispatch(toggleShowUserAuthForm(true));
+                navigate(`/checkout/${_id}`);
             }
         } catch (error) {
             console.error(error);
