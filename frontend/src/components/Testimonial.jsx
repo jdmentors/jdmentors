@@ -1,12 +1,11 @@
 import { Star } from "lucide-react";
 
-function Testimonial({ name, review, school }) {
+function Testimonial({ name, review, school, className = '' }) {
     return (
-        <div className="text-left mx-4 hover:scale-102 transition-all duration-300">
-            <div className="w-84 h-full flex flex-col items-start border border-gray-500/30 p-5 rounded-lg bg-white">
+        <div className={`keen-slider__slide text-left  ${className}`}>
+            <div className="h-full flex flex-col items-start border border-gray-500/30 p-5 mb-1 rounded-lg bg-white">
 
-                <div className="flex items-center gap-3 mt-4">
-                    {/* <img src={image} alt="user" className="w-10 h-10 object-cover rounded-full overflow-hidden" /> */}
+                <div className="flex items-center gap-3 mt-2">
                     <div>
                         <h2 className="text-lg text-gray-900 font-medium">{name}</h2>
                         <p className="text-gray-500">{school}</p>

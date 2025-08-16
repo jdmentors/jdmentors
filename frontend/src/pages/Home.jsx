@@ -1,9 +1,10 @@
 import { CallToAction, Container, Hero, FAQ, Stat, AboutUs, LoadingSpinner } from "../components";
-import Marquee from "react-fast-marquee";
 import { Link } from "react-router";
 import { ArrowRight } from "lucide-react";
-import { lazy } from "react";
+import { lazy, useRef } from "react";
 import { Suspense } from "react";
+import 'keen-slider/keen-slider.min.css'
+import { useKeenSlider } from 'keen-slider/react'
 
 const AllServices = lazy(() => import('../components/AllServices'));
 const Testimonial = lazy(() => import('../components/Testimonial'));
@@ -64,23 +65,68 @@ const testimonials = [
 const stats = [
     {
         name: 'Students Helped',
-        data: '500+'
+        data: '50+'
     },
     {
         name: 'Acceptance Rate',
         data: '100%'
     },
     {
-        name: 'Schools Repesented',
-        data: '100+'
+        name: 'Scholarships Obtained',
+        data: '6 Figures+'
     },
     {
         name: 'Average Rating',
-        data: `4.9`
+        data: `5.0`
     }
 ];
 
 function Home() {
+    const timer = useRef();
+
+    const [sliderRef] = useKeenSlider({
+        loop: true,
+        mode: "snap",
+        slides: {
+            perView: 4,
+            spacing: 15,
+        },
+        breakpoints: {
+            "(max-width: 1250px)": {
+                slides: { perView: 3, spacing: 10 },
+            },
+            "(max-width: 1024px)": {
+                slides: { perView: 2, spacing: 10 },
+            },
+            "(max-width: 640px)": {
+                slides: { perView: 1, spacing: 8 },
+            },
+        },
+        created(s) {
+            startAutoplay(s);
+        },
+        dragStarted() {
+            stopAutoplay();
+        },
+        animationEnded(s) {
+            startAutoplay(s);
+        },
+        updated(s) {
+            startAutoplay(s);
+        },
+    });
+
+    function startAutoplay(slider) {
+        stopAutoplay();
+        timer.current = setInterval(() => {
+            if (slider) slider.next();
+        }, 1500);
+    }
+
+    function stopAutoplay() {
+        clearInterval(timer.current);
+    }
+
     return (
         <div className="min-h-[70vh]">
             <Hero />
@@ -129,16 +175,18 @@ function Home() {
                         <p className="md:text-lg text-blue-950 my-3">Hear from students who achieved their law school dreams</p>
 
                         <Suspense fallback={<LoadingSpinner />}>
-                            <div>
-                                <Marquee speed={40} pauseOnHover={true} gradient={true} gradientColor="#EFF6FF" gradientWidth={50} className="flex items-stretch py-1 overflow-y-hidden">
-                                    {
-                                        testimonials.map(testimonial => (
-                                            <Testimonial key={testimonial.name} name={testimonial.name} school={testimonial.school} review={testimonial.review} />
-                                        ))
-                                    }
-                                </Marquee>
+                            <div ref={sliderRef} className="keen-slider py-4">
+                                {testimonials.map(testimonial => (
+                                    <Testimonial
+                                        key={testimonial.name}
+                                        name={testimonial.name}
+                                        school={testimonial.school}
+                                        review={testimonial.review}
+                                    />
+                                ))}
                             </div>
                         </Suspense>
+
                     </div>
                 </Container>
             </section>

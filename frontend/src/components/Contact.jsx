@@ -89,10 +89,10 @@ function Contact() {
                                     </h3>
                                     <p className="text-blue-950">
                                         Mon - Fri: 9:00 AM - 6:00 PM EST <br />
-                                        Sat - Sun: 10:00 AM - 6:00 PM EST
+                                        Sun: 10:00 AM - 6:00 PM EST
                                     </p>
                                     <p className="text-sm text-gray-500">
-                                        Emergency service available 24/7
+                                        Rush consultations available upon request
                                     </p>
                                 </div>
                             </div>

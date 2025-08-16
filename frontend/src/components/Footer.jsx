@@ -83,7 +83,7 @@ function Footer() {
                             <li className="flex items-center gap-2">
                                 <Mail size={18} />
 
-                                <Link className="hover:underline" to='mailto:support@jdmentors.com'>support@jdmentors.com</Link>
+                                <Link className="hover:underline" to='mailto:contact@jdmentors.com'>contact@jdmentors.com</Link>
                             </li>
                         </ul>
                     </div>
@@ -92,11 +92,12 @@ function Footer() {
                 <hr className='border-gray-300 mt-8' />
 
                 <div className='flex flex-col md:flex-row gap-2 items-center justify-between py-5'>
-                    <p>© {new Date().getFullYear()} &nbsp;
+                    {/* <p>© {new Date().getFullYear()} &nbsp; */}
+                    <p>
                         <Link to="/">
                         JD Mentors
                         </Link>. 
-                        &nbsp; All rights reserved. &nbsp;
+                        {/* &nbsp; All rights reserved. &nbsp; */}
                     </p>
                     <div className="flex flex-row gap-2 items-center">
                         <Link to={'/terms-conditions'}>Terms</Link>

@@ -1,10 +1,9 @@
 import { Star, Verified } from "lucide-react";
 
-function TweetCard({card}) {
+function TweetCard({ card }) {
     return (
-        <div className="p-4 border border-blue-100 rounded-lg mx-4 shadow shadow-blue-100 hover:shadow-lg transition-all duration-200 w-72 shrink-0">
+        <div className="keen-slider__slide p-4 border border-blue-100 rounded-lg shadow shadow-blue-100 ">
             <div className="flex gap-2">
-                {/* <img className="size-10 rounded-full" loading="lazy" src={card.image} alt="User Image" /> */}
                 <div className="flex flex-col">
                     <div className="flex items-center gap-1">
                         <p>{card.name}</p>
@@ -15,14 +14,13 @@ function TweetCard({card}) {
             </div>
             <p className="text-sm py-4 text-gray-800">{card.review}</p>
             <div className="flex items-center justify-start gap-1">
-                    <Star className="fill-amber-400" strokeWidth={0} />
-                    <Star className="fill-amber-400" strokeWidth={0} />
-                    <Star className="fill-amber-400" strokeWidth={0} />
-                    <Star className="fill-amber-400" strokeWidth={0} />
-                    <Star className="fill-amber-400" strokeWidth={0} />
-                </div>
+                {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="fill-amber-400" strokeWidth={0} />
+                ))}
+            </div>
         </div>
     );
 }
+
 
 export default TweetCard;
