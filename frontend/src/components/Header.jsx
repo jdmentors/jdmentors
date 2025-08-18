@@ -17,7 +17,7 @@ function Header() {
         { name: 'About', href: '/about' },
         { name: 'Services', href: '/services' },
         { name: 'Blogs', href: '/blogs' },
-        { name: 'Testimonials', href: '/testimonials' },
+        // { name: 'Testimonials', href: '/testimonials' },
         { name: 'Contact', href: '/contact' },
     ];
 

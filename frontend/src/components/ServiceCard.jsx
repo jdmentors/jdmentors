@@ -44,7 +44,7 @@ function ServiceCard({_id, title, description, features, price, process}) {
                     }
                 </ul>
                 <div className="mt-4 pt-4 border-t border-gray-200">
-                    <p className="text-lg font-bold text-gray-900">${price}/hour</p>
+                    <p className="text-lg font-bold text-gray-900">${price}</p>
                     <p className="text-sm text-gray-600 mt-1">
                         Process: {process}
                     </p>

@@ -142,7 +142,7 @@ function AllServices() {
                                                         <p className="text-gray-600">{service.title}</p>
 
                                                         <p className="">
-                                                            ${service.price}/hr
+                                                            ${service.price}
                                                         </p>
 
                                                         <p>{service.sessionCount}</p>

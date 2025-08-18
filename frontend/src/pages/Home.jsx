@@ -12,20 +12,20 @@ const AllBlogs = lazy(() => import('../components/AllBlogs'));
 
 const faqs = [
     {
-        question: "How many revisions do you provide for personal statements?",
-        answer: "Our standard personal statement review includes two rounds of revisions, but we offer additional rounds if needed. During our 1-on-1 sessions, we'll work iteratively to refine your statement until you're completely satisfied with the final product."
-    },
-    {
-        question: "Do you help with scholarship negotiation too?",
-        answer: "Yes! Many students have received scholarships they aren't the most excited about, but we always encourage students to negotiate. Any extra money you gain is less money you have to pay back down the line. Send us a message so we can help you get started!"
-    },
-    {
         question: "How early should I start working on my application?",
-        answer: "We recommend starting at least 3-4 months before application deadlines. This gives us time for multiple drafts and ensures your materials are polished. However, we can work with tighter timelines if needed—contact us to discuss expedited options."
+        answer: "We suggest starting about 3-4 months before your application deadlines. That gives us plenty of time to work through multiple drafts and make sure everything is polished. If you’re on a tighter schedule, we can still help. Just reach out to us regarding rush options and developing application strategies."
     },
     {
-        question: "What makes your approach different for non-T14 schools?",
-        answer: "Non-T14 schools often evaluate candidates differently than elite programs. We focus on demonstrating your potential for success in their specific programs, highlighting regional connections, practical experience, and how you align with each school's unique strengths and mission."
+        question: "What makes applying to non-T14 schools different?",
+        answer: "Non-T14 schools evaluate applicants differently than the most elite programs. They tend to place greater weight on your potential to succeed in their environment. This includes things like your practical experience, the clarity of your career goals, and how well you align with the school’s mission, values, and strengths. Our role is to help you present a compelling case that speaks directly to what each program cares about most and increase your value to them."
+    },
+    {
+        question: "Can I get more scholarship money from a school that already sent me an offer?",
+        answer: "Yes! A lot of applicants don’t realize that scholarship offers aren’t always set in stone. Even after you’ve been admitted, schools will sometimes reconsider and bump up their initial offer. We’ll help you navigate that process so you have the best chance of getting more rewards."
+    },
+    {
+        question: "Should I create an account or just continue as a guest?",
+        answer: "We recommend creating an account so you can save your work, track revisions, and receive updates from us. It’ll also help us keep your progress in mind and better support you throughout the application process. However, if you’d rather not, you can still continue as a guest."
     }
 ];
 
@@ -63,21 +63,21 @@ const testimonials = [
 ];
 
 const stats = [
-    {
-        name: 'Students Helped',
-        data: '50+'
-    },
+    // {
+    //     name: 'Students Helped',
+    //     data: '50+'
+    // },
     {
         name: 'Acceptance Rate',
         data: '100%'
     },
     {
-        name: 'Scholarships Obtained',
-        data: '6 Figures+'
+        name: 'of thousands saved',
+        data: 'Hundereds'
     },
     {
         name: 'Average Rating',
-        data: `5.0`
+        data: `5/5`
     }
 ];
 
@@ -134,7 +134,7 @@ function Home() {
             {/* Stats section */}
             <section className="mt-12">
                 <Container>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 text-center">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 text-center">
                         {
                             stats.map(stat => (
                                 <Stat key={stat.name} name={stat.name} data={stat.data} />
@@ -167,7 +167,7 @@ function Home() {
             <AboutUs />
 
             {/* Testimonials section */}
-            <section className="mt-12 md:mt-16">
+            {/* <section className="mt-12 md:mt-16">
                 <Container>
                     <div>
 
@@ -189,7 +189,7 @@ function Home() {
 
                     </div>
                 </Container>
-            </section>
+            </section> */}
 
             {/* Blogs section */}
             <section className="mt-12">
