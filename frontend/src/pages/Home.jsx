@@ -1,9 +1,10 @@
 import { CallToAction, Container, Hero, FAQ, Stat, AboutUs, LoadingSpinner } from "../components";
-import Marquee from "react-fast-marquee";
 import { Link } from "react-router";
 import { ArrowRight } from "lucide-react";
-import { lazy } from "react";
+import { lazy, useRef } from "react";
 import { Suspense } from "react";
+import 'keen-slider/keen-slider.min.css'
+import { useKeenSlider } from 'keen-slider/react'
 
 const AllServices = lazy(() => import('../components/AllServices'));
 const Testimonial = lazy(() => import('../components/Testimonial'));
@@ -11,20 +12,20 @@ const AllBlogs = lazy(() => import('../components/AllBlogs'));
 
 const faqs = [
     {
-        question: "How many revisions do you provide for personal statements?",
-        answer: "Our standard personal statement review includes two rounds of revisions, but we offer additional rounds if needed. During our 1-on-1 sessions, we'll work iteratively to refine your statement until you're completely satisfied with the final product."
-    },
-    {
-        question: "Do you help with scholarship negotiation too?",
-        answer: "Yes! Many students have received scholarships they aren't the most excited about, but we always encourage students to negotiate. Any extra money you gain is less money you have to pay back down the line. Send us a message so we can help you get started!"
-    },
-    {
         question: "How early should I start working on my application?",
-        answer: "We recommend starting at least 3-4 months before application deadlines. This gives us time for multiple drafts and ensures your materials are polished. However, we can work with tighter timelines if needed—contact us to discuss expedited options."
+        answer: "We suggest starting about 3-4 months before your application deadlines. That gives us plenty of time to work through multiple drafts and make sure everything is polished. If you’re on a tighter schedule, we can still help. Just reach out to us regarding rush options and developing application strategies."
     },
     {
-        question: "What makes your approach different for non-T14 schools?",
-        answer: "Non-T14 schools often evaluate candidates differently than elite programs. We focus on demonstrating your potential for success in their specific programs, highlighting regional connections, practical experience, and how you align with each school's unique strengths and mission."
+        question: "What makes applying to non-T14 schools different?",
+        answer: "Non-T14 schools evaluate applicants differently than the most elite programs. They tend to place greater weight on your potential to succeed in their environment. This includes things like your practical experience, the clarity of your career goals, and how well you align with the school’s mission, values, and strengths. Our role is to help you present a compelling case that speaks directly to what each program cares about most and increase your value to them."
+    },
+    {
+        question: "Can I get more scholarship money from a school that already sent me an offer?",
+        answer: "Yes! A lot of applicants don’t realize that scholarship offers aren’t always set in stone. Even after you’ve been admitted, schools will sometimes reconsider and bump up their initial offer. We’ll help you navigate that process so you have the best chance of getting more rewards."
+    },
+    {
+        question: "Should I create an account or just continue as a guest?",
+        answer: "We recommend creating an account so you can save your work, track revisions, and receive updates from us. It’ll also help us keep your progress in mind and better support you throughout the application process. However, if you’d rather not, you can still continue as a guest."
     }
 ];
 
@@ -62,25 +63,70 @@ const testimonials = [
 ];
 
 const stats = [
-    {
-        name: 'Students Helped',
-        data: '500+'
-    },
+    // {
+    //     name: 'Students Helped',
+    //     data: '50+'
+    // },
     {
         name: 'Acceptance Rate',
         data: '100%'
     },
     {
-        name: 'Schools Repesented',
-        data: '100+'
+        name: 'of thousands saved',
+        data: 'Hundereds'
     },
     {
         name: 'Average Rating',
-        data: `4.9`
+        data: `5/5`
     }
 ];
 
 function Home() {
+    const timer = useRef();
+
+    const [sliderRef] = useKeenSlider({
+        loop: true,
+        mode: "snap",
+        slides: {
+            perView: 4,
+            spacing: 15,
+        },
+        breakpoints: {
+            "(max-width: 1250px)": {
+                slides: { perView: 3, spacing: 10 },
+            },
+            "(max-width: 1024px)": {
+                slides: { perView: 2, spacing: 10 },
+            },
+            "(max-width: 640px)": {
+                slides: { perView: 1, spacing: 8 },
+            },
+        },
+        created(s) {
+            startAutoplay(s);
+        },
+        dragStarted() {
+            stopAutoplay();
+        },
+        animationEnded(s) {
+            startAutoplay(s);
+        },
+        updated(s) {
+            startAutoplay(s);
+        },
+    });
+
+    function startAutoplay(slider) {
+        stopAutoplay();
+        timer.current = setInterval(() => {
+            if (slider) slider.next();
+        }, 1500);
+    }
+
+    function stopAutoplay() {
+        clearInterval(timer.current);
+    }
+
     return (
         <div className="min-h-[70vh]">
             <Hero />
@@ -88,7 +134,7 @@ function Home() {
             {/* Stats section */}
             <section className="mt-12">
                 <Container>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 text-center">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 text-center">
                         {
                             stats.map(stat => (
                                 <Stat key={stat.name} name={stat.name} data={stat.data} />
@@ -121,7 +167,7 @@ function Home() {
             <AboutUs />
 
             {/* Testimonials section */}
-            <section className="mt-12 md:mt-16">
+            {/* <section className="mt-12 md:mt-16">
                 <Container>
                     <div>
 
@@ -129,19 +175,21 @@ function Home() {
                         <p className="md:text-lg text-blue-950 my-3">Hear from students who achieved their law school dreams</p>
 
                         <Suspense fallback={<LoadingSpinner />}>
-                            <div>
-                                <Marquee speed={40} pauseOnHover={true} gradient={true} gradientColor="#EFF6FF" gradientWidth={50} className="flex items-stretch py-1 overflow-y-hidden">
-                                    {
-                                        testimonials.map(testimonial => (
-                                            <Testimonial key={testimonial.name} name={testimonial.name} school={testimonial.school} review={testimonial.review} />
-                                        ))
-                                    }
-                                </Marquee>
+                            <div ref={sliderRef} className="keen-slider py-4">
+                                {testimonials.map(testimonial => (
+                                    <Testimonial
+                                        key={testimonial.name}
+                                        name={testimonial.name}
+                                        school={testimonial.school}
+                                        review={testimonial.review}
+                                    />
+                                ))}
                             </div>
                         </Suspense>
+
                     </div>
                 </Container>
-            </section>
+            </section> */}
 
             {/* Blogs section */}
             <section className="mt-12">

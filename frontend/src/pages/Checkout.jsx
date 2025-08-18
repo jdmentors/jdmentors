@@ -3,7 +3,7 @@ import { Container, FileInput, LoadingSpinner } from "../components";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useRef } from "react";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
@@ -14,7 +14,7 @@ import { updateUser } from "../features/forms/UserAuthSlice.js";
 function Checkout() {
     const user = useSelector(state => state.user.user);
 
-    const { register, handleSubmit, reset } = useForm({
+    const { register, handleSubmit, reset, formState: {errors} } = useForm({
         defaultValues: {
             fullName: user.fullName || '',
             email: user.email || '',
@@ -48,8 +48,16 @@ function Checkout() {
         getService();
     }, [serviceId])
 
+    const [isChecked, setIsChecked] = useState(false);
+    const [termsWarning, setTermsWarning] = useState(false);
+
     const checkoutHandler = async (userData) => {
         try {
+            if(!isChecked){
+                setTermsWarning(true);
+                return;
+            }
+
             setIsBooking(true);
             const formData = new FormData();
 
@@ -156,11 +164,6 @@ function Checkout() {
                                 </div>
                             </div>
 
-                            {/* <div className="text-gray-600 grid grid-cols-1 my-2 md:my-3">
-                                <label className="flex items-center gap-1 text-sm" htmlFor='dateTime'><CalendarDays size={18} /> <span>Preferred Date & Time</span></label>
-                                <input id="dateTime" type="datetime-local" className="text-black border-2 border-blue-100 py-1.5 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200" {...register('dateTime', { required: false })} />
-                            </div> */}
-
                             <div className="text-gray-600 grid grid-cols-1 my-2 md:my-3">
                                 <label className="flex items-center gap-1 text-sm"><File size={18} /> <span>Document to be reviewed *</span></label>
 
@@ -200,7 +203,14 @@ function Checkout() {
                                     </ul>
 
                                     <div className="mt-5 text-gray-600">
-                                        <p className="flex justify-between">Total Price: <span className="font-semibold text-xl text-black">${service.price}</span></p>
+                                        <p className="flex justify-between">Total Price: <span className="font-semibold text-xl text-black mb-2">${service.price}</span></p>
+
+                                        <label className="flex gap-2 items-center">
+                                            <input type="checkbox" checked={isChecked} onChange={(e) => {setIsChecked(e.target.checked); setTermsWarning(!e.target.checked)}} />
+                                            <span>I have read and agree to the <Link className="text-blue-600 underline" to="/terms-conditions">terms & conditions.</Link></span>
+                                        </label>
+
+                                        <p className={`text-orange-500 text-sm my-2 ${termsWarning ? 'block' : 'hidden'}`}>You need to accept the Terms and Conditions to proceed.</p>
 
                                         <button onClick={() => formRef.current.requestSubmit()} type="button" className="px-6 py-2 bg-blue-600 hover:bg-blue-700 active:scale-95 transition-all text-white rounded cursor-pointer w-full my-5">
                                             {

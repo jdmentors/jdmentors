@@ -1,5 +1,7 @@
-import Marquee from "react-fast-marquee";
 import { CallToAction, Container, Stat, TweetCard } from "../components";
+import 'keen-slider/keen-slider.min.css'
+import { useKeenSlider } from 'keen-slider/react'
+import { useRef } from "react";
 
 const testimonials = [
     {
@@ -66,24 +68,97 @@ const testimonials = [
 
 const stats = [
     {
-        name:'Students Helped',
-        data:'500+'
+        name: 'Students Helped',
+        data: '50+'
     },
     {
-        name:'Acceptance Rate',
-        data:'100%'
+        name: 'Acceptance Rate',
+        data: '100%'
     },
     {
-        name:'Schools Repesented',
-        data:'100+'
+        name: 'Scholarships Obtained',
+        data: '6 Figures+'
     },
     {
-        name:'Average Rating',
-        data:`4.9`
+        name: 'Average Rating',
+        data: `5.0`
     }
 ];
 
 function Testimonials() {
+    const timer1 = useRef();
+    const timer2 = useRef();
+
+    const [sliderRef1] = useKeenSlider({
+        loop: true,
+        mode: "snap",
+        slides: { perView: 4, spacing: 15 },
+        breakpoints: {
+            "(max-width: 1250px)": {
+                slides: { perView: 3, spacing: 10 },
+            },
+            "(max-width: 1024px)": {
+                slides: { perView: 2, spacing: 10 },
+            },
+            "(max-width: 640px)": {
+                slides: { perView: 1, spacing: 8 },
+            },
+        },
+        created(s) {
+            startAutoplay(s, timer1);
+        },
+        dragStarted() {
+            stopAutoplay(timer1);
+        },
+        animationEnded(s) {
+            startAutoplay(s, timer1);
+        },
+        updated(s) {
+            startAutoplay(s, timer1);
+        },
+    });
+
+    const [sliderRef2] = useKeenSlider({
+        loop: true,
+        mode: "snap",
+        rtl: true,
+        slides: { perView: 4, spacing: 15 },
+        breakpoints: {
+            "(max-width: 1250px)": {
+                slides: { perView: 3, spacing: 10 },
+            },
+            "(max-width: 1024px)": {
+                slides: { perView: 2, spacing: 10 },
+            },
+            "(max-width: 640px)": {
+                slides: { perView: 1, spacing: 8 },
+            },
+        },
+        created(s) {
+            startAutoplay(s, timer2);
+        },
+        dragStarted() {
+            stopAutoplay(timer2);
+        },
+        animationEnded(s) {
+            startAutoplay(s, timer2);
+        },
+        updated(s) {
+            startAutoplay(s, timer2);
+        },
+    });
+
+    function startAutoplay(slider, timerRef) {
+        stopAutoplay(timerRef);
+        timerRef.current = setInterval(() => {
+            if (slider) slider.next();
+        }, 1500);
+    }
+
+    function stopAutoplay(timerRef) {
+        clearInterval(timerRef.current);
+    }
+
     return (
         <section className="mt-32">
             <Container>
@@ -91,35 +166,31 @@ function Testimonials() {
                 <p className="md:text-lg text-blue-950 my-3">Here is what our students say who achieved their law school dreams</p>
 
                 <section className="my-12">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 text-center">
-                            {
-                                stats.map(stat => (
-                                    <Stat key={stat.name} name={stat.name} data={stat.data} />
-                                ))
-                            }
-                        </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 text-center">
+                        {
+                            stats.map(stat => (
+                                <Stat key={stat.name} name={stat.name} data={stat.data} />
+                            ))
+                        }
+                    </div>
                 </section>
 
-                <section className="grid grid-cols-1 gap-6 my-12">
-                    <div>
-                    <Marquee speed={40} gradient={true} gradientColor="#EFF6FF" gradientWidth={50} pauseOnHover={true} className="flex items-stretch py-1 overflow-y-hidden">
+                <section className="grid grid-cols-1 gap-6 my-10">
+                    <div ref={sliderRef1} className="keen-slider py-4">
                         {
                             testimonials.slice(0, 6).map(testimonial => (
                                 <TweetCard key={testimonial.name} card={testimonial} />
                             ))
                         }
-                    </Marquee>
-                </div>
+                    </div>
 
-                <div>
-                    <Marquee speed={40} gradient={true} gradientColor="#EFF6FF" gradientWidth={50} direction="right" pauseOnHover={true} className="flex items-stretch py-1 overflow-y-hidden">
+                    <div ref={sliderRef2} className="keen-slider py-4">
                         {
                             testimonials.slice(7, 12).map(testimonial => (
                                 <TweetCard key={testimonial.name} card={testimonial} />
                             ))
                         }
-                    </Marquee>
-                </div>
+                    </div>
                 </section>
             </Container>
             <CallToAction />
