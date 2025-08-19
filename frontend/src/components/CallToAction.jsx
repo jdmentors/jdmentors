@@ -15,10 +15,10 @@ function CallToAction(){
                 <h2 className="text-2xl md:text-4xl font-medium my-3">
                    Your Law School Journey Starts Here
                     <br />
-                    — Stand Out in Your Application
+                    — Make Your Application Stand Out
                 </h2>
                 <p className="text-gray-400 mt-2 max-w-5xl max-md:text-sm">
-                    Book a personalized consultation and get insider strategies to elevate your application — from essays to final submission.
+                    Book a consultation and get clear strategies to strengthen your application. From essays to resumes, we’ll highlight what makes you a strong candidate.
                 </p>
                 
                 <div className="flex gap-3 flex-wrap items-center justify-center my-4">
