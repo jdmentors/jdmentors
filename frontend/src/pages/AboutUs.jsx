@@ -3,42 +3,43 @@ import { aboutUs } from "../assets";
 import { CallToAction, Container } from "../components";
 
 const stats = [
+    // {
+    //     name:'Students Helped',
+    //     data:'500+'
+    // },
     {
-        name:'Students Helped',
-        data:'500+'
+        name: 'Acceptance Rate',
+        data: '100%'
     },
     {
-        name:'Acceptance Rate',
-        data:'100%'
+        name: 'of Thousands saved',
+        data: 'Hundereds'
     },
+    // {
+    //     name:'Schools Repesented',
+    //     data:'100+'
+    // },
     {
-        name:'Schools Repesented',
-        data:'100+'
-    },
-    {
-        name:'Average Rating',
-        data:`4.9`
+        name: 'Average Rating',
+        data: `5/5`
     }
 ];
 
 function AboutUs() {
     return (
         <section className="pt-32 bg-blue-100 max-w-full">
-            <Container className="grid lg:grid-cols-2 gap-5 mb-16 max-w-full">
+            <Container className="grid lg:grid-cols-2 gap-5 mb-16 max-w-full items-start">
                 <div className="bg-white rounded-2xl px-5 py-8 sm:p-8">
                     <h5 className="font-semibold text-blue-600">How It Started</h5>
                     <h2 className="text-2xl md:text-4xl xl:text-5xl font-bold my-3 text-blue-950">Empowering the Next Generation of Law Students</h2>
 
-                    <p>It all started with a simple observation: too many smart, capable law school applicants were getting overlooked; not because they lacked potential, but because they didn’t have the right guidance. We saw students pouring their hearts into personal statements and addendums, only to find themselves frustrated when their applications didn’t reflect who they really were. That’s when we decided to step in.
-                    <br />
-                    <br />
-                    What began as a handful of one-on-one conversations with students slowly grew into something bigger. As word spread, more students reached out, and now we support applicants all throughout New York. They come from different backgrounds and experiences, but they all share the same goal: finding their way into law school.
-                    <br />
-                    <br />
-                    Since then, we’ve had the privilege of helping many future law students refine their narratives, strengthen their applications, and, most importantly, build confidence in themselves. We couldn’t be happier with the results.
-                    <br />
-                    <br />
-                    At the heart of it, this has always been about more than admissions. It’s about showing students that their voice matters, that their story has power, and that with the right guidance, they can take the next step toward a legal career they’ve been dreaming of.
+                    <p>We started with a simple observation: too many capable law school applicants were getting overlooked. Not because they lacked potential, but because they lacked the right guidance. Students were pouring their energy into personal statements and addendums, yet their applications still didn't capture who they truly were. That's when we stepped in.
+                        <br />
+                        <br />
+                        What began as a few one-on-one conversations soon grew into something larger. As word spread, more students reached out, and today we work with applicants all across New York. Each comes with a different story, but they all share the same goal: getting into law school to become a successful future lawyer.
+                        <br />
+                        <br />
+                        Since then, we've helped countless students refine their narratives, strengthen their applications, and gain the confidence they need to move forward. Our focus goes beyond the application itself- we're here to help students gain admission to the schools they want and maximize their scholarship opportunities.
                     </p>
                     <br />
 
@@ -51,11 +52,11 @@ function AboutUs() {
                     </ul>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-5 items-stretch">
-                    <div className="flex items-stretch">
-                        <img src={aboutUs} loading="lazy" alt="About Us" className="h-72 lg:h-full md:h-72 xl:max-h-150 w-full object-cover rounded-2xl" />
+                <div className="flex flex-col h-full">
+                    <div className="relative aspect-[4/3] lg:aspect-auto lg:flex-grow">
+                        <img src={aboutUs} loading="lazy" alt="About Us" className="absolute h-full w-full object-cover rounded-2xl" />
                     </div>
-                    <div className="bg-white grid grid-cols-2 gap-8 p-5 sm:p-10 rounded-2xl">
+                    <div className="bg-white grid grid-cols-2 gap-5 p-5 sm:p-10 rounded-2xl mt-5">
                         {
                             stats.map(stat => (
                                 <div key={stat.name}>
