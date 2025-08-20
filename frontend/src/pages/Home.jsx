@@ -63,17 +63,17 @@ const testimonials = [
 ];
 
 const stats = [
-    // {
-    //     name: 'Students Helped',
-    //     data: '50+'
-    // },
+    {
+        name: 'Students Helped',
+        data: '50+'
+    },
     {
         name: 'Acceptance Rate',
         data: '100%'
     },
     {
-        name: 'of thousands saved',
-        data: 'Hundereds'
+        name: 'exceeded aid expectations',
+        data: '99%'
     },
     {
         name: 'Average Rating',
@@ -134,7 +134,7 @@ function Home() {
             {/* Stats section */}
             <section className="mt-12">
                 <Container>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 text-center">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 text-center">
                         {
                             stats.map(stat => (
                                 <Stat key={stat.name} name={stat.name} data={stat.data} />
