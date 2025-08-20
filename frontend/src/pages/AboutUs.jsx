@@ -3,17 +3,17 @@ import { aboutUs } from "../assets";
 import { CallToAction, Container } from "../components";
 
 const stats = [
-    // {
-    //     name:'Students Helped',
-    //     data:'500+'
-    // },
+    {
+        name:'Students Helped',
+        data:'50+'
+    },
     {
         name: 'Acceptance Rate',
         data: '100%'
     },
     {
-        name: 'of Thousands saved',
-        data: 'Hundereds'
+        name: 'exceeded aid expectations',
+        data: '99%'
     },
     // {
     //     name:'Schools Repesented',
