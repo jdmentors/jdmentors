@@ -12,7 +12,7 @@ const stats = [
         data: '100%'
     },
     {
-        name: 'exceeded aid expectations',
+        name: 'Exceeded Aid Expectations',
         data: '99%'
     },
     // {
