@@ -20,7 +20,7 @@ function CheckOutSuccess() {
                     setSession(data.data);
                     const sessionData = data.data;
                     try {
-                        const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/emails/order`, {fullName: sessionData.fullName, email: sessionData.email, phone: sessionData.phone, service: sessionData.service.title, document: sessionData.document, dateTime: sessionData.dateTime, price: sessionData.service.price, sessionId: sessionData._id});
+                        const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/emails/order`, {fullName: sessionData.fullName, email: sessionData.email, phone: sessionData.phone, service: sessionData.service.title, document: sessionData.document, dateTime: sessionData.dateTime, notes: sessionData.notes, price: sessionData.service.price, sessionId: sessionData._id});
                     } catch (error) {
                         console.error(error);
                     }

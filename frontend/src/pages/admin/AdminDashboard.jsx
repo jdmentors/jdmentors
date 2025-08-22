@@ -256,7 +256,15 @@ function AdminDashboard() {
 
                                                             <p className={`flex items-center gap-1 ${session.payment ? 'text-green-600' : 'text-red-600'}`}><span className={`h-2 w-2 ${!session.payment && 'bg-red-600'} rounded-full`}></span> <span>{session.payment ? `$${session.service.price}` : 'Pending'}</span></p>
 
-                                                            <Link target="_blank" to={`${session.document}`} className="flex gap-1 items-center"><FileDownIcon size={18} /> <span className="text-blue-600 hover:underline">{cleanFileName(decodeURIComponent(session.document))}</span></Link>
+                                                            <div>
+                                                                {
+                                                                    session.document.map((doc) => {
+                                                                        return (
+                                                                            <Link key={doc} target="_blank" to={`${doc}`} className="flex gap-1 items-center"><FileDownIcon size={18} /> <span className="text-blue-600 hover:underline">{cleanFileName(decodeURIComponent(doc))}</span></Link>
+                                                                        )
+                                                                    })
+                                                                }
+                                                            </div>
 
                                                             <p className={`flex items-center gap-1 ${session.status ? 'text-green-600' : 'text-red-600'}`}><span className={`h-2 w-2 ${session.status ? 'bg-green-600' : 'bg-red-600'} rounded-full`}></span> <span>{session.status ? 'Done' : 'Pending'}</span></p>
 
@@ -300,7 +308,15 @@ function AdminDashboard() {
 
                                                             <div className="flex gap-2">
                                                                 <p className="text-gray-800">Doc(s):</p>
-                                                                <Link target="_blank" to={`${session.document}`} className="flex gap-1 items-center"><FileDownIcon size={18} /> <span className="text-blue-600 hover:underline">{cleanFileName(decodeURIComponent(session.document))}</span></Link>
+                                                                <div>
+                                                                    {
+                                                                        session.document.map((doc) => {
+                                                                            return (
+                                                                                <Link key={doc} target="_blank" to={`${doc}`} className="flex gap-1 items-center"><FileDownIcon size={18} /> <span className="text-blue-600 hover:underline">{cleanFileName(decodeURIComponent(doc))}</span></Link>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                </div>
                                                             </div>
 
                                                             <div className="flex gap-2">

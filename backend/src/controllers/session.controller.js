@@ -3,21 +3,24 @@ import { uploadDocsOnCloudinary } from "../utils/cloudinary.js";
 
 const createSession = async (req, res) => {
     try {
-        const { fullName, email, phone, dateTime = '', service } = req.body;
+        const { fullName, email, phone, dateTime = '', notes='', service } = req.body;
 
-        const document = req.file;
+        const document = req.files;
 
         if (!service || !document || !fullName || !email || !phone) {
             return res.status(400).json({ success: false, message: 'All fields are required.' });
         }
 
-        const uploaded = await uploadDocsOnCloudinary(document);
+        // let uploaded = await uploadDocsOnCloudinary(document);
+        let uploadArray = document.map((doc) => uploadDocsOnCloudinary(doc));
+
+        const uploaded = await Promise.all(uploadArray);
 
         if (!uploaded) {
-            return res.status(500).json({ success: false, message: 'Failed to upload doc.' });
+            return res.status(500).json({ success: false, message: 'Failed to upload docs.' });
         }
 
-        const session = await Session.create({ fullName, email, phone, service, dateTime, document: uploaded || '' });
+        const session = await Session.create({ fullName, email, phone, service, dateTime, notes, document: uploaded || '' });
 
         if (!session) {
             return res.status(500).json({ success: false, message: 'Failed to book session.' });
@@ -84,7 +87,7 @@ const getASession = async (req, res) => {
         const { sessionId } = req.params;
 
         const session = await Session.findById(sessionId)
-            .select('fullName email phone dateTime document status payment createAt')
+            .select('fullName email phone dateTime notes document status payment createAt')
             .populate({
                 path: 'service',
                 select: 'title price description features'

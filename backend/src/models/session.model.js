@@ -25,8 +25,13 @@ const sessionSchema = new Schema({
     dateTime: {
         type: Date,
     },
-    document: {
+    notes: {
         type: String,
+        required: false,
+        trim: true,
+    },
+    document: {
+        type: [String],
         required: true
     },
     status: {
@@ -39,7 +44,7 @@ const sessionSchema = new Schema({
         required: true,
         default: false
     },
-}, {timestamps: true});
+}, { timestamps: true });
 
 const Session = model('Session', sessionSchema);
 
