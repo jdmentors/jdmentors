@@ -72,14 +72,14 @@ const createAdmin = async (req, res) => {
 
 const sendOrderEmail = async (req, res) => {
     try {
-        const { fullName, email, phone, service, document, dateTime='No Date', price, sessionId } = req.body;
+        const { fullName, email, phone, service, document, dateTime='No Date', notes='Not Provided', price, sessionId } = req.body;
 
         if (!fullName || !email || !phone || !service || !document || !price || !sessionId) {
             return res.status(400).json({ success: false, message: 'All fields are required.' });
         }
 
-        const adminEmailSent = await orderAdminEmail(fullName, phone, email, service, document, dateTime, price);
-        const userEmailSent = await orderUserEmail(email, service, document, dateTime, price, sessionId);
+        const adminEmailSent = await orderAdminEmail(fullName, phone, email, service, document, dateTime, notes, price);
+        const userEmailSent = await orderUserEmail(email, service, document, dateTime, notes, price, sessionId);
 
         if(!adminEmailSent || !userEmailSent){
             return res.status(500).json({ success: false, message: 'Could not send email.' });

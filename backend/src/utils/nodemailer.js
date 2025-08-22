@@ -36,7 +36,7 @@ const contactEmail = async (name, email, phone, service, message) => {
     }
 }
 
-const orderAdminEmail = async (fullName, phone, email, service, document, dateTime = 'No Date', price) => {
+const orderAdminEmail = async (fullName, phone, email, service, document, dateTime = 'No Date', notes='Not Provided', price) => {
     try {
         const info = await transporter.sendMail({
             from: `"JD Mentors" <${process.env.EMAIL_USER}>`,
@@ -49,8 +49,11 @@ const orderAdminEmail = async (fullName, phone, email, service, document, dateTi
                     <p><b>Email:</b> ${email}</p>
                     <p><b>Service:</b> ${service}</p>
                     <p><b>Amount:</b> $${price}</p>
-                    <p><b>Document:</b> ${document}</p>
+                    <p><b>Document:</b> ${document.map((doc) => {
+                        return doc + '<br /><br />'
+                    })}</p>
                     <p><b>Preferred Time:</b> ${new Date(dateTime).toLocaleString()}</p>
+                    <p><b>Special Notes:</b> ${notes}</p>
                     `,
         });
 
@@ -60,7 +63,7 @@ const orderAdminEmail = async (fullName, phone, email, service, document, dateTi
     }
 }
 
-const orderUserEmail = async (email, service, document, dateTime, price, sessionId) => {
+const orderUserEmail = async (email, service, document, dateTime, notes='Not Provided', price, sessionId) => {
     try {
         const formattedDate = dateTime
             ? (dateTime instanceof Date
@@ -76,9 +79,12 @@ const orderUserEmail = async (email, service, document, dateTime, price, session
                     <p>Your session on JD Mentors has been booked. We will reach out to you soon. Here is the booking summary:</p>
                     <p><b>Service:</b> ${service}</p>
                     <p><b>Amount:</b> $${price}</p>
-                    <p><b>Document:</b> ${document}</p>
+                    <p><b>Document:</b> ${document.map((doc) => {
+                        return doc + '<br /><br />'
+                    })}</p>
                     <p><b>Preferred Time:</b> ${formattedDate}</p>
-                    <p><b>Session ID:</b> ${sessionId}</p><br />
+                    <p><b>Session ID:</b> ${sessionId}</p>
+                    <p><b>Special Notes:</b> ${notes}</p><br />
                     <p>To check the status of your session, please visit <a href='${process.env.FRONTEND_URL}/session-status'>${process.env.FRONTEND_URL}/session-status</a> and search the above session ID.</p><br />
                     <p>If you registered, then you can simply login to your account and visist the user dashboard page or can also use the above method.</p>
                     `,

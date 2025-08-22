@@ -1,4 +1,4 @@
-import { CalendarDays, Check, File, LockKeyholeIcon, Mail, Phone, User, UserCheck2 } from "lucide-react";
+import { CalendarDays, Check, File, LockKeyholeIcon, Mail, Notebook, Phone, User, UserCheck2 } from "lucide-react";
 import { Container, FileInput, LoadingSpinner } from "../components";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -20,6 +20,7 @@ function Checkout() {
             email: user.email || '',
             phone: user.phone || '',
             dateTime: '',
+            notes: '',
             document: '',
         }
     });
@@ -65,8 +66,11 @@ function Checkout() {
             formData.append('email', userData.email);
             formData.append('phone', userData.phone);
             formData.append('dateTime', userData.dateTime);
+            formData.append('notes', userData.notes);
             formData.append('service', serviceId);
-            formData.append('document', userData.document[0]);
+            Object.values(userData.document).forEach((file) => {
+                formData.append('document', file);
+            })
 
             const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/sessions/create`, formData);
 
@@ -97,6 +101,7 @@ function Checkout() {
                     formData.append('email', userData.email);
                     formData.append('phone', userData.phone);
                     formData.append('dateTime', userData.dateTime);
+                    formData.append('notes', userData.notes);
                     formData.append('service', serviceId);
                     formData.append('document', userData.document[0]);
 
@@ -125,6 +130,7 @@ function Checkout() {
                 }
             }else{
                 toast.error(message);
+                console.log(error)
                 setIsBooking(false);
             }
         }
@@ -165,7 +171,13 @@ function Checkout() {
                             </div>
 
                             <div className="text-gray-600 grid grid-cols-1 my-2 md:my-3">
-                                <label className="flex items-center gap-1 text-sm"><File size={18} /> <span>Document to be reviewed *</span></label>
+                                <label htmlFor="notes" className="flex items-center gap-1 text-sm"><Notebook size={18} /> <span>Special Note</span></label>
+
+                                <textarea id="notes" placeholder="e.g. what your goals are, what you're hoping to do, where you're hoping to get into, etc." className="text-black border-2 border-blue-100 py-1.5 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200" rows={4} {...register('notes', {required: false})}></textarea>
+                            </div>
+
+                            <div className="text-gray-600 grid grid-cols-1 my-2 md:my-3">
+                                <label className="flex items-center gap-1 text-sm"><File size={18} /> <span>Document(s) to be reviewed *</span></label>
 
                                 <FileInput {...register('document', { required: true })} />
                             </div>

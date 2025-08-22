@@ -6,7 +6,7 @@ import verifyAdmin from "../middlewares/verifyAdmin.js";
 
 const sessionRouter = Router();
 
-sessionRouter.post('/create', upload.single('document'), createSession);
+sessionRouter.post('/create', upload.array('document'), createSession);
 sessionRouter.get('/user', verifyUser, getSessionsOfUser);
 sessionRouter.get('/single/:sessionId', getASession);
 sessionRouter.get('/all', verifyAdmin, getAllSessions);

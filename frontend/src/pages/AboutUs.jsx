@@ -1,11 +1,11 @@
-import { Verified } from "lucide-react";
-import { aboutUs } from "../assets";
+import { DollarSign, Verified } from "lucide-react";
+import { aboutUs, banner } from "../assets";
 import { CallToAction, Container } from "../components";
 
 const stats = [
     {
-        name:'Students Helped',
-        data:'50+'
+        name: 'Students Helped',
+        data: '50+'
     },
     {
         name: 'Acceptance Rate',
@@ -86,47 +86,44 @@ function AboutUs() {
                     </div>
                 </section>
 
-                {/* <section className="bg-white p-8 md:p-12 lg:p-14 rounded-2xl mb-16">
+                <section className="bg-white p-8 md:p-12 lg:p-14 rounded-2xl mb-16">
                     <h5 className="font-semibold text-blue-600">Meet Our Team</h5>
-                    <h2 className="text-2xl md:text-3xl font-semibold my-5 text-blue-950">Meet Our Dedicated Team of Consultants</h2>
+                    <h2 className="text-2xl md:text-3xl font-semibold my-5 text-blue-950">Meet Our Team of Consultants</h2>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                         <div className="h-80 rounded-2xl overflow-hidden relative">
-                            <img src={daniel} loading="lazy" alt="consultant" className="w-full h-full object-cover" />
+                            <img src={banner} loading="lazy" alt="consultant" className="w-full h-full object-cover" />
                             <div className="absolute py-2 rounded-xl bg-white bottom-5 w-10/12 text-center right-1/2 translate-x-1/2 text-sm">
                                 <p className="text-base font-semibold">Alan Parker</p>
                                 <p className="text-gray-600">Consultant</p>
                             </div>
                         </div>
+                    </div>
+                </section>
 
-                        <div className="h-80 rounded-2xl overflow-hidden relative">
-                            <img src={michael} loading="lazy" alt="consultant" className="w-full h-full object-cover" />
-                            <div className="absolute py-2 rounded-xl bg-white bottom-5 w-10/12 text-center right-1/2 translate-x-1/2 text-sm">
-                                <p className="text-base font-semibold">Daniel Spears</p>
-                                <p className="text-gray-600">Consultant</p>
-                            </div>
+                <section className="bg-white p-8 md:p-12 lg:p-14 rounded-2xl mb-16">
+                    <h5 className="font-semibold text-blue-600">Goal In Action</h5>
+                    <h2 className="text-2xl md:text-3xl font-semibold mt-5 mb-7 text-blue-950">See How Much We’ve Saved For Our Students</h2>
+
+                    <div className="flex flex-col items-start sm:flex-row sm:items-center gap-5">
+                        <div className="bg-blue-600 p-3 rounded-md">
+                            <DollarSign className="text-white" size={40} />
                         </div>
+                        <div className="w-full flex flex-col gap-2">
+                            <p className="text-gray-600">This Year We Want To Save Our Students <span className="font-semibold">$15 Million</span></p>
 
-                        <div className="h-80 rounded-2xl overflow-hidden relative">
-                            <img src={sarah} loading="lazy" alt="consultant" className="w-full h-full object-cover" />
-                            <div className="absolute py-2 rounded-xl bg-white bottom-5 w-10/12 text-center right-1/2 translate-x-1/2 text-sm">
-                                <p className="text-base font-semibold">Jean Mcalin</p>
-                                <p className="text-gray-600">Consultant</p>
-                            </div>
-                        </div>
-
-                        <div className="h-80 rounded-2xl overflow-hidden relative">
-                            <img src={priya} loading="lazy" alt="consultant" className="w-full h-full object-cover" />
-                            <div className="absolute py-2 rounded-xl bg-white bottom-5 w-10/12 text-center right-1/2 translate-x-1/2 text-sm">
-                                <p className="text-base font-semibold">Brenda Sydney</p>
-                                <p className="text-gray-600">Consultant</p>
+                            <div className="relative flex items-center max-w-80 min-w-full bg-gray-500/20 h-5 rounded-full">
+                                <div className="bg-blue-600 h-5 rounded-full" style={{ width: '66%' }}></div>
+                                <span className="absolute inset-0 flex items-center justify-center text-xs font-semibold text-white">
+                                    66%
+                                </span>
                             </div>
                         </div>
                     </div>
-                </section> */}
-            </Container>
+                </section>
+            </Container >
             <CallToAction />
-        </section>
+        </section >
     );
 }
 
