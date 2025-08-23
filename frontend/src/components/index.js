@@ -27,6 +27,7 @@ import AdminFooter from "./admin/AdminFooter";
 import RTE from "./RTE";
 import AddBlogForm from "./admin/AddBlogForm";
 import AddServiceForm from "./admin/AddServiceForm";
+import AddCouponForm from "./admin/AddCouponForm";
 import DeleteModalDialogue from "./DeleteModalDialogue";
 import Profile from "./Profile";
 import CreateAdmin from "./admin/CreateAdmin";
@@ -68,6 +69,7 @@ export {
     RTE,
     AddBlogForm,
     AddServiceForm,
+    AddCouponForm,
     DeleteModalDialogue,
     Profile,
     CreateAdmin,

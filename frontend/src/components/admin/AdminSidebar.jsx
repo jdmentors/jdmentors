@@ -1,5 +1,5 @@
 import axios from "axios";
-import { LaptopIcon, LayoutDashboard, LogOut, Newspaper, Plus, Settings, UserCircle, Users } from "lucide-react";
+import { LaptopIcon, LayoutDashboard, LogOut, Newspaper, Plus, Settings, Tags, UserCircle, Users } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router";
 import { toggleIsUserLoggedIn, updateUser } from "../../features/forms/UserAuthSlice.js";
@@ -12,6 +12,7 @@ const navigation = [
     { name: 'Users', path: '/admin/users', icon: <Users size={25} strokeWidth={1.5} /> },
     { name: 'Services', path: '/admin/services', icon: <Settings size={25} strokeWidth={1.5} /> },
     { name: 'Blogs', path: '/admin/blogs', icon: <Newspaper size={25} strokeWidth={1.5} /> },
+    { name: 'Coupons', path: '/admin/coupons', icon: <Tags size={25} strokeWidth={1.5} /> },
     { name: 'Profile', path: '/admin/profile', icon: <UserCircle size={25} strokeWidth={1.5} /> },
     { name: 'Create Admin', path: '/admin/create', icon: <Plus size={25} strokeWidth={1.5} /> },
 ];

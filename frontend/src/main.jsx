@@ -25,6 +25,7 @@ const SessionStatus = lazy(() => import('./pages/SessionStatus'));
 const CheckOutCancel = lazy(() => import('./pages/CheckOutCancel'));
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
 const AllSessions = lazy(() => import('./pages/admin/AllSessions'));
+const AllCoupons = lazy(() => import('./pages/admin/AllCoupons'));
 const AllBlogs = lazy(() => import('./pages/admin/AllBlogs'));
 const AllUsers = lazy(() => import('./pages/admin/AllUsers'));
 const AllServices = lazy(() => import('./pages/admin/AllServices'));
@@ -33,6 +34,7 @@ const EditService = lazy(() => import('./pages/admin/EditService'));
 const AddBlog = lazy(() => import('./pages/admin/AddBlog'));
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
 const AddService = lazy(() => import('./pages/admin/AddService'));
+const AddCoupon = lazy(() => import('./pages/admin/AddCoupon'));
 const UserDashboard = lazy(() => import('./pages/user/UserDashboard'));
 const Profile = lazy(() => import('./components/Profile'));
 const CreateAdmin = lazy(() => import('./components/admin/CreateAdmin'));
@@ -87,11 +89,15 @@ createRoot(document.getElementById('root')).render(
 
                             <Route path='/admin/sessions' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><AllSessions /></Suspense>} />
 
+                            <Route path='/admin/coupons' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><AllCoupons /></Suspense>} />
+
                             <Route path='/admin/users' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><AllUsers /></Suspense>} />
 
                             <Route path='/admin/services' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><AllServices /></Suspense>} />
 
                             <Route path='/admin/services/add' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><AddService /></Suspense>} />
+
+                            <Route path='/admin/coupons/add' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><AddCoupon /></Suspense>} />
 
                             <Route path='/admin/services/edit/:serviceId' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><EditService /></Suspense>} />
 
