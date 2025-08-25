@@ -3,6 +3,8 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import mongoose from "mongoose";
+import { resetPasswordEmail } from "../utils/nodemailer.js";
+import crypto from "crypto";
 
 const registerUser = async (req, res) => {
     try {
@@ -287,25 +289,64 @@ const updateUser = async (req, res) => {
     }
 }
 
-// const forgotPassword = async (req, res) => {
-//     try {
-//         const { email } = req.body;
+const forgotPassword = async (req, res) => {
+    try {
+        const { email } = req.body;
 
-//         if (!email) {
-//             return res.status(400).json({ success: false, message: 'Email is needed' });
-//         }
+        if (!email) {
+            return res.status(400).json({ success: false, message: 'Email is required' });
+        }
 
-//         const user = await userExists(email);
+        const user = await userExists(email);
 
-//         if (!user) {
-//             return res.status(404).json({ success: false, message: 'No user found with this email.' });
-//         }
+        if (!user) {
+            return res.status(200).json({ success: true, message: 'If an account with that email exists, a reset link has been sent.' });
+        }
 
-//         return res.status(200).json({ success: true, message: 'User found', data: user });
-//     } catch (error) {
-//         return res.status(500).json({ success: false, message: 'Failed to get user' });
-//     }
-// }
+        const resetToken = await user.generateResetPasswordToken();
+        await user.save({validateBeforeSave: false});
+
+        const emailSent = await resetPasswordEmail(user.email, `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`);
+
+        if(!emailSent){
+            user.resetPasswordToken = null;
+            user.resetPasswordTokenExpiry = null;
+            await user.save({validateBeforeSave: false});
+            return res.status(500).json({ success: false, message: 'Could not send email' });
+        }
+
+        return res.status(200).json({ success: true, message: 'If an account with that email exists, a reset link has been sent.' });
+    } catch (error) {
+        return res.status(500).json({ success: false, message: error.message });
+    }
+}
+
+const resetPassword = async (req, res) => {
+    try {
+        const { token } = req.params;
+
+        const { newPassword } = req.body;
+
+        if (!token) {
+            return res.status(400).json({ success: false, message: 'Token is required' });
+        }
+
+        const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+
+        const user = await User.findOne({resetPasswordToken: hashedToken, resetPasswordTokenExpiry: {$gt: Date.now()}})
+
+        if (!user) {
+            return res.status(200).json({ success: true, message: 'Token is invalid or has expired' });
+        }
+
+        user.password = newPassword;
+        await user.save();
+
+        return res.status(200).json({ success: true, message: 'Password updated' });
+    } catch (error) {
+        return res.status(500).json({ success: false, message: 'Failed to get user' });
+    }
+}
 
 export {
     registerUser,
@@ -317,4 +358,6 @@ export {
     deleteUser,
     updateUser,
     userExists,
+    forgotPassword,
+    resetPassword,
 }

@@ -7,31 +7,33 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { updateUser, toggleIsUserLoggedIn, toggleShowUserAuthForm } from "../features/forms/UserAuthSlice.js";
 
-function UserRegForm({isLoginActive, setIsLoginActive}){
-    const {register, handleSubmit} = useForm({defaultValues:{
-        fullName:'',
-        email:'',
-        phone:'',
-        password:'',
-        userType:'user'
-    }});
+function UserRegForm({ isLoginActive, setIsLoginActive }) {
+    const { register, handleSubmit, formState: {errors} } = useForm({
+        defaultValues: {
+            fullName: '',
+            email: '',
+            phone: '',
+            password: '',
+            userType: 'user'
+        }
+    });
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const [showPassword, setShowPassword] = useState(false);
     const [isRegistering, setIsRegistering] = useState(false);
-    
+
     const registerFormHandler = async (formData) => {
         try {
             setIsRegistering(true);
 
-            const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/users/register`, {fullName:formData.fullName, email:formData.email, phone:formData.phone, password:formData.password}, {withCredentials:true});
+            const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/users/register`, { fullName: formData.fullName, email: formData.email, phone: formData.phone, password: formData.password }, { withCredentials: true });
 
-            if(data.success){
+            if (data.success) {
                 setIsRegistering(false);
                 const accessToken = data.data.accessToken;
-                dispatch(updateUser({...data.data.user, accessToken}));
+                dispatch(updateUser({ ...data.data.user, accessToken }));
                 dispatch(toggleIsUserLoggedIn(true));
                 dispatch(toggleShowUserAuthForm(false));
                 // navigate('/user/dashboard');
@@ -51,23 +53,51 @@ function UserRegForm({isLoginActive, setIsLoginActive}){
 
                 <div className="text-gray-600 grid grid-cols-1 my-2">
                     <label className="flex items-center gap-1" htmlFor='fullName'><User size={18} /> <span>Full Name</span></label>
-                    <input id="fullName" type="text" placeholder="Full Name" className="text-black border-2 border-blue-100 py-1 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200" {...register('fullName', {required:true})} />
+                    <input id="fullName" type="text" placeholder="Full Name" className="text-black border-2 border-blue-100 py-1 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200" {...register('fullName', { required: true })} />
                 </div>
 
                 <div className="text-gray-600 grid grid-cols-1 my-2">
                     <label className="flex items-center gap-1" htmlFor='regEmail'><Mail size={18} /> <span>Email</span></label>
-                    <input id="regEmail" type="email" placeholder="E-mail" className="text-black border-2 border-blue-100 py-1 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200" {...register('email', {required:true})} />
+                    <input id="regEmail" type="email" placeholder="E-mail" className="text-black border-2 border-blue-100 py-1 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200" {...register('email', { required: true })} />
                 </div>
 
-                <div className="text-gray-600 grid grid-cols-1 my-2">
+                {/* <div className="text-gray-600 grid grid-cols-1 my-2">
                     <label className="flex items-center gap-1" htmlFor='regPhone'><Phone size={18} /> <span>Phone</span></label>
-                    <input id="regPhone" type="tel" placeholder="Phone No." className="text-black border-2 border-blue-100 py-1 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200" {...register('phone', {required:true})} />
+                    <input id="regPhone" type="tel" placeholder="Phone No." className="text-black border-2 border-blue-100 py-1 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200" {...register('phone', { required: true })} />
+                </div> */}
+
+                <div className="text-gray-600 grid grid-cols-1 my-2 md:my-3">
+                    <label className="flex items-center gap-1 text-sm" htmlFor='regPhone'>
+                        <Phone size={18} /> <span>Phone *</span>
+                    </label>
+                    <input
+                        id="regPhone"
+                        type="tel"
+                        placeholder="(+1) 917-XXX-XXXX"
+                        className="text-black border-2 border-blue-100 py-1.5 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200"
+                        onInput={(e) => {
+                            e.target.value = e.target.value.replace(/[^0-9+\s()\-]/g, '');
+                        }}
+                        {...register('phone', {
+                            required: true,
+                            pattern: {
+                                value: /^[0-9+\s()\-]+$/,
+                                message: "Please enter a valid phone number (numbers, +, -, () only)"
+                            }
+                        })}
+                    />
+                    {errors.phone?.type === 'required' && (
+                        <p className="text-sm text-orange-500 font-light">Phone is required</p>
+                    )}
+                    {errors.phone?.type === 'pattern' && (
+                        <p className="text-sm text-orange-500 font-light">{errors.phone.message}</p>
+                    )}
                 </div>
 
                 <div className="text-gray-600 grid grid-cols-1 my-2">
                     <label className="flex items-center gap-1" htmlFor='regPassword'><Lock size={18} /> <span>Password</span></label>
                     <div className="relative">
-                        <input id="regPassword" type={`${showPassword? 'text' : 'password'}`} placeholder="Password" className="text-black border-2 border-blue-100 py-1 px-2 focus-within:outline-2 focus-within:outline-blue-200 rounded my-1 w-full" {...register('password', {required:true})} />
+                        <input id="regPassword" type={`${showPassword ? 'text' : 'password'}`} placeholder="Password" className="text-black border-2 border-blue-100 py-1 px-2 focus-within:outline-2 focus-within:outline-blue-200 rounded my-1 w-full" {...register('password', { required: true })} />
                         <span onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer">
                             {
                                 showPassword ? <EyeIcon size={18} /> : <EyeOff size={18} />

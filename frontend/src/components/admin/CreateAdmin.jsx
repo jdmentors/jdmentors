@@ -8,7 +8,7 @@ import useRefreshToken from "../../hooks/useRefreshToken";
 import { useState } from "react";
 
 function CreateAdmin() {
-    const { register, handleSubmit, reset, formState: {errors} } = useForm({
+    const { register, handleSubmit, reset, formState: { errors } } = useForm({
         defaultValues: {
             fullName: '',
             email: '',
@@ -89,14 +89,42 @@ function CreateAdmin() {
                                             {errors.email && <p className="text-sm text-orange-500 font-light">Email is required.</p>}
                                         </div>
 
-                                        <div className="flex flex-col gap-2">
+                                        {/* <div className="flex flex-col gap-2">
                                             <label className="text-gray-700" htmlFor="phone">Phone:</label>
                                             <input className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="phone" type="tel" {...register('phone', { required: true })} placeholder="Enter blog phone here..." />
                                             {errors.phone && <p className="text-sm text-orange-500 font-light">Phone is required.</p>}
+                                        </div> */}
+
+                                        <div className="text-gray-600 grid grid-cols-1 my-2 md:my-3">
+                                            <label className="text-gray-700" htmlFor='phone'>
+                                                Phone
+                                            </label>
+                                            <input
+                                                id="phone"
+                                                type="tel"
+                                                placeholder="(+1) 917-XXX-XXXX"
+                                                className="text-black border-2 border-blue-100 py-1.5 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200"
+                                                onInput={(e) => {
+                                                    e.target.value = e.target.value.replace(/[^0-9+\s()\-]/g, '');
+                                                }}
+                                                {...register('phone', {
+                                                    required: true,
+                                                    pattern: {
+                                                        value: /^[0-9+\s()\-]+$/,
+                                                        message: "Please enter a valid phone number (numbers, +, -, () only)"
+                                                    }
+                                                })}
+                                            />
+                                            {errors.phone?.type === 'required' && (
+                                                <p className="text-sm text-orange-500 font-light">Phone is required</p>
+                                            )}
+                                            {errors.phone?.type === 'pattern' && (
+                                                <p className="text-sm text-orange-500 font-light">{errors.phone.message}</p>
+                                            )}
                                         </div>
 
                                         <div className="text-gray-600 grid grid-cols-1 my-2">
-                                            <label className="flex items-center gap-1" htmlFor='regPassword'><Lock size={18} /> <span>Password</span></label>
+                                            <label className="flex items-center gap-1" htmlFor='regPassword'>Password</label>
                                             <div className="relative">
                                                 <input id="regPassword" type={`${showPassword ? 'text' : 'password'}`} placeholder="Password" className="text-black border-2 border-blue-100 py-1 px-2 focus-within:outline-2 focus-within:outline-blue-200 rounded my-1 w-full" {...register('password', { required: true })} />
                                                 <span onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer">

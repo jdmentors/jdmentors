@@ -15,10 +15,12 @@ import AllServices from "./admin/AllServices";
 import AllBlogs from "./admin/AllBlogs";
 import AddBlog from "./admin/AddBlog";
 import AddService from "./admin/AddService";
+import AddCoupon from "./admin/AddCoupon";
 import AllSessions from "./admin/AllSessions";
 import ResetPassword from "./ResetPassword";
 import EditService from "./admin/EditService";
 import EditBlog from "./admin/EditBlog";
+import EditCoupon from "./admin/EditCoupon";
 import CheckOutSuccess from "./CheckOutSuccess";
 import CheckOutCancel from "./CheckOutCancel";
 import AdminLogin from "./admin/AdminLogin";
@@ -26,6 +28,7 @@ import AdminLogForm from "../components/admin/AdminLogForm";
 import PrivacyPolicy from "./PrivacyPolicy";
 import TermsAndConditions from "./TermsAndConditions";
 import PageNotFound from "./PageNotFound";
+import AllCoupons from "./admin/AllCoupons";
 
 export {
     Home,
@@ -45,15 +48,18 @@ export {
     AllBlogs,
     AddBlog,
     AddService,
+    AddCoupon,
     AllSessions,
     ResetPassword,
     EditService,
     EditBlog,
+    EditCoupon,
     CheckOutSuccess,
     CheckOutCancel,
     AdminLogin,
     AdminLogForm,
     PrivacyPolicy,
     TermsAndConditions,
-    PageNotFound
+    PageNotFound,
+    AllCoupons,
 }

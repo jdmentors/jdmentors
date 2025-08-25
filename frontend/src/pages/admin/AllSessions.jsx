@@ -145,9 +145,9 @@ function AllSessions() {
                                                                 {session.fullName}
                                                             </p>
 
-                                                            <p>{new Date(session.dateTime).toDateString() + " " + `(${new Date(session.dateTime).toLocaleTimeString()})`}</p>
+                                                            <p>{session.dateTime ? new Date(session.dateTime).toDateString() + " " + `(${new Date(session.dateTime).toLocaleTimeString()})` : 'Not Specified'}</p>
 
-                                                            <p className={`flex items-center gap-1 ${session.payment ? 'text-green-600' : 'text-red-600'}`}><span className={`h-2 w-2 ${!session.payment && 'bg-red-600'} rounded-full`}></span> <span>{session.payment ? `$${session.service.price}` : 'Pending'}</span></p>
+                                                            <p className={`flex items-center gap-1 ${session.payment ? 'text-green-600' : 'text-red-600'}`}><span className={`h-2 w-2 ${!session.payment && 'bg-red-600'} rounded-full`}></span> <span>{session.payment ? `$${session.price}` : 'Pending'}</span></p>
 
                                                             <div>
                                                                 {
@@ -191,12 +191,12 @@ function AllSessions() {
 
                                                             <div className="flex gap-2">
                                                                 <p className="text-gray-800">Preferred Time:</p>
-                                                                <p>{new Date(session.dateTime).toDateString() + " " + `(${new Date(session.dateTime).toLocaleTimeString()})`}</p>
+                                                                <p>{session.dateTime ? new Date(session.dateTime).toDateString() + " " + `(${new Date(session.dateTime).toLocaleTimeString()})` : 'Not Specified'}</p>
                                                             </div>
 
                                                             <div className="flex gap-2">
                                                                 <p className="text-gray-800">Price:</p>
-                                                                <p>${session.service.price}</p>
+                                                                <p>${session.price}</p>
                                                             </div>
 
                                                             <div className="flex gap-2">

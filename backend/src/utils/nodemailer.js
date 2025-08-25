@@ -36,7 +36,7 @@ const contactEmail = async (name, email, phone, service, message) => {
     }
 }
 
-const orderAdminEmail = async (fullName, phone, email, service, document, dateTime = 'No Date', notes='Not Provided', price) => {
+const orderAdminEmail = async (fullName, phone, email, service, document, dateTime = 'No Date', notes = 'Not Specified', price) => {
     try {
         const info = await transporter.sendMail({
             from: `"JD Mentors" <${process.env.EMAIL_USER}>`,
@@ -52,8 +52,8 @@ const orderAdminEmail = async (fullName, phone, email, service, document, dateTi
                     <p><b>Document:</b> ${document.map((doc) => {
                         return doc + '<br /><br />'
                     })}</p>
-                    <p><b>Preferred Time:</b> ${new Date(dateTime).toLocaleString()}</p>
-                    <p><b>Special Notes:</b> ${notes}</p>
+                    <p><b>Preferred Time:</b> ${dateTime ? new Date(dateTime).toDateString() + " " + `(${new Date(dateTime).toLocaleTimeString()})` : 'Not Specified'}</p>
+                    <p><b>Special Notes:</b> ${notes ? notes : 'Not Specified'}</p>
                     `,
         });
 
@@ -63,14 +63,8 @@ const orderAdminEmail = async (fullName, phone, email, service, document, dateTi
     }
 }
 
-const orderUserEmail = async (email, service, document, dateTime, notes='Not Provided', price, sessionId) => {
+const orderUserEmail = async (email, service, document, dateTime, notes = 'Not Specified', price, sessionId) => {
     try {
-        const formattedDate = dateTime
-            ? (dateTime instanceof Date
-                ? dateTime.toLocaleString()
-                : new Date(dateTime).toLocaleString())
-            : "N/A";
-
         const info = await transporter.sendMail({
             from: `"JD Mentors" <${process.env.EMAIL_USER}>`,
             to: `${email}`,
@@ -82,9 +76,9 @@ const orderUserEmail = async (email, service, document, dateTime, notes='Not Pro
                     <p><b>Document:</b> ${document.map((doc) => {
                         return doc + '<br /><br />'
                     })}</p>
-                    <p><b>Preferred Time:</b> ${formattedDate}</p>
+                    <p><b>Preferred Time:</b> ${dateTime ? new Date(dateTime).toDateString() + " " + `(${new Date(dateTime).toLocaleTimeString()})` : 'Not Specified'}</p>
                     <p><b>Session ID:</b> ${sessionId}</p>
-                    <p><b>Special Notes:</b> ${notes}</p><br />
+                    <p><b>Special Notes:</b> ${notes ? notes : 'Not Specified'}</p><br />
                     <p>To check the status of your session, please visit <a href='${process.env.FRONTEND_URL}/session-status'>${process.env.FRONTEND_URL}/session-status</a> and search the above session ID.</p><br />
                     <p>If you registered, then you can simply login to your account and visist the user dashboard page or can also use the above method.</p>
                     `,
@@ -96,4 +90,24 @@ const orderUserEmail = async (email, service, document, dateTime, notes='Not Pro
     }
 }
 
-export { orderAdminEmail, orderUserEmail, contactEmail }
+const resetPasswordEmail = async (email, url) => {
+    try {
+        const info = await transporter.sendMail({
+            from: `"JD Mentors" <${process.env.EMAIL_USER}>`,
+            to: `${email}`,
+            subject: `Reset Password Request`,
+            html: `
+                    <p>Forgot your password? Click on the following link to reset your password:</p>
+                    <br />
+                    <a href='${url}'>${url}</a>
+                    <br />
+                    `,
+        });
+
+        if (info) return true;
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+export { orderAdminEmail, orderUserEmail, contactEmail, resetPasswordEmail, }

@@ -18,8 +18,6 @@ function ForgotPasswordForm({isLoginActive, setIsLoginActive, isForgotPasswordAc
     const forgotPasswordHandler = async (formData) => {
         try {
             setIsSending(true);
-
-            console.log(formData);
             const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/users/forgot-password`, {email:formData.email});
 
             if(data && data.success){
@@ -61,7 +59,7 @@ function ForgotPasswordForm({isLoginActive, setIsLoginActive, isForgotPasswordAc
 
                 <p className="text-sm font-light text-gray-600">Don't have an account? <span to="" className="underline text-blue-500 cursor-pointer" onClick={() => {setIsLoginActive(false); setIsForgotPasswordActive(false);}}>Sign up</span></p>
 
-                {/* <button className="w-full mt-5 bg-blue-950 py-2 text-white rounded cursor-pointer my-2 font-light">Continue as Guest</button> */}
+                <button className="w-full mt-5 bg-blue-950 py-2 text-white rounded cursor-pointer my-2 font-light">Continue as Guest</button>
             </form>
         </section>
     );
