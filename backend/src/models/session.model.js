@@ -22,13 +22,18 @@ const sessionSchema = new Schema({
         ref: 'Service',
         required: true
     },
+    price: {
+        type: Number,
+        required: true,
+    },
     dateTime: {
         type: Date,
+        default: null
     },
     notes: {
         type: String,
-        required: false,
         trim: true,
+        default: null
     },
     document: {
         type: [String],

@@ -9,11 +9,11 @@ import { Clock, Mail, Phone } from "lucide-react";
 function Contact() {
     const { register, handleSubmit, reset, formState: { errors } } = useForm({
         defaultValues: {
-            name:'',
-            email:'',
-            phone:'',
-            service:'',
-            message:'',
+            name: '',
+            email: '',
+            phone: '',
+            service: '',
+            message: '',
         }
     });
 
@@ -22,14 +22,14 @@ function Contact() {
     const submitHandler = async (formData) => {
         try {
             setSending(true);
-            const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/emails/contact`, {name:formData.name, email:formData.email, phone:formData.phone, service:formData.service, message:formData.message});
+            const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/emails/contact`, { name: formData.name, email: formData.email, phone: formData.phone, service: formData.service, message: formData.message });
 
-            if(data && data.success){
+            if (data && data.success) {
                 setSending(false);
                 toast.success(data.message);
                 reset();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-            }else{
+            } else {
                 toast.error(data.message);
             }
         } catch (error) {
@@ -117,11 +117,38 @@ function Contact() {
                                 *</label>
                             <input type="email" className="flex h-10 w-full rounded-md border border-blue-100 bg-background px-3 py-2 text-base focus:outline-1 focus:outline-blue-200 md:text-sm mt-2" id="email" placeholder="name@example.com" {...register('email', { required: true })} />
                         </div>
-                        <div>
+                        {/* <div>
                             <label className="text-sm font-medium leading-none text-blue-950" htmlFor="phone">
                                 Phone
                                 *</label>
                             <input type="tel" className="flex h-10 w-full rounded-md border border-blue-100 bg-background px-3 py-2 text-base focus:outline-1 focus:outline-blue-200 md:text-sm mt-2" id="phone" placeholder="(+1) 917-XXX-XXXX" {...register('phone', { required: true })} />
+                        </div> */}
+                        <div className="text-gray-600 grid grid-cols-1 my-2 md:my-3">
+                            <label className="text-sm font-medium leading-none text-blue-950" htmlFor="phone">
+                                Phone
+                                *</label>
+                            <input
+                                id="phone"
+                                type="tel"
+                                placeholder="(+1) 917-XXX-XXXX"
+                                className="text-black border-2 border-blue-100 py-1.5 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200"
+                                onInput={(e) => {
+                                    e.target.value = e.target.value.replace(/[^0-9+\s()\-]/g, '');
+                                }}
+                                {...register('phone', {
+                                    required: true,
+                                    pattern: {
+                                        value: /^[0-9+\s()\-]+$/,
+                                        message: "Please enter a valid phone number (numbers, +, -, () only)"
+                                    }
+                                })}
+                            />
+                            {errors.phone?.type === 'required' && (
+                                <p className="text-sm text-orange-500 font-light">Phone is required</p>
+                            )}
+                            {errors.phone?.type === 'pattern' && (
+                                <p className="text-sm text-orange-500 font-light">{errors.phone.message}</p>
+                            )}
                         </div>
                         <div>
                             <label className="text-sm font-medium leading-none text-blue-950" htmlFor="service">

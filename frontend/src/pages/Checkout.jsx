@@ -14,13 +14,13 @@ import { updateUser } from "../features/forms/UserAuthSlice.js";
 function Checkout() {
     const user = useSelector(state => state.user.user);
 
-    const { register, handleSubmit, reset, formState: {errors} } = useForm({
+    const { register, handleSubmit, reset, formState: { errors } } = useForm({
         defaultValues: {
             fullName: user.fullName || '',
             email: user.email || '',
             phone: user.phone || '',
             dateTime: '',
-            notes: '',
+            notes: null,
             document: '',
         }
     });
@@ -41,6 +41,7 @@ function Checkout() {
 
                 if (data && data.success) {
                     setService(data.data);
+                    setDiscountedPrice(data.data.price);
                 }
             } catch (error) {
                 console.error(error);
@@ -51,10 +52,11 @@ function Checkout() {
 
     const [isChecked, setIsChecked] = useState(false);
     const [termsWarning, setTermsWarning] = useState(false);
+    const [discountedPrice, setDiscountedPrice] = useState(null);
 
     const checkoutHandler = async (userData) => {
         try {
-            if(!isChecked){
+            if (!isChecked) {
                 setTermsWarning(true);
                 return;
             }
@@ -66,8 +68,9 @@ function Checkout() {
             formData.append('email', userData.email);
             formData.append('phone', userData.phone);
             formData.append('dateTime', userData.dateTime);
-            formData.append('notes', userData.notes);
+            formData.append('notes', userData.notes || null);
             formData.append('service', serviceId);
+            formData.append('price', discountedPrice);
             Object.values(userData.document).forEach((file) => {
                 formData.append('document', file);
             })
@@ -101,8 +104,9 @@ function Checkout() {
                     formData.append('email', userData.email);
                     formData.append('phone', userData.phone);
                     formData.append('dateTime', userData.dateTime);
-                    formData.append('notes', userData.notes);
+                    formData.append('notes', userData.notes || null);
                     formData.append('service', serviceId);
+                    formData.append('price', discountedPrice);
                     formData.append('document', userData.document[0]);
 
                     const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/sessions/create`, formData);
@@ -128,11 +132,31 @@ function Checkout() {
                     toast.error(message);
                     setIsBooking(false);
                 }
-            }else{
+            } else {
                 toast.error(message);
                 console.log(error)
                 setIsBooking(false);
             }
+        }
+    }
+
+    const couponForm = useForm();
+    const [couponApplied, setCouponApplied] = useState(false);
+    const [discount, setDiscount] = useState(0);
+
+    const handleCoupon = async (couponData) => {
+        try {
+            const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/coupons/validity`, { coupon: couponData.coupon });
+
+            if (data && data.success) {
+                toast.success(data.message);
+                setCouponApplied(true);
+                setDiscount(data.data.discount);
+                setDiscountedPrice(prevPrice => prevPrice - (prevPrice * data.data.discount / 100));
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error(error?.response?.data?.message);
         }
     }
 
@@ -148,38 +172,66 @@ function Checkout() {
                         <form ref={formRef} onSubmit={handleSubmit(checkoutHandler)} className="border border-blue-100 p-5 rounded-md my-5 shadow-lg shadow-blue-100">
                             <div className="grid md:grid-cols-2 md:gap-3">
                                 <div className="text-gray-600 grid grid-cols-1 my-2 md:my-3">
-                                    <label className="flex items-center gap-1 text-sm" htmlFor='fullName'><User size={18} /> <span>Full Name *</span></label>
-                                    <input id="fullName" type="text" placeholder="e.g. Alan Parker" className="text-black border-2 border-blue-100 py-1.5 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200" {...register('fullName', { required: true })} />
+                                    <label className="flex items-center gap-1 text-sm" htmlFor='fullNameCheckout'><User size={18} /> <span>Full Name *</span></label>
+                                    <input id="fullNameCheckout" type="text" placeholder="e.g. Alan Parker" className="text-black border-2 border-blue-100 py-1.5 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200" {...register('fullName', { required: true })} />
+                                    {errors.fullName && <p className="text-sm text-orange-500 font-light">Full name is required</p>}
                                 </div>
 
                                 <div className="text-gray-600 grid grid-cols-1 my-2 md:my-3">
-                                    <label className="flex items-center gap-1 text-sm" htmlFor='email'><Mail size={18} /> <span>E-Mail *</span></label>
-                                    <input id="email" type="email" placeholder="name@example.com" className="text-black border-2 border-blue-100 py-1.5 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200" {...register('email', { required: true })} />
+                                    <label className="flex items-center gap-1 text-sm" htmlFor='emailCheckout'><Mail size={18} /> <span>E-Mail *</span></label>
+                                    <input id="emailCheckout" type="email" placeholder="name@example.com" className="text-black border-2 border-blue-100 py-1.5 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200" {...register('email', { required: true })} />
+                                    {errors.email && <p className="text-sm text-orange-500 font-light">Email is required</p>}
                                 </div>
                             </div>
 
                             <div className="grid md:grid-cols-2 md:gap-3">
                                 <div className="text-gray-600 grid grid-cols-1 my-2 md:my-3">
-                                    <label className="flex items-center gap-1 text-sm" htmlFor='phone'><Phone size={18} /> <span>Phone *</span></label>
-                                    <input id="phone" type="tel" placeholder="(+1) 917-XXX-XXXX" className="text-black border-2 border-blue-100 py-1.5 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200" {...register('phone', { required: true })} />
+                                    <label className="flex items-center gap-1 text-sm" htmlFor='phoneCheckout'>
+                                        <Phone size={18} /> <span>Phone *</span>
+                                    </label>
+                                    <input
+                                        id="phoneCheckout"
+                                        type="tel"
+                                        placeholder="(+1) 917-XXX-XXXX"
+                                        className="text-black border-2 border-blue-100 py-1.5 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200"
+                                        onInput={(e) => {
+                                            e.target.value = e.target.value.replace(/[^0-9+\s()\-]/g, '');
+                                        }}
+                                        {...register('phone', {
+                                            required: true,
+                                            pattern: {
+                                                value: /^[0-9+\s()\-]+$/,
+                                                message: "Please enter a valid phone number (numbers, +, -, () only)"
+                                            }
+                                        })}
+                                    />
+                                    {errors.phone?.type === 'required' && (
+                                        <p className="text-sm text-orange-500 font-light">Phone is required</p>
+                                    )}
+                                    {errors.phone?.type === 'pattern' && (
+                                        <p className="text-sm text-orange-500 font-light">{errors.phone.message}</p>
+                                    )}
                                 </div>
 
                                 <div className="text-gray-600 grid grid-cols-1 my-2 md:my-3">
-                                    <label className="flex items-center gap-1 text-sm" htmlFor='dateTime'><CalendarDays size={18} /> <span>Preferred Date & Time *</span></label>
-                                    <input id="dateTime" type="datetime-local" className="text-black border-2 border-blue-100 py-1.5 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200" {...register('dateTime', { required: true })} />
+                                    <label className="flex items-center gap-1 text-sm" htmlFor='dateTime'><CalendarDays size={18} /> <span>Preferred Meeting Time (optional)</span></label>
+                                    <input id="dateTime" type="datetime-local" className="text-black border-2 border-blue-100 py-1.5 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200" {...register('dateTime', { required: false })} />
+                                    {errors.dateTime && <p className="text-sm text-orange-500 font-light">Something wrong with Date & Time</p>}
                                 </div>
                             </div>
 
                             <div className="text-gray-600 grid grid-cols-1 my-2 md:my-3">
-                                <label htmlFor="notes" className="flex items-center gap-1 text-sm"><Notebook size={18} /> <span>Special Note</span></label>
+                                <label htmlFor="notes" className="flex items-center gap-1 text-sm"><Notebook size={18} /> <span>Notes For Your Consultant</span></label>
 
-                                <textarea id="notes" placeholder="e.g. what your goals are, what you're hoping to do, where you're hoping to get into, etc." className="text-black border-2 border-blue-100 py-1.5 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200" rows={4} {...register('notes', {required: false})}></textarea>
+                                <textarea id="notes" placeholder="Share your priorities, questions, or anything specific you're looking for here..." className="text-black border-2 border-blue-100 py-1.5 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200" rows={4} {...register('notes', { required: false })}></textarea>
+                                {errors.notes && <p className="text-sm text-orange-500 font-light">something wrong with notes</p>}
                             </div>
 
                             <div className="text-gray-600 grid grid-cols-1 my-2 md:my-3">
                                 <label className="flex items-center gap-1 text-sm"><File size={18} /> <span>Document(s) to be reviewed *</span></label>
 
                                 <FileInput {...register('document', { required: true })} />
+                                {errors.document && <p className="text-sm text-orange-500 font-light">Please attach at least one document</p>}
                             </div>
                         </form>
                     </div>
@@ -214,11 +266,21 @@ function Checkout() {
                                         }
                                     </ul>
 
+                                    {/* Coupon Code */}
                                     <div className="mt-5 text-gray-600">
-                                        <p className="flex justify-between">Total Price: <span className="font-semibold text-xl text-black mb-2">${service.price}</span></p>
+                                        <form onSubmit={couponForm.handleSubmit(handleCoupon)}>
+                                            <div className="flex gap-2 mb-4 w-full flex-wrap relative">
+                                                <input type="text" placeholder="Have a coupon?" className={`border-2 border-blue-200 grow py-1.5 px-2 rounded focus-within:outline-2 focus-within:outline-blue-200 w-full sm:w-1/3 ${couponApplied ? 'text-gray-600' : 'text-black'}`} disabled={couponApplied} readOnly={couponApplied} {...couponForm.register('coupon', { required: false })} />
+                                                <button className="absolute right-3 top-1/2 -translate-y-1/2 text-blue-600 underline cursor-pointer" disabled={couponApplied}>{couponApplied ? 'Applied' : 'Apply'}</button>
+                                            </div>
+                                        </form>
+
+                                        <p className="flex justify-between">Total Price: <span className="font-light text-xl text-black mb-2">${service.price}</span></p>
+                                        <p className="flex justify-between">Discount: <span className="font-light text-xl text-black mb-2">- {discount}%</span></p>
+                                        <p className="flex justify-between">Discounted Price: <span className="font-semibold text-xl text-black mb-2">${Number(service.price) - (Number(service.price) * Number(discount) / 100)}</span></p>
 
                                         <label className="flex gap-2 items-center">
-                                            <input type="checkbox" checked={isChecked} onChange={(e) => {setIsChecked(e.target.checked); setTermsWarning(!e.target.checked)}} />
+                                            <input type="checkbox" checked={isChecked} onChange={(e) => { setIsChecked(e.target.checked); setTermsWarning(!e.target.checked) }} />
                                             <span>I have read and agree to the <Link className="text-blue-600 underline" to="/terms-conditions">terms & conditions.</Link></span>
                                         </label>
 

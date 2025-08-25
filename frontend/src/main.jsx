@@ -18,6 +18,7 @@ const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const TermsAndConditions = lazy(() => import('./pages/TermsAndConditions'));
 const SingleBlog = lazy(() => import('./pages/SingleBlog'));
 const Testimonials = lazy(() => import('./pages/Testimonials'));
+const ResetPassword = lazy(() => import('./pages/ResetPassword'));
 const PageNotFound = lazy(() => import('./pages/PageNotFound'));
 const Checkout = lazy(() => import('./pages/Checkout'));
 const CheckOutSuccess = lazy(() => import('./pages/CheckOutSuccess'));
@@ -30,6 +31,7 @@ const AllBlogs = lazy(() => import('./pages/admin/AllBlogs'));
 const AllUsers = lazy(() => import('./pages/admin/AllUsers'));
 const AllServices = lazy(() => import('./pages/admin/AllServices'));
 const EditBlog = lazy(() => import('./pages/admin/EditBlog'));
+const EditCoupon = lazy(() => import('./pages/admin/EditCoupon'));
 const EditService = lazy(() => import('./pages/admin/EditService'));
 const AddBlog = lazy(() => import('./pages/admin/AddBlog'));
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
@@ -58,6 +60,8 @@ createRoot(document.getElementById('root')).render(
                             <Route path='/contact' element={<Suspense fallback={<LoadingSpinner height={'850px'} />}><Contact /></Suspense>} />
 
                             <Route path='/services' element={<Suspense fallback={<LoadingSpinner height={'725px'} />}><Services /></Suspense>} />
+
+                            <Route path='/reset-password' element={<Suspense fallback={<LoadingSpinner height={'725px'} />}><ResetPassword /></Suspense>} />
 
                             {/* <Route path='/testimonials' element={<Suspense fallback={<LoadingSpinner height={"850px"} />}><Testimonials /></Suspense>} /> */}
 
@@ -106,6 +110,8 @@ createRoot(document.getElementById('root')).render(
                             <Route path='/admin/blogs/add' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><AddBlog /></Suspense>} />
 
                             <Route path='/admin/blogs/edit/:slug' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><EditBlog /></Suspense>} />
+
+                            <Route path='/admin/coupons/edit/:couponId' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><EditCoupon /></Suspense>} />
 
                             <Route path='/admin/profile' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><Profile /></Suspense>} />
 

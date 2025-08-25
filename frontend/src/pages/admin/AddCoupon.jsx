@@ -7,8 +7,8 @@ function AddService(){
 
             <AdminContainer>
                 <div className="max-w-full">
-                    <h2 className="text-3xl md:text-4xl font-bold mb-5 text-blue-950">Add a Service</h2>
-                    <p className="text-gray-600">Define and publish a new service by adding details, pricing, and key benefits to promote your latest offering that align with your platform’s goals.</p>
+                    <h2 className="text-3xl md:text-4xl font-bold mb-5 text-blue-950">Add a Coupon</h2>
+                    <p className="text-gray-600">Define and launch a new coupon by setting discounts, usage limits, and expiration to drive engagement and reward your users.  </p>
                 </div>
 
                 <div className="my-10 max-w-full">

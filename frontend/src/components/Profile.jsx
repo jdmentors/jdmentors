@@ -15,7 +15,7 @@ function Profile() {
     const refreshAccessToken = useRefreshToken();
     const [isUpdating, setIsUpdating] = useState(false);
 
-    const { register, handleSubmit, watch, getValues } = useForm({
+    const { register, handleSubmit, watch, formState: {errors}, getValues } = useForm({
         defaultValues: {
             fullName: user.fullName || '',
             email: user.email || '',
@@ -80,7 +80,7 @@ function Profile() {
                     toast.error(error?.response?.data?.message);
                     setIsUpdating(false);
                 }
-            }else{
+            } else {
                 setIsUpdating(false);
                 toast.error(message);
             }
@@ -135,9 +135,37 @@ function Profile() {
                                                     <input className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="email" type="email" {...register('email', { required: true })} placeholder="Enter email here..." />
                                                 </div>
 
-                                                <div className="flex flex-col gap-2">
+                                                {/* <div className="flex flex-col gap-2">
                                                     <label className="text-gray-700" htmlFor="phone">Phone:</label>
                                                     <input className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="phone" type="tel" {...register('phone', { required: true })} placeholder="Enter blog phone here..." />
+                                                </div> */}
+
+                                                <div className="text-gray-600 grid grid-cols-1 my-2 md:my-3">
+                                                    <label className="text-gray-700" htmlFor='phone'>
+                                                        Phone
+                                                    </label>
+                                                    <input
+                                                        id="phone"
+                                                        type="tel"
+                                                        placeholder="(+1) 917-XXX-XXXX"
+                                                        className="text-black border-2 border-blue-100 py-1.5 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200"
+                                                        onInput={(e) => {
+                                                            e.target.value = e.target.value.replace(/[^0-9+\s()\-]/g, '');
+                                                        }}
+                                                        {...register('phone', {
+                                                            required: true,
+                                                            pattern: {
+                                                                value: /^[0-9+\s()\-]+$/,
+                                                                message: "Please enter a valid phone number (numbers, +, -, () only)"
+                                                            }
+                                                        })}
+                                                    />
+                                                    {errors.phone?.type === 'required' && (
+                                                        <p className="text-sm text-orange-500 font-light">Phone is required</p>
+                                                    )}
+                                                    {errors.phone?.type === 'pattern' && (
+                                                        <p className="text-sm text-orange-500 font-light">{errors.phone.message}</p>
+                                                    )}
                                                 </div>
 
                                                 <div className="flex flex-col gap-2">

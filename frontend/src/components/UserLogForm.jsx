@@ -65,9 +65,9 @@ function UserLogForm({ isLoginActive, setIsLoginActive, isForgotPasswordActive, 
                     </div>
                 </div>
 
-                {/* <p className="text-blue-600 text-sm underline font-light cursor-pointer inline float-right" onClick={() => { setIsLoginActive(false); setIsForgotPasswordActive(true); }}>
+                <p className="text-blue-600 text-sm underline font-light cursor-pointer inline float-right" onClick={() => { setIsLoginActive(false); setIsForgotPasswordActive(true); }}>
                     Forgot Password?
-                </p> */}
+                </p>
 
                 <button className="w-full bg-blue-600 py-2 text-white rounded cursor-pointer my-2 font-light" type="submit">
                     {

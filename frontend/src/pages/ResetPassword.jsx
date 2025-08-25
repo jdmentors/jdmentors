@@ -5,8 +5,23 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { EyeIcon, EyeOff, Lock } from "lucide-react";
 import { useState } from "react";
+import { useEffect } from "react";
+import { toggleShowUserAuthForm } from "../features/forms/UserAuthSlice.js";
+import { useDispatch } from "react-redux";
 
 function ResetPassword() {
+    const location = useLocation();
+    const [token, setToken] = useState(location.search.split('=')[1]);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (!token) {
+            toast.error('Invalid URL');
+            navigate('/');
+            return;
+        }
+    }, [token]);
+
     const { register, handleSubmit } = useForm({
         defaultValues: {
             newPassword: ''
@@ -19,13 +34,12 @@ function ResetPassword() {
 
     const resetPasswordHandler = async (formData) => {
         try {
-            const id = search.split("=")[1];
-
-            const { data } = await axios.put(`/api/v1/users/reset-password?id=${id}`, { newPassword: formData.newPassword });
+            const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/users/reset-password/${token}`, { newPassword: formData.newPassword });
 
             if (data.success) {
                 toast.success(data.message);
                 navigate('/');
+                dispatch(toggleShowUserAuthForm(true));
             }
         } catch (error) {
             console.error(error);
@@ -34,7 +48,7 @@ function ResetPassword() {
     }
 
     return (
-        <Container className="mt-20 min-h-[60vh] flex items-center justify-center">
+        <Container className="mt-20 min-h-[70vh] flex items-center justify-center">
             <section className="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 bg-white px-6 sm:px-8 md:px-10 py-10 rounded-md drop-shadow-xl drop-shadow-blue-300 border-2 border-blue-100 relative flex overflow-hidden">
                 <form onSubmit={handleSubmit(resetPasswordHandler)} className="w-full">
                     <h3 className="text-2xl text-center mb-3">Reset Password</h3>

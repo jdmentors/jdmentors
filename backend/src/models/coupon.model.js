@@ -10,6 +10,7 @@ const couponSchema = new Schema({
     usage: {
         type: Number,
         required: false,
+        default: null
     },
     redeemed: {
         type: Number,
@@ -19,6 +20,7 @@ const couponSchema = new Schema({
     expiration: {
         type: Date,
         required: false,
+        default: null
     },
     discount: {
         type: Number,

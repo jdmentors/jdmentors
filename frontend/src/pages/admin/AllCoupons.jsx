@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { Check, FileDownIcon, Plus } from "lucide-react";
+import { Check, FileDownIcon, Pencil, Plus, Trash } from "lucide-react";
 import { Link } from "react-router";
 import useRefreshToken from "../../hooks/useRefreshToken";
 import { updateUser } from "../../features/forms/UserAuthSlice.js";
@@ -23,7 +23,7 @@ function AllCoupons() {
             try {
                 const { data } = await axios.get(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/coupons/all`, { headers: { Authorization: `Bearer ${user.accessToken}` } });
 
-                if (data.success) {
+                if (data && data.success) {
                     setAllCoupons(data.data);
                 }
             } catch (error) {
@@ -47,20 +47,23 @@ function AllCoupons() {
         getAllCoupons();
     }, [])
 
-    const handleStatusUpdate = async (id) => {
+    const handleUpdateAvailability = async (id, e) => {
+        const availabilityStatus = e.target.checked;
         try {
-            const { data } = await axios.patch(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/coupons/status/${id}`, { headers: { Authorization: `Bearer ${user.accessToken}` } });
+            const { data } = await axios.patch(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/coupons/availability/${id}`, { status: availabilityStatus }, { headers: { Authorization: `Bearer ${user.accessToken}` } });
 
             if (data && data.success) {
+                toast.success(data.message);
+
                 setAllCoupons(coupons => {
                     return coupons.map(coupon => {
-                        if (coupon._id === id) {
-                            return { ...coupon, status: data.data.status }
+                        if (coupon._id.toString() === id.toString()) {
+                            return { ...coupon, status: availabilityStatus }
+                        } else {
+                            return coupon;
                         }
-                        return coupon;
                     })
                 })
-                toast.success(data.message);
             }
         } catch (error) {
             const message = error?.response?.data?.message;
@@ -68,23 +71,58 @@ function AllCoupons() {
                 try {
                     const newAccessToken = await refreshAccessToken();
 
-                    const { data } = await axios.patch(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/coupons/status/${id}`, { headers: { Authorization: `Bearer ${newAccessToken}` } });
+                    const { data } = await axios.patch(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/coupon/availability/${id}`, { status: availabilityStatus }, { headers: { Authorization: `Bearer ${newAccessToken}` } });
 
                     if (data && data.success) {
-                        setAllCoupons(coupons => {
-                            return coupons.map(coupon => {
-                                if (coupon._id === id) {
-                                    return { ...coupon, status: data.data.status }
-                                }
-                                return coupon;
-                            })
-                        });
                         toast.success(data.message);
                         dispatch(updateUser({ ...user, accessToken: newAccessToken }));
+
+                        setAllCoupons(coupons => {
+                            return coupons.map(coupon => {
+                                if (coupon._id.toString() === id.toString()) {
+                                    return { ...coupon, status: availabilityStatus }
+                                } else {
+                                    return coupon;
+                                }
+                            })
+                        })
                     }
                 } catch (error) {
                     console.error(error);
                 }
+            }else{
+                toast.error(message);
+            }
+        }
+    }
+
+    const handleDeleteCoupon = async (id) => {
+        try {
+            const { data } = await axios.delete(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/coupons/delete/${id}`, { headers: { Authorization: `Bearer ${user.accessToken}` } });
+
+            if (data && data.success) {
+                toast.success(data.message);
+                setAllCoupons(prevcoupons => prevcoupons.filter(coupon => coupon._id.toString() !== id.toString()));
+            }
+        } catch (error) {
+            const message = error?.response?.data?.message;
+            if (message === 'accessToken') {
+                try {
+                    const newAccessToken = await refreshAccessToken();
+
+                    const { data } = await axios.delete(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/coupons/delete/${id}`, { headers: { Authorization: `Bearer ${newAccessToken}` } });
+
+                    if (data && data.success) {
+                        toast.success(data.message);
+                        dispatch(updateUser({ ...user, accessToken: newAccessToken }));
+                        setAllCoupons(prevcoupons => prevcoupons.filter(coupon => coupon._id.toString() !== id.toString()));
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            }else{
+                toast.error(message);
+                console.error(error)
             }
         }
     }
@@ -142,34 +180,33 @@ function AllCoupons() {
                                                     allCoupons.map(coupon => (
                                                         <div key={coupon._id} className="md:grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-5 items-center py-5 text-gray-600">
                                                             <p className="text-gray-800">
-                                                                {coupon.service.title}
+                                                                {coupon.coupon}
                                                             </p>
 
                                                             <p>
-                                                                {coupon.fullName}
+                                                                {coupon.usage ? coupon.usage : 'Not set'}
                                                             </p>
 
-                                                            <p>{new Date(coupon.dateTime).toDateString() + " " + `(${new Date(coupon.dateTime).toLocaleTimeString()})`}</p>
+                                                            <p>
+                                                                {coupon.redeemed}
+                                                            </p>
 
-                                                            <p className={`flex items-center gap-1 ${coupon.payment ? 'text-green-600' : 'text-red-600'}`}><span className={`h-2 w-2 ${!coupon.payment && 'bg-red-600'} rounded-full`}></span> <span>{coupon.payment ? `$${coupon.service.price}` : 'Pending'}</span></p>
+                                                            <p>{coupon.expiration ? new Date(coupon.expiration).toDateString() : 'Not Set'}</p>
 
-                                                            <div>
-                                                                {
-                                                                    coupon.document.map((doc) => {
-                                                                        return (
-                                                                            <Link key={doc} target="_blank" to={`${doc}`} className="flex gap-1 items-center"><FileDownIcon size={18} /> <span className="text-blue-600 hover:underline">{cleanFileName(decodeURIComponent(doc))}</span></Link>
-                                                                        )
-                                                                    })
-                                                                }
+                                                            <p>{coupon.discount}</p>
+
+                                                            <label className="relative cursor-pointer">
+                                                                <input type="checkbox" checked={coupon.status} onChange={(e) => handleUpdateAvailability(coupon._id, e)} className="sr-only peer" />
+
+                                                                <div className="w-12 h-7 peer-checked:bg-blue-600 bg-blue-200 border border-blue-200 rounded-full transition-colors duration-200"></div>
+
+                                                                <span className="h-5 w-5 bg-white rounded-full absolute top-1/2 -translate-y-1/2 peer-checked:translate-x-full mx-1 transition duration-200"></span>
+                                                            </label>
+
+                                                            <div className="flex gap-3">
+                                                                <Link to={`/admin/coupons/edit/${coupon._id}`} className="bg-green-600 px-4 py-3 rounded-md text-white max-w-max cursor-pointer"><Pencil size={18} /></Link>
+                                                                <button onClick={() => handleDeleteCoupon(coupon._id)} className="bg-red-600 px-4 py-3 rounded-md text-white max-w-max cursor-pointer"><Trash size={18} /></button>
                                                             </div>
-
-                                                            <p className={`flex items-center gap-1 ${coupon.status ? 'text-green-600' : 'text-red-600'}`}><span className={`h-2 w-2 ${coupon.status ? 'bg-green-600' : 'bg-red-600'} rounded-full`}></span> <span>{coupon.status ? 'Done' : 'Pending'}</span></p>
-
-                                                            {
-                                                                !coupon.status
-                                                                &&
-                                                                <button onClick={() => handleStatusUpdate(coupon._id)} className="bg-green-600 py-2 px-5 rounded text-white cursor-pointer flex items-center gap-1 max-w-max"><Check size={20} /> <span>Done</span></button>
-                                                            }
 
                                                         </div>
                                                     ))
@@ -182,56 +219,57 @@ function AllCoupons() {
                                                             <div className="flex gap-2">
                                                                 <p className="text-gray-800">Coupon Code:</p>
                                                                 <p className="text-gray-600">
-                                                                    {coupon.service.title}
+                                                                    {coupon.coupon}
                                                                 </p>
                                                             </div>
 
                                                             <div className="flex gap-2">
                                                                 <p className="text-gray-800">Usage Limit:</p>
                                                                 <p>
-                                                                    {coupon.fullName}
+                                                                    {coupon.usage ? coupon.usage : 'Not set'}
                                                                 </p>
                                                             </div>
 
                                                             <div className="flex gap-2">
                                                                 <p className="text-gray-800">Redeemed:</p>
-                                                                <p>{new Date(coupon.dateTime).toDateString() + " " + `(${new Date(coupon.dateTime).toLocaleTimeString()})`}</p>
+                                                                <p>{coupon.redeemed}</p>
                                                             </div>
 
                                                             <div className="flex gap-2">
                                                                 <p className="text-gray-800">Expiration:</p>
-                                                                <p>${coupon.service.price}</p>
+                                                                <p>{coupon.expiration ? new Date(coupon.expiration).toDateString() : 'Not Set'}</p>
                                                             </div>
 
                                                             <div className="flex gap-2">
                                                                 <p className="text-gray-800">Discount (%):</p>
-                                                                <div>
-                                                                    {
-                                                                        coupon.document.map((doc) => {
-                                                                            return (
-                                                                                <Link key={doc} target="_blank" to={`${doc}`} className="flex gap-1 items-center"><FileDownIcon size={18} /> <span className="text-blue-600 hover:underline">{cleanFileName(decodeURIComponent(doc))}</span></Link>
-                                                                            )
-                                                                        })
-                                                                    }
-                                                                </div>
+                                                                <p>{coupon.discount}</p>
                                                             </div>
 
                                                             <div className="flex gap-2">
                                                                 <p className="text-gray-800">Status:</p>
-                                                                <p className={`flex items-center gap-1 ${coupon.status ? 'text-green-600' : 'text-red-600'}`}><span className={`h-2 w-2 ${coupon.status ? 'bg-green-600' : 'bg-red-600'} rounded-full`}></span> <span>{coupon.status ? 'Done' : 'Pending'}</span></p>
+                                                                <label className="relative cursor-pointer">
+                                                                    <input type="checkbox" checked={coupon.status} onChange={(e) => handleUpdateAvailability(coupon._id, e)} className="sr-only peer" />
+
+                                                                    <div className="w-12 h-7 peer-checked:bg-blue-600 bg-blue-200 border border-blue-200 rounded-full transition-colors duration-200"></div>
+
+                                                                    <span className="h-5 w-5 bg-white rounded-full absolute top-1/2 -translate-y-1/2 peer-checked:translate-x-full mx-1 transition duration-200"></span>
+                                                                </label>
                                                             </div>
 
-                                                            {
-                                                                !coupon.status
-                                                                &&
-                                                                <button onClick={() => handleStatusUpdate(coupon._id)} className="bg-green-600 py-2 px-5 rounded text-white cursor-pointer flex items-center gap-1 max-w-max"><Check size={20} /> <span>Done</span></button>
-                                                            }
+                                                            <div className="flex gap-3">
+                                                                <Link to={`/admin/coupons/edit/${coupon._id}`} className="bg-green-600 px-4 py-3 rounded-md text-white max-w-max cursor-pointer"><Pencil size={18} /></Link>
+                                                                <button onClick={() => handleDeleteCoupon(coupon._id)} className="bg-red-600 px-4 py-3 rounded-md text-white max-w-max cursor-pointer"><Trash size={18} /></button>
+                                                            </div>
                                                         </div>
                                                     ))
                                                 }
                                             </div>
                                         </>
                                     )
+                                    :
+                                    Array.isArray(allCoupons) && allCoupons.length === 0
+                                    ? 
+                                    ''
                                     :
                                     <LoadingSpinner />
                             }

@@ -1,6 +1,7 @@
 import { model, Schema } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
 
 const userSchema = new Schema({
     fullName: {
@@ -34,6 +35,12 @@ const userSchema = new Schema({
     },
     refreshToken: {
         type: String,
+    },
+    resetPasswordToken: {
+        type: String,
+    },
+    resetPasswordTokenExpiry: {
+        type: String,
     }
 }, { timestamps: true });
 
@@ -60,6 +67,20 @@ userSchema.methods.generateAccessToken = async function(){
 userSchema.methods.generateRefreshToken = async function(){
     try {
         return await jwt.sign({id:this._id}, process.env.REFRESH_TOKEN_KEY, {expiresIn:process.env.REFRESH_TOKEN_EXPIRY})
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+userSchema.methods.generateResetPasswordToken = async function(){
+    try {
+        const resetToken = crypto.randomBytes(32).toString('hex');
+
+        this.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+
+        this.resetPasswordTokenExpiry = Date.now() + 60*60*1000;
+
+        return resetToken;
     } catch (error) {
         throw new Error(error);
     }

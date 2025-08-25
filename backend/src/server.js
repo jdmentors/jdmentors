@@ -13,6 +13,7 @@ import Stripe from "stripe";
 import axios from "axios";
 import compression from "compression";
 import Session from "./models/session.model.js";
+import couponRouter from "./routes/coupon.route.js";
 
 const app = express();
 app.use(compression());
@@ -84,6 +85,7 @@ app.use('/api/v1/users', userRouter);
 app.use('/api/v1/services', serviceRouter);
 app.use('/api/v1/blogs', blogRouter);
 app.use('/api/v1/sessions', sessionRouter);
+app.use('/api/v1/coupons', couponRouter);
 app.get('/api/v1/dashboard', verifyAdmin, dashboard);
 app.post('/api/v1/admin/register', verifyAdmin, createAdmin);
 
@@ -104,7 +106,7 @@ app.post('/create-checkout-session', async (req, res) => {
           product_data: {
             name: `${data.data.service.title}`,
           },
-          unit_amount: Number(data.data.service.price) * 100,
+          unit_amount: Number(data.data.price) * 100,
         },
         quantity: 1,
       },

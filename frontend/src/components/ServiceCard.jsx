@@ -1,7 +1,7 @@
 import { CalendarCheck2, Check, UserCheck2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
-import { toggleShowUserAuthForm } from "../features/forms/UserAuthSlice";
+import { toggleShowUserAuthForm } from "../features/forms/UserAuthSlice.js";
 
 function ServiceCard({ _id, title, description, features, price, process }) {
     const dispatch = useDispatch();

@@ -15,11 +15,11 @@ function AddCouponForm({ coupon }) {
     const navigate = useNavigate();
     const [isPublishing, setIsPublishing] = useState(false);
 
-    const { register, handleSubmit, control, watch, setValue, formState: { errors }, reset } = useForm({
+    const { register, handleSubmit, formState: { errors }, reset } = useForm({
         defaultValues: {
             coupon: coupon?.coupon || "",
-            usage: coupon?.usage || "",
-            expiration: coupon?.expiration || "",
+            usage: coupon?.usage || null,
+            expiration: coupon?.expiration && coupon?.expiration.split("T")[0] || null,
             discount: coupon?.discount || "",
             status: coupon?.status || true,
         }
@@ -28,7 +28,7 @@ function AddCouponForm({ coupon }) {
     const publishCoupon = async (couponData) => {
         try {
             setIsPublishing(true);
-            const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/coupons/create`, { title: couponData.title, slug: couponData.slug, description: couponData.description, price: couponData.price, process: couponData.process || '', features: couponData.features || '', status: couponData.status }, { headers: { Authorization: `Bearer ${user.accessToken}` } });
+            const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/coupons/create`, { coupon: couponData.coupon, usage: couponData.usage || '', expiration: couponData.expiration || '', discount: couponData.discount, status: couponData.status || false }, { headers: { Authorization: `Bearer ${user.accessToken}` } });
 
             if (data && data.success) {
                 toast.success(data.message);
@@ -41,7 +41,7 @@ function AddCouponForm({ coupon }) {
                 try {
                     const newAccessToken = await refreshAccessToken();
 
-                    const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/coupons/create`, { title: couponData.title, slug: couponData.slug, description: couponData.description, price: couponData.price, process: couponData.process || '', features: couponData.features || '', status: couponData.status }, { headers: { Authorization: `Bearer ${newAccessToken}` } });
+                    const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/coupons/create`, { coupon: couponData.coupon, usage: couponData.usage || '', expiration: couponData.expiration || '', discount: couponData.discount, status: couponData.status || false }, { headers: { Authorization: `Bearer ${newAccessToken}` } });
 
                     if (data && data.success) {
                         toast.success(data.message);
@@ -65,7 +65,7 @@ function AddCouponForm({ coupon }) {
         try {
             setIsPublishing(true);
 
-            const { data } = await axios.put(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/coupons/edit/${coupon._id}`, { title: couponData.title, slug: couponData.slug, description: couponData.description, price: couponData.price, process: couponData.process || '', features: couponData.features || '', status: couponData.status }, { headers: { Authorization: `Bearer ${user.accessToken}` } });
+            const { data } = await axios.put(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/coupons/edit/${coupon._id}`, { coupon: couponData.coupon, usage: couponData.usage || '', expiration: couponData.expiration || '', discount: couponData.discount, status: couponData.status || false }, { headers: { Authorization: `Bearer ${user.accessToken}` } });
 
             if (data && data.success) {
                 toast.success(data.message);
@@ -78,12 +78,13 @@ function AddCouponForm({ coupon }) {
                 try {
                     const newAccessToken = await refreshAccessToken();
 
-                    const { data } = await axios.put(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/coupons/edit/${coupon._id}`, { title: couponData.title, slug: couponData.slug, description: couponData.description, price: couponData.price, process: couponData.process || '', features: couponData.features || '', status: couponData.status }, { headers: { Authorization: `Bearer ${newAccessToken}` } });
+                    const { data } = await axios.put(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/coupons/edit/${coupon._id}`, { coupon: couponData.coupon, usage: couponData.usage || '', expiration: couponData.expiration || '', discount: couponData.discount, status: couponData.status || false }, { headers: { Authorization: `Bearer ${newAccessToken}` } });
 
                     if (data && data.success) {
                         toast.success(data.message);
                         dispatch(updateUser({ ...user, accessToken: newAccessToken }));
                         setIsPublishing(false);
+                        navigate('/admin/coupons');
                     }
                 } catch (error) {
                     const message = error?.response?.data?.message;
@@ -102,9 +103,9 @@ function AddCouponForm({ coupon }) {
             <div className="w-full grid grid-cols-1 md:grid-cols-5 gap-10 items-start">
                 <div className="border-2 border-blue-100 rounded-xl col-span-1 p-3 md:p-10 md:col-span-3 bg-blue-50">
                     <div className="flex flex-col gap-2">
-                        <label className="text-gray-700" htmlFor="coupon">Coupon coupon:</label>
+                        <label className="text-gray-700" htmlFor="coupon">Coupon: *</label>
                         <input className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="coupon" type="text" {...register('coupon', { required: true })} placeholder="Enter coupon coupon here..." />
-                        {errors.coupon && <p className="text-sm text-orange-500 font-light">Coupon coupon is required.</p>}
+                        {errors.coupon && <p className="text-sm text-orange-500 font-light">Coupon is required.</p>}
                     </div>
 
                     <br />
@@ -127,7 +128,7 @@ function AddCouponForm({ coupon }) {
 
                     <div className="grid grid-cols-2 gap-5">
                         <div className="flex flex-col gap-2">
-                            <label className="text-gray-700" htmlFor="discount">Discount Value (%):</label>
+                            <label className="text-gray-700" htmlFor="discount">Discount Value (%): *</label>
                             <input type="number" className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="discount" {...register('discount', { required: true })} placeholder="Enter coupon discount here..." />
                             {errors.discount && <p className="text-sm text-orange-500 font-light">Discount Value is required.</p>}
                         </div>

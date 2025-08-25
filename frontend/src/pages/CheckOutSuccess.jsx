@@ -20,7 +20,7 @@ function CheckOutSuccess() {
                     setSession(data.data);
                     const sessionData = data.data;
                     try {
-                        const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/emails/order`, {fullName: sessionData.fullName, email: sessionData.email, phone: sessionData.phone, service: sessionData.service.title, document: sessionData.document, dateTime: sessionData.dateTime, notes: sessionData.notes, price: sessionData.service.price, sessionId: sessionData._id});
+                        const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/emails/order`, {fullName: sessionData.fullName, email: sessionData.email, phone: sessionData.phone, service: sessionData.service.title, document: sessionData.document, dateTime: sessionData.dateTime, notes: sessionData.notes, price: sessionData.price, sessionId: sessionData._id});
                     } catch (error) {
                         console.error(error);
                     }
@@ -72,9 +72,9 @@ function CheckOutSuccess() {
                                     </ul>
 
                                     <div className="mt-5 text-gray-600 flex flex-col gap-3">
-                                        <p className="flex justify-between">Preferred Time: <span>{new Date(session.dateTime).toDateString()}</span></p>
+                                        <p className="flex justify-between">Preferred Time: <span>{session.dateTime ? new Date(session.dateTime).toDateString() + " " + `(${new Date(session.dateTime).toLocaleTimeString()})` : 'Not Specified'}</span></p>
                                         <p className="flex justify-between">Document: <Link target="_blank" to={session.document} className="text-blue-600 underline">{cleanFileName(decodeURIComponent(session.document))}</Link></p>
-                                        <p className="flex justify-between">Total Price: <span className="font-semibold text-xl text-black">${session.service.price}</span></p>
+                                        <p className="flex justify-between">Total Price: <span className="font-semibold text-xl text-black">${session.price}</span></p>
                                     </div>
                                 </div>
                             </section>

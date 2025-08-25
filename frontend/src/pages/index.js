@@ -20,6 +20,7 @@ import AllSessions from "./admin/AllSessions";
 import ResetPassword from "./ResetPassword";
 import EditService from "./admin/EditService";
 import EditBlog from "./admin/EditBlog";
+import EditCoupon from "./admin/EditCoupon";
 import CheckOutSuccess from "./CheckOutSuccess";
 import CheckOutCancel from "./CheckOutCancel";
 import AdminLogin from "./admin/AdminLogin";
@@ -52,6 +53,7 @@ export {
     ResetPassword,
     EditService,
     EditBlog,
+    EditCoupon,
     CheckOutSuccess,
     CheckOutCancel,
     AdminLogin,
