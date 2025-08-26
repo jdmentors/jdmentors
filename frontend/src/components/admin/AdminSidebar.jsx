@@ -1,5 +1,5 @@
 import axios from "axios";
-import { LaptopIcon, LayoutDashboard, LogOut, Newspaper, Plus, Settings, Tags, UserCircle, Users } from "lucide-react";
+import { Gift, LaptopIcon, LayoutDashboard, LogOut, Newspaper, Package, Plus, Puzzle, Settings, Tags, UserCircle, Users } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router";
 import { toggleIsUserLoggedIn, updateUser } from "../../features/forms/UserAuthSlice.js";
@@ -11,6 +11,9 @@ const navigation = [
     { name: 'Sessions', path: '/admin/sessions', icon: <LaptopIcon size={25} strokeWidth={1.5} /> },
     { name: 'Users', path: '/admin/users', icon: <Users size={25} strokeWidth={1.5} /> },
     { name: 'Services', path: '/admin/services', icon: <Settings size={25} strokeWidth={1.5} /> },
+    { name: 'Packages', path: '/admin/packages', icon: <Package size={25} strokeWidth={1.5} /> },
+    { name: 'Add-ons', path: '/admin/addons', icon: <Puzzle size={25} strokeWidth={1.5} /> },
+    { name: 'Extras', path: '/admin/extras', icon: <Gift size={25} strokeWidth={1.5} /> },
     { name: 'Blogs', path: '/admin/blogs', icon: <Newspaper size={25} strokeWidth={1.5} /> },
     { name: 'Coupons', path: '/admin/coupons', icon: <Tags size={25} strokeWidth={1.5} /> },
     { name: 'Profile', path: '/admin/profile', icon: <UserCircle size={25} strokeWidth={1.5} /> },

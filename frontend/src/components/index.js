@@ -10,6 +10,9 @@ import FAQ from "./FAQ";
 import Testimonial from "./Testimonial";
 import Stat from "./Stat";
 import ServiceCard from "./ServiceCard";
+import AddonCard from "./AddonCard";
+import ExtraCard from "./ExtraCard";
+import PackageCard from "./PackageCard";
 import UserAuth from "./UserAuth";
 import UserLogForm from "./UserLogForm";
 import UserRegForm from "./UserRegForm";
@@ -27,6 +30,9 @@ import AdminFooter from "./admin/AdminFooter";
 import RTE from "./RTE";
 import AddBlogForm from "./admin/AddBlogForm";
 import AddServiceForm from "./admin/AddServiceForm";
+import AddAddonForm from "./admin/AddAddonForm";
+import AddExtraForm from "./admin/AddExtraForm";
+import AddPackageForm from "./admin/AddPackageForm";
 import AddCouponForm from "./admin/AddCouponForm";
 import DeleteModalDialogue from "./DeleteModalDialogue";
 import Profile from "./Profile";
@@ -34,6 +40,9 @@ import CreateAdmin from "./admin/CreateAdmin";
 import UserPopUp from "./UserPopUp";
 import Protected from "./Protected";
 import AllServices from "./AllServices";
+import AllAddons from "./AllAddons";
+import AllExtras from "./AllExtras";
+import AllPackages from "./AllPackages";
 import AllBlogs from "./AllBlogs";
 import AdminRoute from "./admin/AdminRoute";
 import LoadingSpinner from "./LoadingSpinner";
@@ -52,6 +61,9 @@ export {
     Testimonial,
     Stat,
     ServiceCard,
+    AddonCard,
+    ExtraCard,
+    PackageCard,
     UserAuth,
     UserLogForm,
     UserRegForm,
@@ -69,6 +81,9 @@ export {
     RTE,
     AddBlogForm,
     AddServiceForm,
+    AddAddonForm,
+    AddExtraForm,
+    AddPackageForm,
     AddCouponForm,
     DeleteModalDialogue,
     Profile,
@@ -76,6 +91,9 @@ export {
     UserPopUp,
     Protected,
     AllServices,
+    AllAddons,
+    AllExtras,
+    AllPackages,
     AllBlogs,
     AdminRoute,
     LoadingSpinner,

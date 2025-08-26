@@ -14,6 +14,9 @@ import axios from "axios";
 import compression from "compression";
 import Session from "./models/session.model.js";
 import couponRouter from "./routes/coupon.route.js";
+import addonRouter from "./routes/addon.route.js";
+import extraRouter from "./routes/extra.route.js";
+import packageRouter from "./routes/package.router.js";
 
 const app = express();
 app.use(compression());
@@ -83,6 +86,9 @@ app.get('/api/v1/health', (req, res) => {
 });
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/services', serviceRouter);
+app.use('/api/v1/addons', addonRouter);
+app.use('/api/v1/extras', extraRouter);
+app.use('/api/v1/packages', packageRouter);
 app.use('/api/v1/blogs', blogRouter);
 app.use('/api/v1/sessions', sessionRouter);
 app.use('/api/v1/coupons', couponRouter);
