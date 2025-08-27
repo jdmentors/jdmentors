@@ -13,6 +13,7 @@ function AllPackages({ limit }) {
         }
         fetchAllPackages();
     }, [])
+    
     return (
             allPackages
             ?
@@ -20,11 +21,11 @@ function AllPackages({ limit }) {
                 {
                     limit ?
                         allPackages.slice(0, limit).map(ourPackge => (
-                            ourPackge.status === true && <PackageCard _id={ourPackge._id} key={ourPackge.title} title={ourPackge.title} description={ourPackge.description} services={ourPackge.services} price={ourPackge.price} process={ourPackge.process} />
+                            ourPackge.status === true && <PackageCard _id={ourPackge._id} key={ourPackge.title} title={ourPackge.title} description={ourPackge.description} services={ourPackge.services} addons={ourPackge.addons} extras={ourPackge.extras} price={ourPackge.price} process={ourPackge.process} />
                         ))
                         :
                         allPackages.map(ourPackge => (
-                            ourPackge.status === true && <PackageCard _id={ourPackge._id} key={ourPackge.title} title={ourPackge.title} description={ourPackge.description} services={ourPackge.services} price={ourPackge.price} process={ourPackge.process} />
+                            ourPackge.status === true && <PackageCard _id={ourPackge._id} key={ourPackge.title} title={ourPackge.title} description={ourPackge.description} services={ourPackge.services} addons={ourPackge.addons} extras={ourPackge.extras} price={ourPackge.price} process={ourPackge.process} />
                         ))
                 }
             </div>

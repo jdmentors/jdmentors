@@ -1,11 +1,11 @@
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import useRefreshToken from "../../hooks/useRefreshToken";
 import { updateUser } from "../../features/forms/UserAuthSlice.js";
 import { useNavigate } from "react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function AddPackageForm({ ourPackage }) {
     const user = useSelector(state => state.user.user);
@@ -14,16 +14,15 @@ function AddPackageForm({ ourPackage }) {
     const navigate = useNavigate();
     const [isPublishing, setIsPublishing] = useState(false);
 
-    const { register, handleSubmit, formState: { errors }, reset, getValues, setValue } = useForm({
+    const { register, handleSubmit, formState: { errors }, control, reset } = useForm({
         defaultValues: {
             title: ourPackage?.title || "",
             description: ourPackage?.description || "",
             price: ourPackage?.price || "",
             process: ourPackage?.process || "",
-            services: ourPackage?.services || [],
-            serviceInput: "",
-            addons: ourPackage?.addons || [],
-            extras: ourPackage?.extras || [],
+            services: ourPackage?.services || [""],
+            addons: ourPackage?.addons || [""],
+            extras: ourPackage?.extras || [""],
             status: ourPackage?.status || true,
         }
     });
@@ -57,7 +56,7 @@ function AddPackageForm({ ourPackage }) {
                     toast.error(message);
                     setIsPublishing(false);
                 }
-            }else{
+            } else {
                 toast.error(message);
                 setIsPublishing(false);
             }
@@ -93,17 +92,47 @@ function AddPackageForm({ ourPackage }) {
                     toast.error(message);
                     setIsPublishing(false);
                 }
-            }else{
+            } else {
                 toast.error(message);
                 setIsPublishing(false);
             }
         }
     }
 
-    const addServiceHandler = async (serviceData) => {
+    const { append: appendService, remove: removeService, fields: serviceFields } = useFieldArray({
+        control,
+        name: 'services',
+    });
+
+    const { fields:addonFields, append:appendAddon, remove: removeAddon } = useFieldArray({
+        control,
+        name: 'addons'
+    });
+
+    const { fields:extraFields, append:appendExtra, remove:removeExtra } = useFieldArray({
+        control,
+        name: 'extras'
+    });
+
+    const addServiceHandler = () => {
         try {
-            setValue('services', getValues('serviceInput'))
-            console.log(getValues('services[]'));
+            appendService('');
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const addAddonHandler = () => {
+        try {
+            appendAddon('');
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const addExtraHandler = () => {
+        try {
+            appendExtra('');
         } catch (error) {
             console.error(error);
         }
@@ -129,19 +158,65 @@ function AddPackageForm({ ourPackage }) {
 
                     <br />
 
+                    {/* Service add */}
                     <div className="flex flex-col gap-2">
                         <label className="text-gray-700" htmlFor="services">Services:</label>
-                        <input className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="services" type="text" {...register(`services[]`, { required: false })} placeholder="Enter package services here..." />
-                        <input className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="services" type="text" {...register(`services[]`, { required: false })} placeholder="Enter package services here..." />
-                        {/* <input className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="services" type="text" {...register(`services[2]`, { required: false })} placeholder="Enter package services here..." /> */}
+                        {
+                            serviceFields.map((field, index) => (
+                                    <div key={field.id} className="flex gap-2 items-center flex-wrap">
+                                        <input className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 grow max-w-full" id="services" type="text" {...register(`services.${index}`, { required: false })} placeholder="Enter package services here..." />
+                                        <button type="button" className="bg-red-500 cursor-pointer text-white rounded-md py-2 px-3" onClick={() => removeService(index)}>Remove</button>
+                                    </div>
+                                )
+                            )
+                        }
                         {errors.services && <p className="text-sm text-orange-500 font-light">Services are required.</p>}
                     </div>
 
-                    <div className="flex gap-2">
-                        {/* <form> */}
-                            <input className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="services" type="text" {...register(`serviceInput`, { required: false })} placeholder="Enter package services here..." />
-                            <button onClick={addServiceHandler} className="bg-blue-600 text-white rounded-md py-2 px-5">Add</button>
-                        {/* </form> */}
+                    <div className="mt-3">
+                        <button type="button" onClick={addServiceHandler} className="bg-blue-600 cursor-pointer text-white rounded-md py-2 px-5">Add a Service</button>
+                    </div>
+
+                    <br />
+
+                    {/* Addon Add */}
+                    <div className="flex flex-col gap-2">
+                        <label className="text-gray-700" htmlFor="addons">Addons:</label>
+                        {
+                            addonFields.map((field, index) => (
+                                    <div key={field.id} className="flex gap-2 items-center flex-wrap">
+                                        <input className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 grow max-w-full" id="addons" type="text" {...register(`addons.${index}`, { required: false })} placeholder="Enter package addons here..." />
+                                        <button type="button" className="bg-red-500 cursor-pointer text-white rounded-md py-2 px-3" onClick={() => removeAddon(index)}>Remove</button>
+                                    </div>
+                                )
+                            )
+                        }
+                        {errors.addons && <p className="text-sm text-orange-500 font-light">Addons are required.</p>}
+                    </div>
+
+                    <div className="mt-3">
+                        <button type="button" onClick={addAddonHandler} className="bg-blue-600 cursor-pointer text-white rounded-md py-2 px-5">Add an Addon</button>
+                    </div>
+
+                    <br />
+
+                    {/* Extra add */}
+                    <div className="flex flex-col gap-2">
+                        <label className="text-gray-700" htmlFor="extras">Extras:</label>
+                        {
+                            extraFields.map((field, index) => (
+                                    <div key={field.id} className="flex gap-2 items-center flex-wrap">
+                                        <input className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 grow max-w-full" id="extras" type="text" {...register(`extras.${index}`, { required: false })} placeholder="Enter package extras here..." />
+                                        <button type="button" className="bg-red-500 cursor-pointer text-white rounded-md py-2 px-3" onClick={() => removeExtra(index)}>Remove</button>
+                                    </div>
+                                )
+                            )
+                        }
+                        {errors.extras && <p className="text-sm text-orange-500 font-light">Extras are required.</p>}
+                    </div>
+
+                    <div className="mt-3">
+                        <button type="button" onClick={addExtraHandler} className="bg-blue-600 cursor-pointer text-white rounded-md py-2 px-5">Add an Extra</button>
                     </div>
 
                     <br />

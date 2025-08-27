@@ -1,4 +1,4 @@
-import { CalendarDays, Check, File, LockKeyholeIcon, Mail, Notebook, Phone, User, UserCheck2 } from "lucide-react";
+import { CalendarDays, Check, File, LockKeyholeIcon, Mail, Notebook, Phone, Plus, User, UserCheck2, X } from "lucide-react";
 import { Container, FileInput, LoadingSpinner } from "../components";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -52,6 +52,8 @@ function Checkout() {
 
     const [isChecked, setIsChecked] = useState(false);
     const [termsWarning, setTermsWarning] = useState(false);
+    const [showAddonsAndExtraPopUp, setShowAddonsAndExtraPopUp] = useState(false);
+    const [addonsAndExtras, setAddonsAndExtras] = useState([]);
     const [discountedPrice, setDiscountedPrice] = useState(null);
 
     const checkoutHandler = async (userData) => {
@@ -71,6 +73,9 @@ function Checkout() {
             formData.append('notes', userData.notes || null);
             formData.append('service', serviceId);
             formData.append('price', discountedPrice);
+            addonsAndExtras.forEach((addonAndExtra) => {
+                formData.append('addonsAndExtras[]', addonAndExtra);
+            });
             Object.values(userData.document).forEach((file) => {
                 formData.append('document', file);
             })
@@ -107,7 +112,12 @@ function Checkout() {
                     formData.append('notes', userData.notes || null);
                     formData.append('service', serviceId);
                     formData.append('price', discountedPrice);
-                    formData.append('document', userData.document[0]);
+                    addonsAndExtras.forEach((addonAndExtra) => {
+                        formData.append('addonsAndExtras[]', addonAndExtra);
+                    });
+                    Object.values(userData.document).forEach((file) => {
+                        formData.append('document', file);
+                    })
 
                     const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/sessions/create`, formData);
 
@@ -160,8 +170,81 @@ function Checkout() {
         }
     }
 
+    const addonAndExtraHandler = (e, title, price) => {
+        try {
+            if (e.target.checked) {
+                setDiscountedPrice(discountedPrice => Number(discountedPrice) + (Number(price) - (Number(price) * Number(discount) / 100)));
+                setAddonsAndExtras(prev => [...prev, title]);
+            } else {
+                setDiscountedPrice(discountedPrice => Number(discountedPrice) - (Number(price) - (Number(price) * Number(discount) / 100)));
+                setAddonsAndExtras(previous => previous.filter(prev => prev != title));
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     return (
-        <section className="min-h-[70vh] mt-24 md:mt-32">
+        <section className="min-h-[70vh] pt-24 md:pt-32 relative">
+            {
+                (showAddonsAndExtraPopUp && service) && (service.addons.length > 0 || service.extras.length > 0) &&
+                (
+                    <section className="fixed top-0 right-0 left-0 bottom-0 bg-black/70 z-50">
+                        <div className="absolute bg-white w-lg max-w-full top-1/2 left-1/2 -translate-1/2 p-6 space-y-4 max-h-[90vh] overflow-y-auto">
+                            <button onClick={() => setShowAddonsAndExtraPopUp(false)} className="absolute right-5 cursor-pointer"><X size={32} /></button>
+                            <h1 className="text-2xl font-bold mb-3 text-gray-900">
+                                Customize Your Service
+                            </h1>
+                            <p className="text-gray-600 mb-4">
+                                Select add-ons and extras (optional)
+                            </p>
+
+                            {
+                                service.addons.map(addon => (
+                                    <label key={addon.title} className="flex items-start space-x-3 p-4 border border-blue-200 rounded-lg hover:border-blue-400 cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            className="mt-1 h-4 w-4 text-blue-600"
+                                            onChange={(e) => addonAndExtraHandler(e, addon.title, addon.price)}
+                                            checked={addonsAndExtras.includes(addon.title)}
+                                        />
+                                        <div className="w-full">
+                                            <div className="flex justify-between">
+                                                <h3 className="font-medium text-gray-900">{addon.title}</h3>
+                                                <span className="text-blue-600 text-lg font-semibold">+${addon.price}</span>
+                                            </div>
+                                            <p className="text-sm text-gray-600">{addon.description}</p>
+                                        </div>
+                                    </label>
+                                ))
+                            }
+
+                            {
+                                service.extras.map(extra => (
+                                    <label key={extra.title} className="flex items-start space-x-3 p-4 border border-blue-200 rounded-lg hover:border-blue-400 cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            className="mt-1 h-4 w-4 text-blue-600"
+                                            onChange={(e) => addonAndExtraHandler(e, extra.title, extra.price)}
+                                            checked={addonsAndExtras.includes(extra.title)}
+                                        />
+                                        <div className="w-full">
+                                            <div className="flex justify-between">
+                                                <h3 className="font-medium text-gray-900">{extra.title}</h3>
+                                                <span className="text-blue-600 text-lg font-semibold">+${extra.price}</span>
+                                            </div>
+                                            <p className="text-sm text-gray-600">{extra.description}</p>
+                                        </div>
+                                    </label>
+                                ))
+                            }
+
+                            <button onClick={() => setShowAddonsAndExtraPopUp(false)} type="button" className="px-6 py-2 bg-blue-600 hover:bg-blue-700 active:scale-95 transition-all text-white rounded cursor-pointer w-full my-2">Continue to Booking</button>
+                        </div>
+                    </section>
+                )
+            }
+
             <Container className="grid md:grid-cols-2 gap-5 lg:gap-14 xl:gap-20 divide-blue-100">
                 {/* Customer Information */}
                 <section>
@@ -277,10 +360,14 @@ function Checkout() {
 
                                         <p className="flex justify-between">Total Price: <span className="font-light text-xl text-black mb-2">${service.price}</span></p>
                                         <p className="flex justify-between">Discount: <span className="font-light text-xl text-black mb-2">- {discount}%</span></p>
-                                        <p className="flex justify-between">Discounted Price: <span className="font-semibold text-xl text-black mb-2">${Number(service.price) - (Number(service.price) * Number(discount) / 100)}</span></p>
+                                        <p className="flex justify-between">Discounted Price: <span className="font-semibold text-xl text-black mb-2">${discountedPrice.toFixed(2)}</span></p>
+
+                                        {isChecked && (
+                                            <p onClick={() => setShowAddonsAndExtraPopUp(true)} className="text-blue-600 flex items-center gap-1 cursor-pointer"><span className="text-2xl">+</span> <span className="underline">Add-ons & Extras (optional)</span></p>
+                                        )}
 
                                         <label className="flex gap-2 items-center">
-                                            <input type="checkbox" checked={isChecked} onChange={(e) => { setIsChecked(e.target.checked); setTermsWarning(!e.target.checked) }} />
+                                            <input type="checkbox" checked={isChecked} onChange={(e) => { setIsChecked(e.target.checked); setTermsWarning(!e.target.checked); setShowAddonsAndExtraPopUp(true); }} />
                                             <span>I have read and agree to the <Link className="text-blue-600 underline" to="/terms-conditions">terms & conditions.</Link></span>
                                         </label>
 

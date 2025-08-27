@@ -1,9 +1,9 @@
-import { CalendarCheck2, Package, Settings } from "lucide-react";
+import { CalendarCheck2, Gift, Package, Puzzle, Settings } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
 import { toggleShowUserAuthForm } from "../features/forms/UserAuthSlice.js";
 
-function PackageCard({ _id, title, description, services, price, process }) {
+function PackageCard({ _id, title, description, services = [], addons = [], extras = [], price, process }) {
     const dispatch = useDispatch();
     const isUserLoggedIn = useSelector(state => state.user.isUserLoggedIn);
     const navigate = useNavigate();
@@ -22,7 +22,8 @@ function PackageCard({ _id, title, description, services, price, process }) {
     }
 
     return (
-        <div className="package-card bg-white rounded-xl overflow-hidden shadow-lg shadow-blue-200 border border-blue-100 transition duration-300 flex flex-col">
+        <div className="package-card bg-white rounded-xl overflow-hidden shadow-lg shadow-blue-200 border border-blue-100 transition duration-300 flex flex-col relative">
+            {_id == '68ae8c7e6ab48dc9e3f708a6' && <p className="bg-blue-600 text-white py-1 px-3 text-xs absolute right-4 top-3 rounded">Featured</p>}
             <div className="p-6 flex flex-col flex-1">
                 {/* Top section */}
                 <div>
@@ -33,14 +34,57 @@ function PackageCard({ _id, title, description, services, price, process }) {
                         <h3 className="text-lg font-semibold text-blue-950">{title}</h3>
                     </div>
                     <p className="text-gray-600 mb-4">{description}</p>
-                    <ul className="text-gray-600 space-y-2 mb-6">
-                        {services.map((service) => (
-                            <li key={service} className="flex items-start gap-1">
-                                <Settings className="text-blue-600" size={18} />
-                                <span>{service}</span>
-                            </li>
-                        ))}
-                    </ul>
+
+                    {
+                        services &&
+                        (
+                            <div>
+                                <p className="text-gray-600 mb-2 font-semibold">Services:</p>
+                                <ul className="text-gray-600 space-y-2 mb-4">
+                                    {services.map((service) => (
+                                        <li key={service} className="flex items-start gap-1">
+                                            <Settings className="text-blue-600" size={18} />
+                                            <span>{service}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )
+                    }
+
+                    {
+                        addons &&
+                        (
+                            <div>
+                                <p className="text-gray-600 mb-2 font-semibold">Add-ons:</p>
+                                <ul className="text-gray-600 space-y-2 mb-4">
+                                    {addons.map((addon) => (
+                                        <li key={addon} className="flex items-start gap-1">
+                                            <Puzzle className="text-blue-600" size={18} />
+                                            <span>{addon}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )
+                    }
+
+                    {
+                        extras &&
+                        (
+                            <div>
+                                <p className="text-gray-600 mb-2 font-semibold">Extras:</p>
+                                <ul className="text-gray-600 space-y-2 mb-6">
+                                    {extras.map((extra) => (
+                                        <li key={extra} className="flex items-start gap-1">
+                                            <Gift className="text-blue-600" size={18} />
+                                            <span>{extra}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )
+                    }
                 </div>
 
                 {/* Bottom section (pushed down) */}

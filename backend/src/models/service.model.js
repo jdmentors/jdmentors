@@ -21,6 +21,14 @@ const serviceSchema = new Schema({
         type: Array,
         trim:true
     },
+    addons: {
+        type: Array,
+        trim:true
+    },
+    extras: {
+        type: Array,
+        trim:true
+    },
     process: {
         type: String,
         trim: true,

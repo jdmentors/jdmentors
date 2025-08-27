@@ -62,7 +62,6 @@ const getAllPackages = async (req, res) => {
             }
         ]);
 
-
         if (!allPackages) {
             return res.status(404).json({ success: false, message: 'No packages found' });
         }

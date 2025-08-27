@@ -26,6 +26,10 @@ const sessionSchema = new Schema({
         type: Number,
         required: true,
     },
+    addonsAndExtras: {
+        type: Array,
+        required: false,
+    },
     dateTime: {
         type: Date,
         default: null

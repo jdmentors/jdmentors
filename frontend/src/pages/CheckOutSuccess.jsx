@@ -70,10 +70,11 @@ function CheckOutSuccess() {
                                             ))
                                         }
                                     </ul>
+                                    {console.log(session.document)}
 
                                     <div className="mt-5 text-gray-600 flex flex-col gap-3">
                                         <p className="flex justify-between">Preferred Time: <span>{session.dateTime ? new Date(session.dateTime).toDateString() + " " + `(${new Date(session.dateTime).toLocaleTimeString()})` : 'Not Specified'}</span></p>
-                                        <p className="flex justify-between">Document: <Link target="_blank" to={session.document} className="text-blue-600 underline">{cleanFileName(decodeURIComponent(session.document))}</Link></p>
+                                        <p className="flex justify-between">Document: {session.document.map(document => {return <><Link target="_blank" to={document} className="text-blue-600 underline">{cleanFileName(decodeURIComponent(document))}</Link><br /></>})}</p>
                                         <p className="flex justify-between">Total Price: <span className="font-semibold text-xl text-black">${session.price}</span></p>
                                     </div>
                                 </div>

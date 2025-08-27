@@ -2,7 +2,7 @@ import Service from "../models/service.model.js";
 
 const createService = async (req, res) => {
     try {
-        const { title, slug, description, process = '', features, price, status } = req.body;
+        const { title, slug, description, process = '', features=[], addons=[], extras=[], price, status } = req.body;
 
         const user = req.user;
 
@@ -16,7 +16,7 @@ const createService = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Service already exists with this title' });
         }
 
-        const service = await Service.create({ title, slug, description, process, features, price, status, user: user._id });
+        const service = await Service.create({ title, slug, description, process, features, addons, extras, price, status, user: user._id });
 
         if (!service) {
             return res.status(500).json({ success: false, message: 'Error occured while creating service' });
@@ -72,6 +72,8 @@ const getAllServices = async (req, res) => {
                     slug: { $first: '$slug' },
                     description: { $first: '$description' },
                     features: { $first: '$features' },
+                    addons: { $first: '$addons' },
+                    extras: { $first: '$extras' },
                     process: { $first: '$process' },
                     price: { $first: '$price' },
                     status: { $first: '$status' },
@@ -114,7 +116,7 @@ const deleteService = async (req, res) => {
 
 const editService = async (req, res) => {
     try {
-        const { title, slug, description, process = '', features, price, status } = req.body;
+        const { title, slug, description, process = '', features=[], addons=[], extras=[], price, status } = req.body;
 
         const { serviceId } = req.params;
 
@@ -122,7 +124,7 @@ const editService = async (req, res) => {
             return res.status(400).json({ success: false, message: 'All fields are required.' });
         }
 
-        const service = await Service.findByIdAndUpdate(serviceId, { title, slug, description, process, features, price, status });
+        const service = await Service.findByIdAndUpdate(serviceId, { title, slug, description, process, features, addons, extras, price, status });
 
         if (!service) {
             return res.status(500).json({ success: false, message: 'Error occured while updating service' });
