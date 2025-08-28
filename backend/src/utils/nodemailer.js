@@ -36,7 +36,7 @@ const contactEmail = async (name, email, phone, service, message) => {
     }
 }
 
-const orderAdminEmail = async (fullName, phone, email, service, document, dateTime = 'No Date', notes = 'Not Specified', price) => {
+const orderAdminEmail = async (fullName, phone, email, service, addonsAndExtras=[], document, dateTime = 'No Date', notes = 'Not Specified', price) => {
     try {
         const info = await transporter.sendMail({
             from: `"JD Mentors" <${process.env.EMAIL_USER}>`,
@@ -48,6 +48,7 @@ const orderAdminEmail = async (fullName, phone, email, service, document, dateTi
                     <p><b>Phone No.:</b> ${phone}</p>
                     <p><b>Email:</b> ${email}</p>
                     <p><b>Service:</b> ${service}</p>
+                    <p><b>Add-ons & Extras:</b> ${addonsAndExtras}</p>
                     <p><b>Amount:</b> $${price}</p>
                     <p><b>Document:</b> ${document.map((doc) => {
                         return doc + '<br /><br />'
@@ -63,7 +64,7 @@ const orderAdminEmail = async (fullName, phone, email, service, document, dateTi
     }
 }
 
-const orderUserEmail = async (email, service, document, dateTime, notes = 'Not Specified', price, sessionId) => {
+const orderUserEmail = async (email, service, addonsAndExtras=[], document, dateTime, notes = 'Not Specified', price, sessionId) => {
     try {
         const info = await transporter.sendMail({
             from: `"JD Mentors" <${process.env.EMAIL_USER}>`,
@@ -72,6 +73,7 @@ const orderUserEmail = async (email, service, document, dateTime, notes = 'Not S
             html: `
                     <p>Your session on JD Mentors has been booked. We will reach out to you soon. Here is the booking summary:</p>
                     <p><b>Service:</b> ${service}</p>
+                    <p><b>Add-ons & Extras:</b> ${addonsAndExtras}</p>
                     <p><b>Amount:</b> $${price}</p>
                     <p><b>Document:</b> ${document.map((doc) => {
                         return doc + '<br /><br />'

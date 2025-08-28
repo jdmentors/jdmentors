@@ -1,4 +1,4 @@
-import { CallToAction, Container, Hero, FAQ, Stat, AboutUs, LoadingSpinner } from "../components";
+import { CallToAction, Container, Hero, FAQ, Stat, AboutUs, LoadingSpinner, AllPackages, AllAddons, AllExtras } from "../components";
 import { Link } from "react-router";
 import { ArrowRight } from "lucide-react";
 import { lazy, useRef } from "react";
@@ -149,8 +149,8 @@ function Home() {
                 <Container>
                     <div>
 
-                        <h2 className="text-3xl font-bold text-blue-950">Our Specialized Services</h2>
-                        <p className="md:text-lg text-blue-950 mt-3 mb-10">Tailored support to make your law school application stand out.</p>
+                        <h2 className="text-3xl font-bold text-blue-950">Our Core Services</h2>
+                        <p className="md:text-lg text-blue-950 mt-3 mb-10">Foundational support tailored to your specific application needs.</p>
 
                         <Suspense fallback={<LoadingSpinner />}>
                             <AllServices limit={3} />
@@ -158,6 +158,63 @@ function Home() {
 
                         <div className="flex justify-center mt-10">
                             <Link className="py-2.5 px-6 rounded-md bg-blue-600 text-white inline-flex items-center gap-2" to="/services">All Services <ArrowRight /></Link>
+                        </div>
+                    </div>
+                </Container>
+            </section>
+
+            {/* Packages section */}
+            <section className="mt-12">
+                <Container>
+                    <div>
+
+                        <h2 className="text-3xl font-bold text-blue-950">Our Packages</h2>
+                        <p className="md:text-lg text-blue-950 mt-3 mb-10">Comprehensive, tiered solutions for complete application guidance.</p>
+
+                        <Suspense fallback={<LoadingSpinner />}>
+                            <AllPackages limit={3} />
+                        </Suspense>
+
+                        <div className="flex justify-center mt-10">
+                            <Link className="py-2.5 px-6 rounded-md bg-blue-600 text-white inline-flex items-center gap-2" to="/packages">All Packages <ArrowRight /></Link>
+                        </div>
+                    </div>
+                </Container>
+            </section>
+
+            {/* Add-ons section */}
+            <section className="mt-12">
+                <Container>
+                    <div>
+
+                        <h2 className="text-3xl font-bold text-blue-950">Our Add-ons</h2>
+                        <p className="md:text-lg text-blue-950 mt-3 mb-10">Specialized enhancements to strengthen specific parts of your application.</p>
+
+                        <Suspense fallback={<LoadingSpinner />}>
+                            <AllAddons limit={3} />
+                        </Suspense>
+
+                        <div className="flex justify-center mt-10">
+                            <Link className="py-2.5 px-6 rounded-md bg-blue-600 text-white inline-flex items-center gap-2" to="/addons">All Add-ons <ArrowRight /></Link>
+                        </div>
+                    </div>
+                </Container>
+            </section>
+
+            {/* Extras section */}
+            <section className="mt-12">
+                <Container>
+                    <div>
+
+                        <h2 className="text-3xl font-bold text-blue-950">Our Extras</h2>
+                        <p className="md:text-lg text-blue-950 mt-3 mb-10">Exclusive premium services for the final competitive edge.</p>
+
+                        <Suspense fallback={<LoadingSpinner />}>
+                            <AllExtras limit={3} />
+                        </Suspense>
+
+                        <div className="flex justify-center mt-10">
+                            <Link className="py-2.5 px-6 rounded-md bg-blue-600 text-white inline-flex items-center gap-2" to="/extras">All Extras <ArrowRight /></Link>
                         </div>
                     </div>
                 </Container>

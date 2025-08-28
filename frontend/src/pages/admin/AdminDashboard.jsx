@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { Check, DollarSign, FileDownIcon, Newspaper, Settings, User, UserRound, VideoIcon } from "lucide-react";
+import { Check, DollarSign, FileDownIcon, Gift, Newspaper, Package, Puzzle, Settings, User, UserRound, VideoIcon } from "lucide-react";
 import { Link } from "react-router";
 import useRefreshToken from "../../hooks/useRefreshToken";
 import { updateUser } from "../../features/forms/UserAuthSlice.js";
@@ -123,7 +123,7 @@ function AdminDashboard() {
         setUserPopUpId(id);
         setShowUserPopUp(true);
     }
-
+    
     return (
         <section className="flex min-h-[90vh] relative">
             {
@@ -176,7 +176,7 @@ function AdminDashboard() {
 
                                     <div>
                                         <p className="text-gray-600">Revenue</p>
-                                        <p className="text-2xl text-blue-950 font-semibold">${dashboardData?.revenue[0]?.totalPrice}</p>
+                                        <p className="text-2xl text-blue-950 font-semibold">${dashboardData?.totalRevenue}</p>
                                     </div>
                                 </div>
 
@@ -188,6 +188,39 @@ function AdminDashboard() {
                                     <div>
                                         <p className="text-gray-600">Services</p>
                                         <p className="text-2xl text-blue-950 font-semibold">{dashboardData?.serviceCount}</p>
+                                    </div>
+                                </div>
+
+                                <div className="flex justify-between gap-10 bg-blue-50 items-center border-2 border-blue-100 rounded-xl p-7">
+                                    <div className="bg-blue-100 p-3 rounded-md">
+                                        <Package size={30} strokeWidth={1.5} className="text-blue-600" />
+                                    </div>
+
+                                    <div>
+                                        <p className="text-gray-600">Packages</p>
+                                        <p className="text-2xl text-blue-950 font-semibold">{dashboardData?.packageCount}</p>
+                                    </div>
+                                </div>
+
+                                <div className="flex justify-between gap-10 bg-blue-50 items-center border-2 border-blue-100 rounded-xl p-7">
+                                    <div className="bg-blue-100 p-3 rounded-md">
+                                        <Puzzle size={30} strokeWidth={1.5} className="text-blue-600" />
+                                    </div>
+
+                                    <div>
+                                        <p className="text-gray-600">Add-ons</p>
+                                        <p className="text-2xl text-blue-950 font-semibold">{dashboardData?.addonCount}</p>
+                                    </div>
+                                </div>
+
+                                <div className="flex justify-between gap-10 bg-blue-50 items-center border-2 border-blue-100 rounded-xl p-7">
+                                    <div className="bg-blue-100 p-3 rounded-md">
+                                        <Gift size={30} strokeWidth={1.5} className="text-blue-600" />
+                                    </div>
+
+                                    <div>
+                                        <p className="text-gray-600">Extras</p>
+                                        <p className="text-2xl text-blue-950 font-semibold">{dashboardData?.extraCount}</p>
                                     </div>
                                 </div>
 
@@ -225,10 +258,10 @@ function AdminDashboard() {
                         </div>
 
                         <div className="my-5 overflow-x-auto">
-                            <div className="hidden sm:grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-5 items-center py-3 border-b-2 border-b-blue-100">
+                            <div className="hidden sm:grid grid-cols-[2fr_1fr_2fr_1fr_1fr_1fr_1fr] gap-5 items-center py-3 border-b-2 border-b-blue-100">
                                 <h5 className="text-lg">Service</h5>
                                 <h5 className="text-lg">User</h5>
-                                <h5 className="text-lg">Preferred Time</h5>
+                                <h5 className="text-lg">Add-ons & Extras</h5>
                                 <h5 className="text-lg">Payment</h5>
                                 <h5 className="text-lg">Document</h5>
                                 <h5 className="text-lg">Status</h5>
@@ -243,7 +276,7 @@ function AdminDashboard() {
                                             <div className="hidden sm:block">
                                                 {
                                                     allSessions.map(session => (
-                                                        <div key={session._id} className="md:grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-5 items-center py-5 text-gray-600">
+                                                        <div key={session._id} className="md:grid grid-cols-[2fr_1fr_2fr_1fr_1fr_1fr_1fr] gap-5 items-center py-5 text-gray-600">
                                                             <p className="text-gray-800">
                                                                 {session.service.title}
                                                             </p>
@@ -252,7 +285,19 @@ function AdminDashboard() {
                                                                 {session.fullName}
                                                             </p>
 
-                                                            <p>{session.dateTime ? new Date(session.dateTime).toDateString() + " " + `(${new Date(session.dateTime).toLocaleTimeString()})` : 'Not Specified'}</p>
+                                                            <div>
+                                                                {
+                                                                    session.addonsAndExtras && session.addonsAndExtras.length > 0
+                                                                        ?
+                                                                        session.addonsAndExtras.map((addonAndExtra) => {
+                                                                            return (
+                                                                                <p key={addonAndExtra}>{addonAndExtra}</p>
+                                                                            )
+                                                                        })
+                                                                        :
+                                                                        <p>Not Included</p>
+                                                                }
+                                                            </div>
 
                                                             <p className={`flex items-center gap-1 ${session.payment ? 'text-green-600' : 'text-red-600'}`}><span className={`h-2 w-2 ${!session.payment && 'bg-red-600'} rounded-full`}></span> <span>{session.payment ? `$${session.price}` : 'Pending'}</span></p>
 
@@ -298,7 +343,19 @@ function AdminDashboard() {
 
                                                             <div className="flex gap-2">
                                                                 <p className="text-gray-800">Preferred Time:</p>
-                                                                <p>{session.dateTime ? new Date(session.dateTime).toDateString() + " " + `(${new Date(session.dateTime).toLocaleTimeString()})` : 'Not Specified'}</p>
+                                                                <div>
+                                                                {
+                                                                    session.addonsAndExtras && session.addonsAndExtras.length > 0
+                                                                        ?
+                                                                        session.addonsAndExtras.map((addonAndExtra) => {
+                                                                            return (
+                                                                                <p key={addonAndExtra}>{addonAndExtra}</p>
+                                                                            )
+                                                                        })
+                                                                        :
+                                                                        <p>Not Included</p>
+                                                                }
+                                                            </div>
                                                             </div>
 
                                                             <div className="flex gap-2">

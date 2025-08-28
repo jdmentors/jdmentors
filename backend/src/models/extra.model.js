@@ -1,36 +1,15 @@
 import { Schema, model } from "mongoose";
 
-const serviceSchema = new Schema({
+const extraSchema = new Schema({
     title: {
         type: String,
         required: true,
         trim: true,
         index: true
     },
-    slug: {
-        type: String,
-        required: true,
-        trim: true,
-    },
     description: {
         type: String,
         required: true,
-        trim: true,
-    },
-    features: {
-        type: Array,
-        trim:true
-    },
-    addons: {
-        type: Array,
-        trim:true
-    },
-    extras: {
-        type: Array,
-        trim:true
-    },
-    process: {
-        type: String,
         trim: true,
     },
     price: {
@@ -49,6 +28,6 @@ const serviceSchema = new Schema({
     }
 }, {timestamps:true});
 
-const Service = model('Service', serviceSchema);
+const Extra = model('Extra', extraSchema);
 
-export default Service;
+export default Extra;

@@ -19,12 +19,22 @@ const sessionSchema = new Schema({
     },
     service: {
         type: Schema.Types.ObjectId,
-        ref: 'Service',
+        refPath: 'serviceType',
         required: true
+    },
+    serviceType: {
+        type: String,
+        enum: ['Service', 'Package', 'Addon', 'Extra'],
+        required: true,
+        default: 'Service'
     },
     price: {
         type: Number,
         required: true,
+    },
+    addonsAndExtras: {
+        type: Array,
+        required: false,
     },
     dateTime: {
         type: Date,

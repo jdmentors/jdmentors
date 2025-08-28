@@ -1,36 +1,35 @@
 import User from "../models/user.model.js";
 import Blog from "../models/blog.model.js";
 import Service from "../models/service.model.js";
+import Package from "../models/package.model.js";
+import Addon from "../models/addon.model.js";
+import Extra from "../models/extra.model.js";
 import Session from "../models/session.model.js";
 import { userExists } from "./user.controller.js";
 import { contactEmail, orderAdminEmail, orderUserEmail } from "../utils/nodemailer.js";
 
 const dashboard = async (req, res) => {
     try {
-        const [userCount, blogCount, serviceCount, sessionCount, adminCount, revenue] = await Promise.all([
+        const [userCount, blogCount, serviceCount, packageCount, addonCount, extraCount, sessionCount, adminCount, revenue] = await Promise.all([
             User.countDocuments(),
             Blog.countDocuments(),
             Service.countDocuments(),
+            Package.countDocuments(),
+            Addon.countDocuments(),
+            Extra.countDocuments(),
             Session.countDocuments(),
             User.countDocuments({ userType: 'admin' }),
             Session.aggregate([
                 {
-                    $lookup: {
-                        from: 'services',
-                        localField: 'service',
-                        foreignField: '_id',
-                        as: 'services'
-                    }
-                },
-                { $unwind: '$services' },
-                {
                     $group: {
                         _id: null,
-                        totalPrice: { $sum: '$services.price' }
+                        totalPrice: { $sum: '$price' }
                     }
                 }
             ])
         ]);
+
+        const totalRevenue = revenue.length > 0 ? revenue[0].totalPrice : 0;
 
         return res.status(200).json({
             success: true,
@@ -38,9 +37,12 @@ const dashboard = async (req, res) => {
                 userCount,
                 blogCount,
                 serviceCount,
+                packageCount,
+                addonCount,
+                extraCount,
                 sessionCount,
                 adminCount,
-                revenue
+                totalRevenue
             }
         });
     } catch (error) {
@@ -48,72 +50,72 @@ const dashboard = async (req, res) => {
     }
 }
 
-const createAdmin = async (req, res) => {
-    try {
-        const { fullName, email, phone = '', image = '', password, userType='admin' } = req.body;
+    const createAdmin = async (req, res) => {
+        try {
+            const { fullName, email, phone = '', image = '', password, userType = 'admin' } = req.body;
 
-        if (!fullName || !email || !password) {
-            return res.status(400).json({ success: false, message: 'All fields are required.' });
+            if (!fullName || !email || !password) {
+                return res.status(400).json({ success: false, message: 'All fields are required.' });
+            }
+
+            const existingUser = await userExists(email);
+
+            if (existingUser) {
+                return res.status(400).json({ success: false, message: 'Email already exists.' });
+            }
+
+            const createdUser = await User.create({ fullName, email, phone, password, image, userType });
+
+            return res.status(200).json({ success: true, message: 'Admin created' });
+        } catch (error) {
+            throw new Error(error);
         }
-
-        const existingUser = await userExists(email);
-
-        if (existingUser) {
-            return res.status(400).json({ success: false, message: 'Email already exists.' });
-        }
-
-        const createdUser = await User.create({ fullName, email, phone, password, image, userType });
-
-        return res.status(200).json({success: true, message: 'Admin created'});
-    } catch (error) {
-        throw new Error(error);
     }
-}
 
-const sendOrderEmail = async (req, res) => {
-    try {
-        const { fullName, email, phone, service, document, dateTime='No Date', notes='Not Provided', price, sessionId } = req.body;
+    const sendOrderEmail = async (req, res) => {
+        try {
+            const { fullName, email, phone, service, addonsAndExtras='Not Included', document, dateTime = 'No Date', notes = 'Not Provided', price, sessionId } = req.body;
 
-        if (!fullName || !email || !phone || !service || !document || !price || !sessionId) {
-            return res.status(400).json({ success: false, message: 'All fields are required.' });
+            if (!fullName || !email || !phone || !service || !document || !price || !sessionId) {
+                return res.status(400).json({ success: false, message: 'All fields are required.' });
+            }
+
+            const adminEmailSent = await orderAdminEmail(fullName, phone, email, service, addonsAndExtras, document, dateTime, notes, price);
+            const userEmailSent = await orderUserEmail(email, service, addonsAndExtras, document, dateTime, notes, price, sessionId);
+
+            if (!adminEmailSent || !userEmailSent) {
+                return res.status(500).json({ success: false, message: 'Could not send email.' });
+            }
+
+            return res.status(200).json({ success: true });
+        } catch (error) {
+            throw new Error(error);
         }
-
-        const adminEmailSent = await orderAdminEmail(fullName, phone, email, service, document, dateTime, notes, price);
-        const userEmailSent = await orderUserEmail(email, service, document, dateTime, notes, price, sessionId);
-
-        if(!adminEmailSent || !userEmailSent){
-            return res.status(500).json({ success: false, message: 'Could not send email.' });
-        }
-
-        return res.status(200).json({ success: true});
-    } catch (error) {
-        throw new Error(error);
     }
-}
 
-const sendContactEmail = async (req, res) => {
-    try {
-        const { name, email, phone, service, message } = req.body;
+    const sendContactEmail = async (req, res) => {
+        try {
+            const { name, email, phone, service, message } = req.body;
 
-        if (!name || !email || !phone || !service || !message) {
-            return res.status(400).json({ success: false, message: 'All fields are required.' });
+            if (!name || !email || !phone || !service || !message) {
+                return res.status(400).json({ success: false, message: 'All fields are required.' });
+            }
+
+            const contactEmailSent = await contactEmail(name, email, phone, service, message);
+
+            if (!contactEmailSent) {
+                return res.status(500).json({ success: false, message: 'Could not send email.' });
+            }
+
+            return res.status(200).json({ success: true, message: 'Message Sent' });
+        } catch (error) {
+            throw new Error(error);
         }
-
-        const contactEmailSent = await contactEmail(name, email, phone, service, message);
-
-        if(!contactEmailSent){
-            return res.status(500).json({ success: false, message: 'Could not send email.' });
-        }
-
-        return res.status(200).json({ success: true, message: 'Message Sent'});
-    } catch (error) {
-        throw new Error(error);
     }
-}
 
-export {
-    dashboard,
-    createAdmin,
-    sendOrderEmail,
-    sendContactEmail
-}
+    export {
+        dashboard,
+        createAdmin,
+        sendOrderEmail,
+        sendContactEmail
+    }

@@ -1,23 +1,18 @@
 import { Schema, model } from "mongoose";
 
-const serviceSchema = new Schema({
+const packageSchema = new Schema({
     title: {
         type: String,
         required: true,
         trim: true,
         index: true
     },
-    slug: {
-        type: String,
-        required: true,
-        trim: true,
-    },
     description: {
         type: String,
         required: true,
         trim: true,
     },
-    features: {
+    services: {
         type: Array,
         trim:true
     },
@@ -49,6 +44,6 @@ const serviceSchema = new Schema({
     }
 }, {timestamps:true});
 
-const Service = model('Service', serviceSchema);
+const Package = model('Package', packageSchema);
 
-export default Service;
+export default Package;
