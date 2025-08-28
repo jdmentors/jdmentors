@@ -99,6 +99,7 @@ function AllExtras() {
             }
         }
     }
+    
     return (
         <section className="flex min-h-[90vh]">
             <AdminSidebar />
@@ -145,7 +146,7 @@ function AllExtras() {
                                                         </p>
 
                                                         <p>{extra.sessionCount}</p>
-                                                        <p>${extra.sessionCount * extra.price}</p>
+                                                        <p>${extra.totalRevenue}</p>
                                                         <label className="relative cursor-pointer">
                                                             <input type="checkbox" checked={extra.status} onChange={(e) => handleUpdateAvailability(extra._id, e)} className="sr-only peer" />
 
@@ -186,7 +187,7 @@ function AllExtras() {
 
                                                         <div className="flex gap-4">
                                                             <p className="text-gray-800">Revenue:</p>
-                                                            <p>${extra.sessionCount * extra.price}</p>
+                                                            <p>${extra.totalRevenue}</p>
                                                         </div>
 
                                                         <div className="flex gap-4">

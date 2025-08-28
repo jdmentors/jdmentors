@@ -51,37 +51,48 @@ const getAService = async (req, res) => {
 const getAllServices = async (req, res) => {
     try {
         const allServices = await Service.aggregate([
-            {
-                $lookup: {
-                    from: 'sessions',
-                    localField: '_id',
-                    foreignField: 'service',
-                    as: 'sessions'
-                }
-            },
-            {
-                $unwind: {
-                    path: '$sessions',
-                    preserveNullAndEmptyArrays: true
-                }
-            },
-            {
-                $group: {
-                    _id: '$_id',
-                    title: { $first: '$title' },
-                    slug: { $first: '$slug' },
-                    description: { $first: '$description' },
-                    features: { $first: '$features' },
-                    addons: { $first: '$addons' },
-                    extras: { $first: '$extras' },
-                    process: { $first: '$process' },
-                    price: { $first: '$price' },
-                    status: { $first: '$status' },
-                    createdAt: { $first: '$createdAt' },
-                    sessionCount: { $sum: { $cond: [{ $ifNull: ["$sessions", false] }, 1, 0] } }
-                }
-            }
-        ]);
+  {
+    $lookup: {
+      from: 'sessions',
+      let: { serviceId: '$_id' },
+      pipeline: [
+        {
+          $match: {
+            $expr: { $eq: ['$service', '$$serviceId'] }
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            sessionCount: { $sum: 1 },
+            totalRevenue: { $sum: '$price' }
+          }
+        }
+      ],
+      as: 'sessionStats'
+    }
+  },
+  {
+    $project: {
+      title: 1,
+      slug: 1,
+      description: 1,
+      features: 1,
+      addons: 1,
+      extras: 1,
+      process: 1,
+      price: 1,
+      status: 1,
+      createdAt: 1,
+      sessionCount: { 
+        $ifNull: [{ $arrayElemAt: ['$sessionStats.sessionCount', 0] }, 0] 
+      },
+      totalRevenue: { 
+        $ifNull: [{ $arrayElemAt: ['$sessionStats.totalRevenue', 0] }, 0] 
+      }
+    }
+  }
+]);
 
 
         if (!allServices) {

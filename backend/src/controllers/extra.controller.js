@@ -10,8 +10,8 @@ const createExtra = async (req, res) => {
             return res.status(400).json({ success: false, message: 'All fields are required' });
         }
 
-        if(!user){
-            return res.status(401).json({success: false, message: 'Could not verify admin'});
+        if (!user) {
+            return res.status(401).json({ success: false, message: 'Could not verify admin' });
         }
 
         const extraExists = await Extra.findOne({ title });
@@ -38,30 +38,40 @@ const getAllExtras = async (req, res) => {
             {
                 $lookup: {
                     from: 'sessions',
-                    localField: '_id',
-                    foreignField: 'service',
-                    as: 'sessions'
+                    let: { extraId: '$_id' },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: { $eq: ['$service', '$$extraId'] }
+                            }
+                        },
+                        {
+                            $group: {
+                                _id: null,
+                                sessionCount: { $sum: 1 },
+                                totalRevenue: { $sum: '$price' }
+                            }
+                        }
+                    ],
+                    as: 'sessionStats'
                 }
             },
             {
-                $unwind: {
-                    path: '$sessions',
-                    preserveNullAndEmptyArrays: true
-                }
-            },
-            {
-                $group: {
-                    _id: '$_id',
-                    title: { $first: '$title' },
-                    description: { $first: '$description' },
-                    price: { $first: '$price' },
-                    status: { $first: '$status' },
-                    createdAt: { $first: '$createdAt' },
-                    sessionCount: { $sum: { $cond: [{ $ifNull: ["$sessions", false] }, 1, 0] } }
+                $project: {
+                    title: 1,
+                    description: 1,
+                    price: 1,
+                    status: 1,
+                    createdAt: 1,
+                    sessionCount: {
+                        $ifNull: [{ $arrayElemAt: ['$sessionStats.sessionCount', 0] }, 0]
+                    },
+                    totalRevenue: {
+                        $ifNull: [{ $arrayElemAt: ['$sessionStats.totalRevenue', 0] }, 0]
+                    }
                 }
             }
         ]);
-
 
         if (!allExtras) {
             return res.status(404).json({ success: false, message: 'No extras found' });
@@ -117,7 +127,7 @@ const getAnExtra = async (req, res) => {
 
 const editExtra = async (req, res) => {
     try {
-        const { title, description, price, status=true } = req.body;
+        const { title, description, price, status = true } = req.body;
 
         const { extraId } = req.params;
 

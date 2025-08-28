@@ -23,8 +23,8 @@ function AddServiceForm({ service }) {
             price: service?.price || "",
             process: service?.process || "",
             features: service?.features || [""],
-            addons: service?.addons || [],
-            extras: service?.extras || [],
+            addons: service?.addons || [""],
+            extras: service?.extras || [""],
             status: service?.status || true,
         }
     });

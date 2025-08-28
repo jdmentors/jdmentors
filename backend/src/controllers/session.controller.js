@@ -3,11 +3,11 @@ import { uploadDocsOnCloudinary } from "../utils/cloudinary.js";
 
 const createSession = async (req, res) => {
     try {
-        const { fullName, email, phone, dateTime = null, notes = null, service, price, addonsAndExtras=[] } = req.body;
+        const { fullName, email, phone, dateTime = null, notes = null, service, serviceType, price, addonsAndExtras=[] } = req.body;
 
         const document = req.files;
 
-        if (!service || !document || !fullName || !email || !phone || !price) {
+        if (!service || !serviceType || !document || !fullName || !email || !phone || !price) {
             return res.status(400).json({ success: false, message: 'All fields are required.' });
         }
 
@@ -20,7 +20,7 @@ const createSession = async (req, res) => {
             return res.status(500).json({ success: false, message: 'Failed to upload docs.' });
         }
 
-        const session = await Session.create({ fullName, email, phone, service, price, addonsAndExtras, dateTime, notes, document: uploaded || '' });
+        const session = await Session.create({ fullName, email, phone, service, serviceType, price, addonsAndExtras, dateTime, notes, document: uploaded || '' });
 
         if (!session) {
             return res.status(500).json({ success: false, message: 'Failed to book session.' });
@@ -87,11 +87,8 @@ const getASession = async (req, res) => {
         const { sessionId } = req.params;
 
         const session = await Session.findById(sessionId)
-            .select('fullName email phone price addonsAndExtras dateTime notes document status payment createAt')
-            .populate({
-                path: 'service',
-                select: 'title price description features'
-            });
+            .populate('service')
+            .select('fullName email phone price addonsAndExtras serviceType dateTime notes document status payment createAt');
 
         if (!session) {
             return res.status(500).json({ success: false, message: 'Could not find the session.' });

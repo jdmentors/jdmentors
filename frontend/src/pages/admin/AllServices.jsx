@@ -100,6 +100,7 @@ function AllServices() {
             }
         }
     }
+    
     return (
         <section className="flex min-h-[90vh]">
             <AdminSidebar />
@@ -146,7 +147,7 @@ function AllServices() {
                                                         </p>
 
                                                         <p>{service.sessionCount}</p>
-                                                        <p>${service.sessionCount * service.price}</p>
+                                                        <p>${service.totalRevenue}</p>
                                                         <label className="relative cursor-pointer">
                                                             <input type="checkbox" checked={service.status} onChange={(e) => handleUpdateAvailability(service._id, e)} className="sr-only peer" />
 
@@ -187,7 +188,7 @@ function AllServices() {
 
                                                         <div className="flex gap-4">
                                                             <p className="text-gray-800">Revenue:</p>
-                                                            <p>${service.sessionCount * service.price}</p>
+                                                            <p>${service.totalRevenue}</p>
                                                         </div>
 
                                                         <div className="flex gap-4">

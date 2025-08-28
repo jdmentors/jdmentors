@@ -1,4 +1,4 @@
-import { CalendarDays, Check, File, LockKeyholeIcon, Mail, Notebook, Phone, Plus, User, UserCheck2, X } from "lucide-react";
+import { CalendarDays, Check, File, Gift, LockKeyholeIcon, Mail, Notebook, Phone, Plus, Puzzle, Settings, User, UserCheck2, X } from "lucide-react";
 import { Container, FileInput, LoadingSpinner } from "../components";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -32,12 +32,14 @@ function Checkout() {
     const refreshAccessToken = useRefreshToken();
     const dispatch = useDispatch();
 
-    const { serviceId } = useParams();
+    const { serviceType, serviceId } = useParams();
+    const capitalize = (str) => str ? str.charAt(0).toUpperCase() + str.slice(1).toLowerCase() : '';
+    const capitalizedServiceType = capitalize(serviceType);
 
     useEffect(() => {
         const getService = async () => {
             try {
-                const { data } = await axios.get(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/services/single/${serviceId}`);
+                const { data } = await axios.get(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/${serviceType}s/single/${serviceId}`);
 
                 if (data && data.success) {
                     setService(data.data);
@@ -72,6 +74,7 @@ function Checkout() {
             formData.append('dateTime', userData.dateTime);
             formData.append('notes', userData.notes || null);
             formData.append('service', serviceId);
+            formData.append('serviceType', capitalizedServiceType);
             formData.append('price', discountedPrice);
             addonsAndExtras.forEach((addonAndExtra) => {
                 formData.append('addonsAndExtras[]', addonAndExtra);
@@ -111,6 +114,7 @@ function Checkout() {
                     formData.append('dateTime', userData.dateTime);
                     formData.append('notes', userData.notes || null);
                     formData.append('service', serviceId);
+                    formData.append('serviceType', capitalizedServiceType);
                     formData.append('price', discountedPrice);
                     addonsAndExtras.forEach((addonAndExtra) => {
                         formData.append('addonsAndExtras[]', addonAndExtra);
@@ -183,11 +187,11 @@ function Checkout() {
             console.error(error);
         }
     }
-
+    
     return (
         <section className="min-h-[70vh] pt-24 md:pt-32 relative">
             {
-                (showAddonsAndExtraPopUp && service) && (service.addons.length > 0 || service.extras.length > 0) &&
+                (showAddonsAndExtraPopUp && service) && (service.addons.length > 0 || service.extras.length > 0) && (serviceType == 'service') &&
                 (
                     <section className="fixed top-0 right-0 left-0 bottom-0 bg-black/70 z-50">
                         <div className="absolute bg-white w-lg max-w-full top-1/2 left-1/2 -translate-1/2 p-6 space-y-4 max-h-[90vh] overflow-y-auto">
@@ -338,16 +342,73 @@ function Checkout() {
                                     <p className="text-gray-600 mb-4">
                                         {service.description}
                                     </p>
-                                    <ul className="text-gray-600 space-y-2">
-                                        {
-                                            service.features.map(feature => (
-                                                <li key={feature} className="flex items-start gap-1">
-                                                    <Check className="text-blue-600" size={18} />
-                                                    <span>{feature}</span>
-                                                </li>
-                                            ))
-                                        }
-                                    </ul>
+                                    {
+                                        service.features && service.features.length > 0 &&
+                                        <>
+                                        <p className="text-gray-600 my-2 font-semibold">Features:</p>
+                                            <ul className="text-gray-600 space-y-2">
+                                            {
+                                                service.features.map(feature => (
+                                                    <li key={feature} className="flex items-start gap-1">
+                                                        <Check className="text-blue-600" size={18} />
+                                                        <span>{feature}</span>
+                                                    </li>
+                                                ))
+                                            }
+                                        </ul>
+                                        </>
+                                    }
+
+                                    {
+                                        service.services && service.services.length > 0 &&
+                                        <>
+                                        <p className="text-gray-600 my-2 font-semibold">Services:</p>
+                                            <ul className="text-gray-600 space-y-2">
+                                            {
+                                                service.services.map(service => (
+                                                    <li key={service} className="flex items-start gap-1">
+                                                        <Settings className="text-blue-600" size={18} />
+                                                        <span>{service}</span>
+                                                    </li>
+                                                ))
+                                            }
+                                        </ul>
+                                        </>
+                                    }
+
+                                    {
+                                        service.addons && service.addons.length > 0 &&
+                                        <>
+                                        <p className="text-gray-600 my-2 font-semibold">Add-ons:</p>
+                                            <ul className="text-gray-600 space-y-2">
+                                            {
+                                                service.addons.map(addon => (
+                                                    <li key={addon.title} className="flex items-start gap-1">
+                                                        <Puzzle className="text-blue-600" size={18} />
+                                                        <span>{addon.title}</span>
+                                                    </li>
+                                                ))
+                                            }
+                                        </ul>
+                                        </>
+                                    }
+
+                                    {
+                                        service.extras && service.extras.length > 0 &&
+                                        <>
+                                        <p className="text-gray-600 my-2 font-semibold">Extras:</p>
+                                            <ul className="text-gray-600 space-y-2">
+                                            {
+                                                service.extras.map(extra => (
+                                                    <li key={extra.title} className="flex items-start gap-1">
+                                                        <Gift className="text-blue-600" size={18} />
+                                                        <span>{extra.title}</span>
+                                                    </li>
+                                                ))
+                                            }
+                                        </ul>
+                                        </>
+                                    }
 
                                     {/* Coupon Code */}
                                     <div className="mt-5 text-gray-600">
@@ -358,11 +419,11 @@ function Checkout() {
                                             </div>
                                         </form>
 
-                                        <p className="flex justify-between">Total Price: <span className="font-light text-xl text-black mb-2">${service.price}</span></p>
+                                        <p className="flex justify-between">Base Price: <span className="font-light text-xl text-black mb-2">${service.price}</span></p>
                                         <p className="flex justify-between">Discount: <span className="font-light text-xl text-black mb-2">- {discount}%</span></p>
                                         <p className="flex justify-between">Discounted Price: <span className="font-semibold text-xl text-black mb-2">${discountedPrice.toFixed(2)}</span></p>
 
-                                        {isChecked && (
+                                        {isChecked && serviceType == 'service' && (
                                             <p onClick={() => setShowAddonsAndExtraPopUp(true)} className="text-blue-600 flex items-center gap-1 cursor-pointer"><span className="text-2xl">+</span> <span className="underline">Add-ons & Extras (optional)</span></p>
                                         )}
 

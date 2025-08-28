@@ -11,10 +11,10 @@ function ServiceCard({ _id, title, description, features, price, process }) {
     const handleClick = () => {
         try {
             if (isUserLoggedIn) {
-                navigate(`/checkout/${_id}`);
+                navigate(`/checkout/service/${_id}`);
             } else {
                 dispatch(toggleShowUserAuthForm(true));
-                navigate(`/checkout/${_id}`);
+                navigate(`/checkout/service/${_id}`);
             }
         } catch (error) {
             console.error(error);

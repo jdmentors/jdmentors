@@ -2,7 +2,7 @@ import Package from "../models/package.model.js";
 
 const createPackage = async (req, res) => {
     try {
-        const { title, description, process = '', services=[], addons=[], extras=[], price, status } = req.body;
+        const { title, description, process = '', services = [], addons = [], extras = [], price, status } = req.body;
 
         const user = req.user;
 
@@ -34,30 +34,37 @@ const getAllPackages = async (req, res) => {
             {
                 $lookup: {
                     from: 'sessions',
-                    localField: '_id',
-                    foreignField: 'service',
-                    as: 'sessions'
+                    let: { packageId: '$_id' },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: { $eq: ['$service', '$$packageId'] }
+                            }
+                        },
+                        {
+                            $group: {
+                                _id: null,
+                                sessionCount: { $sum: 1 },
+                                totalRevenue: { $sum: '$price' }
+                            }
+                        }
+                    ],
+                    as: 'sessionStats'
                 }
             },
             {
-                $unwind: {
-                    path: '$sessions',
-                    preserveNullAndEmptyArrays: true
-                }
-            },
-            {
-                $group: {
-                    _id: '$_id',
-                    title: { $first: '$title' },
-                    description: { $first: '$description' },
-                    services: { $first: '$services' },
-                    addons: { $first: '$addons' },
-                    extras: { $first: '$extras' },
-                    process: { $first: '$process' },
-                    price: { $first: '$price' },
-                    status: { $first: '$status' },
-                    createdAt: { $first: '$createdAt' },
-                    sessionCount: { $sum: { $cond: [{ $ifNull: ["$sessions", false] }, 1, 0] } }
+                $project: {
+                    title: 1,
+                    description: 1,
+                    services: 1,
+                    addons: 1,
+                    extras: 1,
+                    process: 1,
+                    price: 1,
+                    status: 1,
+                    createdAt: 1,
+                    sessionCount: { $ifNull: [{ $arrayElemAt: ['$sessionStats.sessionCount', 0] }, 0] },
+                    totalRevenue: { $ifNull: [{ $arrayElemAt: ['$sessionStats.totalRevenue', 0] }, 0] }
                 }
             }
         ]);
@@ -96,7 +103,7 @@ const updateAvailability = async (req, res) => {
 
 const editPackage = async (req, res) => {
     try {
-        const { title, description, process = '', services=[], addons=[], extras=[], price, status } = req.body;
+        const { title, description, process = '', services = [], addons = [], extras = [], price, status } = req.body;
 
         const { packageId } = req.params;
 

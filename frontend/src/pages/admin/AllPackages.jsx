@@ -145,7 +145,7 @@ function AllPackages() {
                                                         </p>
 
                                                         <p>{ourPackage.sessionCount}</p>
-                                                        <p>${ourPackage.sessionCount * ourPackage.price}</p>
+                                                        <p>${ourPackage.totalRevenue}</p>
                                                         <label className="relative cursor-pointer">
                                                             <input type="checkbox" checked={ourPackage.status} onChange={(e) => handleUpdateAvailability(ourPackage._id, e)} className="sr-only peer" />
 
@@ -186,7 +186,7 @@ function AllPackages() {
 
                                                         <div className="flex gap-4">
                                                             <p className="text-gray-800">Revenue:</p>
-                                                            <p>${ourPackage.sessionCount * ourPackage.price}</p>
+                                                            <p>${ourPackage.totalRevenue}</p>
                                                         </div>
 
                                                         <div className="flex gap-4">

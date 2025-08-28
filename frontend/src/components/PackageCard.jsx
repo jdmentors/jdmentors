@@ -11,10 +11,10 @@ function PackageCard({ _id, title, description, services = [], addons = [], extr
     const handleClick = () => {
         try {
             if (isUserLoggedIn) {
-                navigate(`/checkout/${_id}`);
+                navigate(`/checkout/package/${_id}`);
             } else {
                 dispatch(toggleShowUserAuthForm(true));
-                navigate(`/checkout/${_id}`);
+                navigate(`/checkout/package/${_id}`);
             }
         } catch (error) {
             console.error(error);
@@ -23,7 +23,7 @@ function PackageCard({ _id, title, description, services = [], addons = [], extr
 
     return (
         <div className="package-card bg-white rounded-xl overflow-hidden shadow-lg shadow-blue-200 border border-blue-100 transition duration-300 flex flex-col relative">
-            {_id == '68ae8c7e6ab48dc9e3f708a6' && <p className="bg-blue-600 text-white py-1 px-3 text-xs absolute right-4 top-3 rounded">Featured</p>}
+            {_id == '68b01ac311cd8661cbde73f8' && <p className="bg-blue-600 text-white py-1 px-3 text-xs absolute right-4 top-3 rounded">Featured</p>}
             <div className="p-6 flex flex-col flex-1">
                 {/* Top section */}
                 <div>

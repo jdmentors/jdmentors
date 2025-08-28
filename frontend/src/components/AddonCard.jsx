@@ -11,10 +11,10 @@ function AddonCard({ _id, title, description, price }) {
     const handleClick = () => {
         try {
             if (isUserLoggedIn) {
-                navigate(`/checkout/${_id}`);
+                navigate(`/checkout/addon/${_id}`);
             } else {
                 dispatch(toggleShowUserAuthForm(true));
-                navigate(`/checkout/${_id}`);
+                navigate(`/checkout/addon/${_id}`);
             }
         } catch (error) {
             console.error(error);

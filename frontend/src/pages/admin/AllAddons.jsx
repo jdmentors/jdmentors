@@ -99,6 +99,7 @@ function AllAddons() {
             }
         }
     }
+    
     return (
         <section className="flex min-h-[90vh]">
             <AdminSidebar />
@@ -145,7 +146,7 @@ function AllAddons() {
                                                         </p>
 
                                                         <p>{addon.sessionCount}</p>
-                                                        <p>${addon.sessionCount * addon.price}</p>
+                                                        <p>${addon.totalRevenue}</p>
                                                         <label className="relative cursor-pointer">
                                                             <input type="checkbox" checked={addon.status} onChange={(e) => handleUpdateAvailability(addon._id, e)} className="sr-only peer" />
 
@@ -186,7 +187,7 @@ function AllAddons() {
 
                                                         <div className="flex gap-4">
                                                             <p className="text-gray-800">Revenue:</p>
-                                                            <p>${addon.sessionCount * addon.price}</p>
+                                                            <p>${addon.totalRevenue}</p>
                                                         </div>
 
                                                         <div className="flex gap-4">
