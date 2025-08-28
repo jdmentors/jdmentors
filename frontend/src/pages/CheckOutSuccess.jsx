@@ -124,7 +124,7 @@ function CheckOutSuccess() {
                                                     })}
                                                 </div>
                                             </div>
-                                            <p className="flex justify-between">Total Price: <span className="font-semibold text-xl text-black">${session.price}</span></p>
+                                            <p className="flex justify-between">Total Price: <span className="font-semibold text-xl text-black">${Math.round(session.price)}</span></p>
                                         </div>
                                     </div>
                                 </section>
