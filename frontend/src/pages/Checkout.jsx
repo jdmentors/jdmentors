@@ -75,7 +75,7 @@ function Checkout() {
             formData.append('notes', userData.notes || null);
             formData.append('service', serviceId);
             formData.append('serviceType', capitalizedServiceType);
-            formData.append('price', discountedPrice);
+            formData.append('price', Math.round(discountedPrice));
             addonsAndExtras.forEach((addonAndExtra) => {
                 formData.append('addonsAndExtras[]', addonAndExtra);
             });
@@ -115,7 +115,7 @@ function Checkout() {
                     formData.append('notes', userData.notes || null);
                     formData.append('service', serviceId);
                     formData.append('serviceType', capitalizedServiceType);
-                    formData.append('price', discountedPrice);
+                    formData.append('price', Math.round(discountedPrice));
                     addonsAndExtras.forEach((addonAndExtra) => {
                         formData.append('addonsAndExtras[]', addonAndExtra);
                     });
@@ -421,7 +421,7 @@ function Checkout() {
 
                                         <p className="flex justify-between">Base Price: <span className="font-light text-xl text-black mb-2">${service.price}</span></p>
                                         <p className="flex justify-between">Discount: <span className="font-light text-xl text-black mb-2">- {discount}%</span></p>
-                                        <p className="flex justify-between">Discounted Price: <span className="font-semibold text-xl text-black mb-2">${discountedPrice.toFixed(2)}</span></p>
+                                        <p className="flex justify-between">Discounted Price: <span className="font-semibold text-xl text-black mb-2">${Math.round(discountedPrice)}</span></p>
 
                                         {isChecked && serviceType == 'service' && (
                                             <p onClick={() => setShowAddonsAndExtraPopUp(true)} className="text-blue-600 flex items-center gap-1 cursor-pointer"><span className="text-2xl">+</span> <span className="underline">Add-ons & Extras (optional)</span></p>

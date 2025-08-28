@@ -112,7 +112,7 @@ app.post('/create-checkout-session', async (req, res) => {
           product_data: {
             name: `${data.data.service.title}`,
           },
-          unit_amount: Number(data.data.price) * 100,
+          unit_amount: Math.round(Number(data.data.price)) * 100,
         },
         quantity: 1,
       },
