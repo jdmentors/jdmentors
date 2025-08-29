@@ -1,4 +1,4 @@
-import { CalendarCheck2, Puzzle } from "lucide-react";
+import { CalendarCheck2, Plus, Puzzle } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
 import { toggleShowUserAuthForm } from "../features/forms/UserAuthSlice.js";
@@ -28,7 +28,7 @@ function AddonCard({ _id, title, description, price }) {
                 <div>
                     <div className="flex items-center mb-4">
                         <div className="bg-blue-100 p-2.5 rounded-full mr-4 w-10 h-10 flex items-center justify-center">
-                            <Puzzle className="text-blue-600" />
+                            <Plus className="text-blue-600" />
                         </div>
                         <h3 className="text-lg font-semibold text-blue-950">{title}</h3>
                     </div>

@@ -367,7 +367,7 @@ function Checkout() {
                                                 {
                                                     addonsAndExtras.map(addonAndExtra => (
                                                         <li key={addonAndExtra} className="flex items-start gap-1">
-                                                            <Puzzle className="text-blue-600" size={18} />
+                                                            <Plus className="text-blue-600" size={18} />
                                                             <span>{addonAndExtra}</span>
                                                         </li>
                                                     ))
@@ -401,7 +401,7 @@ function Checkout() {
                                                 {
                                                     service.addons.map(addon => (
                                                         <li key={addon} className="flex items-start gap-1">
-                                                            <Puzzle className="text-blue-600" size={18} />
+                                                            <Plus className="text-blue-600" size={18} />
                                                             <span>{addon}</span>
                                                         </li>
                                                     ))

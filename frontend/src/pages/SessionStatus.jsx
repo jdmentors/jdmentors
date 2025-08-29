@@ -1,4 +1,4 @@
-import { Check, CheckCircle2, FileDownIcon, Puzzle, Search, UserCheck2 } from "lucide-react";
+import { Check, CheckCircle2, FileDownIcon, Plus, Search, UserCheck2 } from "lucide-react";
 import Container from "../components/Container";
 import { Link, useParams } from "react-router";
 import { useEffect } from "react";
@@ -95,7 +95,7 @@ function SessionStatus() {
                                                     {
                                                         session.addonsAndExtras.map(addonAndExtra => (
                                                             <li key={addonAndExtra} className="flex items-start gap-1">
-                                                                <Puzzle className="text-blue-600" size={18} />
+                                                                <Plus className="text-blue-600" size={18} />
                                                                 <span>{addonAndExtra}</span>
                                                             </li>
                                                         ))
