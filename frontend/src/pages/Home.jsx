@@ -144,13 +144,16 @@ function Home() {
                 </Container>
             </section>
 
+            {/* About us */}
+            <AboutUs />
+
             {/* Packages section */}
-            <section className="mt-12">
+            <section className="mt-14">
                 <Container>
                     <div>
 
-                        <h2 className="text-3xl font-bold text-blue-950">Our Specialized Packages</h2>
-                        <p className="md:text-lg text-blue-950 mt-3 mb-10">Comprehensive, tiered solutions for complete application guidance.</p>
+                        <h2 className="text-3xl font-bold text-blue-950">All-In-One Solutions</h2>
+                        <p className="md:text-lg text-blue-950 mt-3 mb-10">Full-service guidance designed to maximize admissions and scholarship results.</p>
 
                         <Suspense fallback={<LoadingSpinner />}>
                             <AllPackages limit={3} />
@@ -162,9 +165,6 @@ function Home() {
                     </div>
                 </Container>
             </section>
-
-            {/* About us */}
-            <AboutUs />
 
             {/* Testimonials section */}
             {/* <section className="mt-12 md:mt-16">

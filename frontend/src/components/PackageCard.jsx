@@ -1,4 +1,4 @@
-import { CalendarCheck2, Gift, Package, Puzzle, Settings } from "lucide-react";
+import { CalendarCheck2, Gift, Package, Plus, Settings } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
 import { toggleShowUserAuthForm } from "../features/forms/UserAuthSlice.js";
@@ -60,7 +60,7 @@ function PackageCard({ _id, title, description, services = [], addons = [], extr
                                 <ul className="text-gray-600 space-y-2 mb-4">
                                     {addons.map((addon) => (
                                         <li key={addon} className="flex items-start gap-1">
-                                            <Puzzle className="text-blue-600" size={18} />
+                                            <Plus className="text-blue-600" size={18} />
                                             <span>{addon}</span>
                                         </li>
                                     ))}

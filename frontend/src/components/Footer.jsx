@@ -6,17 +6,17 @@ import { Instagram, Mail, Phone } from "lucide-react";
 
 function Footer() {
     const quickLinks = [
-        { name: 'Home', href: '/' },
+        // { name: 'Home', href: '/' },
         { name: 'About', href: '/about' },
         { name: 'Blogs', href: '/blogs' },
+        { name: 'Services', href: '/services' },
         // { name: 'Testimonials', href: '/testimonials' },
-         { name: 'Check Session Status', href: '/session-status' },
+        { name: 'Check Session Status', href: '/session-status' },
     ];
 
-    const ourServices = [
-        { name: 'Core Services', href: '/services' },
-        { name: 'Packages', href: '/packages' },
-        { name: 'Extras', href: '/extras' },
+    const legalPolicies = [
+        { name: 'Privacy Policy', href: '/privacy-policy' },
+        { name: 'Terms & Conditions', href: '/terms-conditions' },
     ];
 
     return (
@@ -55,11 +55,11 @@ function Footer() {
 
                     <div>
                         <p className='text-lg text-gray-300 font-semibold'>
-                            Services
+                            Legal Policies
                         </p>
                         <ul className='mt-3 flex flex-col gap-2 '>
                             {
-                                ourServices.map(service => (
+                                legalPolicies.map(service => (
                                     <li key={service.name}>
                                         <Link to={service.href}>{service.name}</Link>
                                     </li>
