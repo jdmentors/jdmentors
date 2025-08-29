@@ -16,7 +16,6 @@ function Footer() {
     const ourServices = [
         { name: 'Core Services', href: '/services' },
         { name: 'Packages', href: '/packages' },
-        { name: 'Add-ons', href: '/addons' },
         { name: 'Extras', href: '/extras' },
     ];
 
