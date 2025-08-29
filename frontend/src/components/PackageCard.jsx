@@ -23,7 +23,7 @@ function PackageCard({ _id, title, description, services = [], addons = [], extr
 
     return (
         <div className="package-card bg-white rounded-xl overflow-hidden shadow-lg shadow-blue-200 border border-blue-100 transition duration-300 flex flex-col relative">
-            {_id == '68b01ac311cd8661cbde73f8' && <p className="bg-blue-600 text-white py-1 px-3 text-xs absolute right-4 top-3 rounded">Featured</p>}
+            {_id == '68b01ac311cd8661cbde73f8' && <p className="bg-blue-600 text-white py-1 px-3 text-xs absolute right-4 top-3 rounded">Most Popular</p>}
             <div className="p-6 flex flex-col flex-1">
                 {/* Top section */}
                 <div>
@@ -36,7 +36,7 @@ function PackageCard({ _id, title, description, services = [], addons = [], extr
                     <p className="text-gray-600 mb-4">{description}</p>
 
                     {
-                        services &&
+                        (services) &&
                         (
                             <div>
                                 <p className="text-gray-600 mb-2 font-semibold">Services:</p>

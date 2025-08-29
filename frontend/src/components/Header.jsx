@@ -19,14 +19,15 @@ function Header() {
         { name: 'Blogs', href: '/blogs' },
         // { name: 'Testimonials', href: '/testimonials' },
         { name: 'Contact', href: '/contact' },
+        { name: 'Services', href: '/services' },
     ];
 
-    const services = [
-        { name: 'Core Services', href: '/services' },
-        { name: 'Packages', href: '/packages' },
-        { name: 'Add-ons', href: '/addons' },
-        { name: 'Extras', href: '/extras' },
-    ];
+    // const services = [
+    //     { name: 'Core Services', href: '/services' },
+    //     { name: 'Packages', href: '/packages' },
+    //     { name: 'Add-ons', href: '/addons' },
+    //     { name: 'Extras', href: '/extras' },
+    // ];
 
     useEffect(() => {
         const handleScroll = () => {
@@ -55,7 +56,7 @@ function Header() {
                                 </li>
                             ))
                         }
-                        <li className="flex items-center relative" onClick={() => setIsOpen(!isOpen)}>
+                        {/* <li className="flex items-center relative" onClick={() => setIsOpen(!isOpen)}>
                             <Link className={`${isScrolled ? 'text-blue-950 after:bg-blue-950' : 'text-white'}`}>Services</Link>
 
                             <svg className={`w-5 h-5 inline float-right transition-transform cursor-pointer duration-200 ${isOpen ? "rotate-0" : "-rotate-90"}`} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke={`${isScrolled ? '#172554' : '#fff'}`} >
@@ -71,7 +72,7 @@ function Header() {
                                     ))}
                                 </ul>
                             )}
-                        </li>
+                        </li> */}
                         <li>
                             {
                                 isUserLoggedIn
@@ -103,7 +104,7 @@ function Header() {
                                 </li>
                             ))
                         }
-                        <li className="flex items-center justify-center relative mx-5 py-2" onClick={() => setIsOpen(!isOpen)}>
+                        {/* <li className="flex items-center justify-center relative mx-5 py-2" onClick={() => setIsOpen(!isOpen)}>
                             <Link className={`text-blue-950 after:bg-blue-950`}>Services</Link>
 
                             <svg className={`w-5 h-5 inline float-right transition-transform cursor-pointer duration-200 ${isOpen ? "rotate-0" : "-rotate-90"}`} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke={`#172554`} >
@@ -119,7 +120,7 @@ function Header() {
                                     ))}
                                 </ul>
                             )}
-                        </li>
+                        </li> */}
                         {
                             isUserLoggedIn
                             &&

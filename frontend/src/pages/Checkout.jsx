@@ -187,14 +187,14 @@ function Checkout() {
             console.error(error);
         }
     }
-    
+
     return (
         <section className="min-h-[70vh] pt-24 md:pt-32 relative">
             {
-                (showAddonsAndExtraPopUp && service) && (service.addons.length > 0 || service.extras.length > 0) && (serviceType == 'service') &&
+                (showAddonsAndExtraPopUp && service) && (serviceType == 'service') && (service.addons.length > 0 || service.extras.length > 0) &&
                 (
                     <section className="fixed top-0 right-0 left-0 bottom-0 bg-black/70 z-50">
-                        <div className="absolute bg-white w-lg max-w-full top-1/2 left-1/2 -translate-1/2 p-6 space-y-4 max-h-[90vh] overflow-y-auto">
+                        <div className="absolute bg-white w-lg max-w-full top-1/2 left-1/2 -translate-1/2 p-6 space-y-4 max-h-[100vh] overflow-y-auto">
                             <button onClick={() => setShowAddonsAndExtraPopUp(false)} className="absolute right-5 cursor-pointer"><X size={32} /></button>
                             <h1 className="text-2xl font-bold mb-3 text-gray-900">
                                 Customize Your Service
@@ -345,68 +345,85 @@ function Checkout() {
                                     {
                                         service.features && service.features.length > 0 &&
                                         <>
-                                        <p className="text-gray-600 my-2 font-semibold">Features:</p>
+                                            <p className="text-gray-600 my-2 font-semibold">Features:</p>
                                             <ul className="text-gray-600 space-y-2">
-                                            {
-                                                service.features.map(feature => (
-                                                    <li key={feature} className="flex items-start gap-1">
-                                                        <Check className="text-blue-600" size={18} />
-                                                        <span>{feature}</span>
-                                                    </li>
-                                                ))
-                                            }
-                                        </ul>
+                                                {
+                                                    service.features.map(feature => (
+                                                        <li key={feature} className="flex items-start gap-1">
+                                                            <Check className="text-blue-600" size={18} />
+                                                            <span>{feature}</span>
+                                                        </li>
+                                                    ))
+                                                }
+                                            </ul>
+                                        </>
+                                    }
+
+                                    {
+                                        addonsAndExtras && addonsAndExtras.length > 0 &&
+                                        <>
+                                            <p className="text-gray-600 my-3 font-semibold">Add-ons & Extras:</p>
+                                            <ul className="text-gray-600 space-y-2">
+                                                {
+                                                    addonsAndExtras.map(addonAndExtra => (
+                                                        <li key={addonAndExtra} className="flex items-start gap-1">
+                                                            <Puzzle className="text-blue-600" size={18} />
+                                                            <span>{addonAndExtra}</span>
+                                                        </li>
+                                                    ))
+                                                }
+                                            </ul>
                                         </>
                                     }
 
                                     {
                                         service.services && service.services.length > 0 &&
                                         <>
-                                        <p className="text-gray-600 my-2 font-semibold">Services:</p>
+                                            <p className="text-gray-600 my-2 font-semibold">Services:</p>
                                             <ul className="text-gray-600 space-y-2">
-                                            {
-                                                service.services.map(service => (
-                                                    <li key={service} className="flex items-start gap-1">
-                                                        <Settings className="text-blue-600" size={18} />
-                                                        <span>{service}</span>
-                                                    </li>
-                                                ))
-                                            }
-                                        </ul>
+                                                {
+                                                    service.services.map(service => (
+                                                        <li key={service} className="flex items-start gap-1">
+                                                            <Settings className="text-blue-600" size={18} />
+                                                            <span>{service}</span>
+                                                        </li>
+                                                    ))
+                                                }
+                                            </ul>
                                         </>
                                     }
 
                                     {
-                                        service.addons && service.addons.length > 0 &&
+                                        (service.addons && service.addons.length && serviceType == 'package') > 0 &&
                                         <>
-                                        <p className="text-gray-600 my-2 font-semibold">Add-ons:</p>
+                                            <p className="text-gray-600 my-2 font-semibold">Add-ons:</p>
                                             <ul className="text-gray-600 space-y-2">
-                                            {
-                                                service.addons.map(addon => (
-                                                    <li key={addon.title} className="flex items-start gap-1">
-                                                        <Puzzle className="text-blue-600" size={18} />
-                                                        <span>{addon.title}</span>
-                                                    </li>
-                                                ))
-                                            }
-                                        </ul>
+                                                {
+                                                    service.addons.map(addon => (
+                                                        <li key={addon} className="flex items-start gap-1">
+                                                            <Puzzle className="text-blue-600" size={18} />
+                                                            <span>{addon}</span>
+                                                        </li>
+                                                    ))
+                                                }
+                                            </ul>
                                         </>
                                     }
 
                                     {
-                                        service.extras && service.extras.length > 0 &&
+                                        (service.extras && service.extras.length > 0 && serviceType == 'package') &&
                                         <>
-                                        <p className="text-gray-600 my-2 font-semibold">Extras:</p>
+                                            <p className="text-gray-600 my-2 font-semibold">Extras:</p>
                                             <ul className="text-gray-600 space-y-2">
-                                            {
-                                                service.extras.map(extra => (
-                                                    <li key={extra.title} className="flex items-start gap-1">
-                                                        <Gift className="text-blue-600" size={18} />
-                                                        <span>{extra.title}</span>
-                                                    </li>
-                                                ))
-                                            }
-                                        </ul>
+                                                {
+                                                    service.extras.map(extra => (
+                                                        <li key={extra} className="flex items-start gap-1">
+                                                            <Gift className="text-blue-600" size={18} />
+                                                            <span>{extra}</span>
+                                                        </li>
+                                                    ))
+                                                }
+                                            </ul>
                                         </>
                                     }
 
@@ -423,12 +440,12 @@ function Checkout() {
                                         <p className="flex justify-between">Discount: <span className="font-light text-xl text-black mb-2">- {discount}%</span></p>
                                         <p className="flex justify-between">Discounted Price: <span className="font-semibold text-xl text-black mb-2">${Math.round(discountedPrice)}</span></p>
 
-                                        {isChecked && serviceType == 'service' && (
+                                        {serviceType == 'service' && (
                                             <p onClick={() => setShowAddonsAndExtraPopUp(true)} className="text-blue-600 flex items-center gap-1 cursor-pointer"><span className="text-2xl">+</span> <span className="underline">Add-ons & Extras (optional)</span></p>
                                         )}
 
                                         <label className="flex gap-2 items-center">
-                                            <input type="checkbox" checked={isChecked} onChange={(e) => { setIsChecked(e.target.checked); setTermsWarning(!e.target.checked); setShowAddonsAndExtraPopUp(true); }} />
+                                            <input type="checkbox" checked={isChecked} onChange={(e) => { setIsChecked(e.target.checked); setTermsWarning(!e.target.checked); addonsAndExtras.length < 1 &&setShowAddonsAndExtraPopUp(true); }} />
                                             <span>I have read and agree to the <Link className="text-blue-600 underline" to="/terms-conditions">terms & conditions.</Link></span>
                                         </label>
 

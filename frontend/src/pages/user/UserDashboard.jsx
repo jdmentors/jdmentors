@@ -47,7 +47,7 @@ function UserDashboard() {
         }
         getUserSessions();
     }, [])
-
+    
     return (
         <section className="flex min-h-[70vh]">
             <UserSidebar />
@@ -67,7 +67,7 @@ function UserDashboard() {
                         <div className="my-5 overflow-x-auto">
                             <div className="hidden sm:grid grid-cols-[2fr_2fr_1fr_1fr_1fr] gap-5 items-center py-3 border-b-2 border-b-blue-100">
                                 <h5 className="text-lg">Service</h5>
-                                <h5 className="text-lg">Preferred Time</h5>
+                                <h5 className="text-lg">Add-ons & Extras</h5>
                                 <h5 className="text-lg">Payment</h5>
                                 <h5 className="text-lg">Document</h5>
                                 <h5 className="text-lg">Status</h5>
@@ -86,7 +86,19 @@ function UserDashboard() {
                                                                 {session.service.title}
                                                             </p>
 
-                                                            <p>{session.dateTime ? new Date(session.dateTime).toDateString() + " " + `(${new Date(session.dateTime).toLocaleTimeString()})` : 'Not Specified'}</p>
+                                                            <div>
+                                                                {
+                                                                    session.addonsAndExtras && session.addonsAndExtras.length > 0
+                                                                        ?
+                                                                        session.addonsAndExtras.map((addonAndExtra) => {
+                                                                            return (
+                                                                                <p key={addonAndExtra}>{addonAndExtra}</p>
+                                                                            )
+                                                                        })
+                                                                        :
+                                                                        <p>Not Included</p>
+                                                                }
+                                                            </div>
 
                                                             <p className={`flex items-center gap-1 ${session.payment ? 'text-green-600' : 'text-red-600'}`}><span className={`h-2 w-2 ${!session.payment && 'bg-red-600'} rounded-full`}></span> <span>{session.payment ? `$${session.price}` : 'Pending'}</span></p>
 
@@ -118,8 +130,20 @@ function UserDashboard() {
                                                             </div>
 
                                                             <div className="flex gap-2">
-                                                                <p className="text-gray-800">Preferred Time:</p>
-                                                                <p>{session.dateTime ? new Date(session.dateTime).toDateString() + " " + `(${new Date(session.dateTime).toLocaleTimeString()})` : 'Not Specified'}</p>
+                                                                <p className="text-gray-800">Add-ons & Extras:</p>
+                                                                <div>
+                                                                    {
+                                                                        session.addonsAndExtras && session.addonsAndExtras.length > 0
+                                                                            ?
+                                                                            session.addonsAndExtras.map((addonAndExtra) => {
+                                                                                return (
+                                                                                    <p key={addonAndExtra}>{addonAndExtra}</p>
+                                                                                )
+                                                                            })
+                                                                            :
+                                                                            <p>Not Included</p>
+                                                                    }
+                                                                </div>
                                                             </div>
 
                                                             <div className="flex gap-2">
