@@ -17,7 +17,7 @@ function AllPackages({ limit }) {
     return (
             allPackages
             ?
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 sm:gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-10 gap-10 sm:gap-8">
                 {
                     limit ?
                         allPackages.slice(0, limit).map(ourPackge => (

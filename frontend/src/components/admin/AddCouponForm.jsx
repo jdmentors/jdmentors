@@ -101,7 +101,7 @@ function AddCouponForm({ coupon }) {
     return (
         <form onSubmit={coupon ? handleSubmit(editCoupon) : handleSubmit(publishCoupon)}>
             <div className="w-full grid grid-cols-1 md:grid-cols-5 gap-10 items-start">
-                <div className="border-2 border-blue-100 rounded-xl col-span-1 p-3 md:p-10 md:col-span-3 bg-blue-50">
+                <div className="border-2 border-blue-100 rounded-xl col-span-1 p-3 md:p-10 md:col-span-4 lg:col-span-3 bg-blue-50">
                     <div className="flex flex-col gap-2">
                         <label className="text-gray-700" htmlFor="coupon">Coupon: *</label>
                         <input className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="coupon" type="text" {...register('coupon', { required: true })} placeholder="Enter coupon coupon here..." />

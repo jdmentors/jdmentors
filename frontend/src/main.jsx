@@ -52,6 +52,9 @@ const AddCoupon = lazy(() => import('./pages/admin/AddCoupon'));
 const UserDashboard = lazy(() => import('./pages/user/UserDashboard'));
 const Profile = lazy(() => import('./components/Profile'));
 const CreateAdmin = lazy(() => import('./components/admin/CreateAdmin'));
+const AddTeam = lazy(() => import('./pages/admin/AddTeam'));
+const AllTeam = lazy(() => import('./pages/admin/AllTeam'));
+const UpdateTeam = lazy(() => import('./pages/admin/UpdateTeam'));
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>
@@ -152,6 +155,12 @@ createRoot(document.getElementById('root')).render(
                             <Route path='/admin/profile' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><Profile /></Suspense>} />
 
                             <Route path='/admin/create' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><CreateAdmin /></Suspense>} />
+
+                            <Route path='/admin/team/all' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><AllTeam /></Suspense>} />
+                            
+                            <Route path='/admin/team/add' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><AddTeam /></Suspense>} />
+
+                            <Route path='/admin/team/update/:id' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><UpdateTeam /></Suspense>} />
                         </Route>
                     </Routes>
                 </BrowserRouter>

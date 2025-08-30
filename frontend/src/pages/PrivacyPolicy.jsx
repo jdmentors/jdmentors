@@ -5,7 +5,7 @@ const PrivacyPolicy = () => {
     return (
         <section className="my-32 text-gray-800">
             <Container>
-                <h1 className="text-3xl font-bold mb-6 text-blue-950">Privacy Policy</h1>
+                <h1 className="text-4xl md:text-5xl font-bold my-5 text-blue-950">Privacy Policy</h1>
 
                 <p className="mb-4">
                     This Privacy Policy explains how we collect, use, store, and protect your information when you use our website and services. By using our website, you agree to the terms outlined here.

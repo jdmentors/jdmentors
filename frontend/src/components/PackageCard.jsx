@@ -22,28 +22,29 @@ function PackageCard({ _id, title, description, services = [], addons = [], extr
     }
 
     return (
-        <div className="package-card bg-white rounded-xl overflow-hidden shadow-lg shadow-blue-200 border border-blue-100 transition duration-300 flex flex-col relative">
-            {_id == '68b01ac311cd8661cbde73f8' && <p className="bg-blue-600 text-white py-1 px-3 text-xs absolute right-4 top-3 rounded">Most Popular</p>}
-            <div className="p-6 flex flex-col flex-1">
+        <div className={`package-card bg-white rounded-xl overflow-hidden shadow-lg shadow-blue-200 border border-blue-100 transition duration-300 flex flex-col relative ${_id == '68b01ac311cd8661cbde73f8'? 'lg:col-span-4' :'lg:col-span-3'}`}>
+            {_id == '68b01ac311cd8661cbde73f8' && <p className={`px-3 py-1 text-xs lg:text-sm absolute right-1 md:right-2 top-1 md:top-1 rounded bg-white text-blue-600`}>Most Popular</p>}
+            {_id == '68b01b7311cd8661cbde73fe' && <p className={`px-3 py-1 text-xs lg:text-xs absolute right-1 md:right-2 top-1 md:top-1 rounded bg-white text-yellow-600`}>Ultimate Package</p>}
+            <div className={`p-6 flex flex-col flex-1 ${_id == '68b01ac311cd8661cbde73f8' ? 'bg-gradient-to-b from-blue-700  to-blue-400 text-white' : _id == '68b01b7311cd8661cbde73fe' ? 'bg-gradient-to-br from-yellow-600 via-yellow-500 to-yellow-400' : 'bg-white'}`}>
                 {/* Top section */}
                 <div>
                     <div className="flex items-center mb-4">
-                        <div className="bg-blue-100 p-2.5 rounded-full mr-4 w-10 h-10 flex items-center justify-center">
-                            <Package className="text-blue-600" />
+                        <div className={`${_id == '68b01ac311cd8661cbde73f8'? 'bg-white' :'bg-blue-100'} p-2.5 rounded-full mr-4 w-10 h-10 flex items-center justify-center`}>
+                            <Package className={`text-sm mt-1 text-blue-600`} />
                         </div>
-                        <h3 className="text-lg font-semibold text-blue-950">{title}</h3>
+                        <h3 className={`text-lg font-semibold ${_id == '68b01ac311cd8661cbde73f8'? 'text-white' : _id == '68b01b7311cd8661cbde73fe' ? 'text-black' : 'text-blue-950'}`}>{title}</h3>
                     </div>
-                    <p className="text-gray-600 mb-4">{description}</p>
+                    <p className={` mb-4 ${_id == '68b01ac311cd8661cbde73f8'? 'text-white' : _id == '68b01b7311cd8661cbde73fe' ? 'text-black' : 'text-gray-600'}`}>{description}</p>
 
                     {
                         (services) &&
                         (
                             <div>
-                                <p className="text-gray-600 mb-2 font-semibold">Services:</p>
-                                <ul className="text-gray-600 space-y-2 mb-4">
+                                <p className={` mb-2 font-semibold ${_id == '68b01ac311cd8661cbde73f8'? 'text-white' : _id == '68b01b7311cd8661cbde73fe' ? 'text-black' : 'text-gray-600'}`}>Services:</p>
+                                <ul className={` space-y-2 mb-4 ${_id == '68b01ac311cd8661cbde73f8'? 'text-white' : _id == '68b01b7311cd8661cbde73fe' ? 'text-black' : 'text-gray-600'}`}>
                                     {services.map((service) => (
                                         <li key={service} className="flex items-start gap-1">
-                                            <Settings className="text-blue-600" size={18} />
+                                            <Settings className={`text-sm mt-1 ${_id == '68b01ac311cd8661cbde73f8'? 'text-white' :'text-blue-600'}`} size={18} />
                                             <span>{service}</span>
                                         </li>
                                     ))}
@@ -56,11 +57,11 @@ function PackageCard({ _id, title, description, services = [], addons = [], extr
                         addons &&
                         (
                             <div>
-                                <p className="text-gray-600 mb-2 font-semibold">Add-ons:</p>
-                                <ul className="text-gray-600 space-y-2 mb-4">
+                                <p className={`mb-2 font-semibold ${_id == '68b01ac311cd8661cbde73f8'? 'text-white' : _id == '68b01b7311cd8661cbde73fe' ? 'text-black' : 'text-gray-600'}`}>Add-ons:</p>
+                                <ul className={` space-y-2 mb-4 ${_id == '68b01ac311cd8661cbde73f8'? 'text-white' : _id == '68b01b7311cd8661cbde73fe' ? 'text-black' : 'text-gray-600'}`}>
                                     {addons.map((addon) => (
                                         <li key={addon} className="flex items-start gap-1">
-                                            <Plus className="text-blue-600" size={18} />
+                                            <Plus className={`text-sm mt-1 ${_id == '68b01ac311cd8661cbde73f8'? 'text-white' :'text-blue-600'}`} size={18} />
                                             <span>{addon}</span>
                                         </li>
                                     ))}
@@ -73,11 +74,11 @@ function PackageCard({ _id, title, description, services = [], addons = [], extr
                         extras &&
                         (
                             <div>
-                                <p className="text-gray-600 mb-2 font-semibold">Extras:</p>
-                                <ul className="text-gray-600 space-y-2 mb-6">
+                                <p className={`mb-2 font-semibold ${_id == '68b01ac311cd8661cbde73f8'? 'text-white' : _id == '68b01b7311cd8661cbde73fe' ? 'text-black' : 'text-gray-600'}`}>Extras:</p>
+                                <ul className={` space-y-2 mb-6 ${_id == '68b01ac311cd8661cbde73f8'? 'text-white' : _id == '68b01b7311cd8661cbde73fe' ? 'text-black' : 'text-gray-600'}`}>
                                     {extras.map((extra) => (
                                         <li key={extra} className="flex items-start gap-1">
-                                            <Gift className="text-blue-600" size={18} />
+                                            <Gift className={`text-sm mt-1 ${_id == '68b01ac311cd8661cbde73f8'? 'text-white' :'text-blue-600'}`} size={18} />
                                             <span>{extra}</span>
                                         </li>
                                     ))}
@@ -89,8 +90,8 @@ function PackageCard({ _id, title, description, services = [], addons = [], extr
 
                 {/* Bottom section (pushed down) */}
                 <div className="mt-auto pt-4 border-t border-gray-200">
-                    <p className="text-lg font-bold text-gray-900">${price}</p>
-                    <p className="text-sm text-gray-600 mt-1">Process: {process}</p>
+                    <p className={`text-lg font-bold ${_id == '68b01ac311cd8661cbde73f8'? 'text-white' :'text-gray-900'}`}>${price}</p>
+                    <p className={`text-sm mt-1 ${_id == '68b01ac311cd8661cbde73f8'? 'text-white' : _id == '68b01b7311cd8661cbde73fe' ? 'text-black' : 'text-gray-600'}`}>Process: {process}</p>
                     <button
                         onClick={handleClick}
                         className="mt-4 w-full flex gap-1 items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
