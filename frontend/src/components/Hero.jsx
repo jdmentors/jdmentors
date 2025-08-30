@@ -38,7 +38,7 @@ function Hero() {
                             <div className="flex items-center gap-1">
                                 <Clock />
                                 <h4 className="text-white">
-                                    Available 24/7
+                                    Fast Responses
                                 </h4>
                             </div>
 
@@ -54,7 +54,7 @@ function Hero() {
                             <div className="flex items-center gap-1">
                                 <FileText />
                                 <h4 className="text-white">
-                                    Review & Feedback
+                                    Expert Review & Feedback
                                 </h4>
                             </div>
                         </div>

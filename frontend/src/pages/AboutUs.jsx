@@ -1,6 +1,9 @@
 import { DollarSign, Verified } from "lucide-react";
-import { aboutUs, banner } from "../assets";
+import { aboutUs, banner, user } from "../assets";
 import { CallToAction, Container } from "../components";
+import { useState } from "react";
+import { useEffect } from "react";
+import useGetAllTeam from "../hooks/useGetAllTeam";
 
 const stats = [
     {
@@ -26,8 +29,23 @@ const stats = [
 ];
 
 function AboutUs() {
+    const [members, setMembers] = useState([]);
+    const getAllMembers = useGetAllTeam();
+
+    useEffect(() => {
+        const fetchAllMembers = async () => {
+            setMembers(await getAllMembers());
+        }
+        fetchAllMembers();
+    }, [])
+    
     return (
         <section className="pt-32 bg-blue-100 max-w-full">
+            <Container>
+                <h2 className="text-4xl md:text-5xl font-bold my-5 text-blue-950">About</h2>
+                <p className="text-blue-950 mt-4 mb-10">Every well-crafted document begins with the right tools and advice. Discover how our mission is to provide both, ensuring you're prepared for every step ahead.</p>
+            </Container>
+
             <Container className="grid lg:grid-cols-2 gap-5 mb-16 max-w-full items-start">
                 <div className="bg-white rounded-2xl px-5 py-8 sm:p-8">
                     <h5 className="font-semibold text-blue-600">How It Started</h5>
@@ -91,17 +109,23 @@ function AboutUs() {
                     <h2 className="text-2xl md:text-3xl font-semibold my-5 text-blue-950">Meet Our Team of Consultants</h2>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                        <div className="h-80 rounded-2xl overflow-hidden relative">
-                            <img src={banner} loading="lazy" alt="consultant" className="w-full h-full object-cover" />
-                            <div className="absolute py-2 rounded-xl bg-white bottom-5 w-10/12 text-center right-1/2 translate-x-1/2 text-sm">
-                                <p className="text-base font-semibold">Alan Parker</p>
-                                <p className="text-gray-600">Consultant</p>
-                            </div>
-                        </div>
+                        {
+                            members && members.map(member => {
+                                return (
+                                    <div key={member._id} className="h-80 rounded-2xl overflow-hidden relative">
+                                        <img src={member.image || user} loading="lazy" alt="consultant" className="w-full h-full object-cover" />
+                                        <div className="absolute py-2 rounded-xl bg-white bottom-5 w-10/12 text-center right-1/2 translate-x-1/2 text-sm">
+                                            <p className="text-base font-semibold">{member.fullName}</p>
+                                            <p className="text-gray-600">{member.designation}</p>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
                     </div>
                 </section>
 
-                <section className="bg-white p-8 md:p-12 lg:p-14 rounded-2xl mb-16">
+                {/* <section className="bg-white p-8 md:p-12 lg:p-14 rounded-2xl mb-16">
                     <h5 className="font-semibold text-blue-600">Goal In Action</h5>
                     <h2 className="text-2xl md:text-3xl font-semibold mt-5 mb-7 text-blue-950">See How Much We’ve Saved For Our Students</h2>
 
@@ -120,7 +144,7 @@ function AboutUs() {
                             </div>
                         </div>
                     </div>
-                </section>
+                </section> */}
             </Container >
             <CallToAction />
         </section >

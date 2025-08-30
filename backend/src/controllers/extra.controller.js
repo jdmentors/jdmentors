@@ -2,7 +2,7 @@ import Extra from "../models/extra.model.js";
 
 const createExtra = async (req, res) => {
     try {
-        const { title, description, price, status = true } = req.body;
+        const { title, description, price, order, status = true } = req.body;
 
         const user = req.user;
 
@@ -20,7 +20,7 @@ const createExtra = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Extra already exists with this title' });
         }
 
-        const extra = await Extra.create({ title, description, price, status, user: user._id });
+        const extra = await Extra.create({ title, description, price, order, status, user: user._id });
 
         if (!extra) {
             return res.status(500).json({ success: false, message: 'Error occured while creating Extra' });
@@ -35,6 +35,9 @@ const createExtra = async (req, res) => {
 const getAllExtras = async (req, res) => {
     try {
         const allExtras = await Extra.aggregate([
+            {
+                $sort: { order: 1 }
+            },
             {
                 $lookup: {
                     from: 'sessions',
@@ -127,7 +130,7 @@ const getAnExtra = async (req, res) => {
 
 const editExtra = async (req, res) => {
     try {
-        const { title, description, price, status = true } = req.body;
+        const { title, description, price, order, status = true } = req.body;
 
         const { extraId } = req.params;
 
@@ -135,7 +138,7 @@ const editExtra = async (req, res) => {
             return res.status(400).json({ success: false, message: 'All fields are required.' });
         }
 
-        const extra = await Extra.findByIdAndUpdate(extraId, { title, description, price, status });
+        const extra = await Extra.findByIdAndUpdate(extraId, { title, description, price, order, status });
 
         if (!extra) {
             return res.status(500).json({ success: false, message: 'Error occured while updating extra' });

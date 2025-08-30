@@ -17,6 +17,7 @@ import couponRouter from "./routes/coupon.route.js";
 import addonRouter from "./routes/addon.route.js";
 import extraRouter from "./routes/extra.route.js";
 import packageRouter from "./routes/package.router.js";
+import teamRouter from "./routes/team.routes.js";
 
 const app = express();
 app.use(compression());
@@ -92,6 +93,7 @@ app.use('/api/v1/packages', packageRouter);
 app.use('/api/v1/blogs', blogRouter);
 app.use('/api/v1/sessions', sessionRouter);
 app.use('/api/v1/coupons', couponRouter);
+app.use('/api/v1/team', teamRouter);
 app.get('/api/v1/dashboard', verifyAdmin, dashboard);
 app.post('/api/v1/admin/register', verifyAdmin, createAdmin);
 

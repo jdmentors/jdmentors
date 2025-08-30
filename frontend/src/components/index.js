@@ -47,6 +47,7 @@ import AllBlogs from "./AllBlogs";
 import AdminRoute from "./admin/AdminRoute";
 import LoadingSpinner from "./LoadingSpinner";
 import AboutUs from '../components/AboutUs';
+import TeamForm from "./admin/TeamForm";
 
 export {
     Header,
@@ -98,4 +99,5 @@ export {
     AdminRoute,
     LoadingSpinner,
     AboutUs,
+    TeamForm,
 }

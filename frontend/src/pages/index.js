@@ -41,6 +41,9 @@ import PrivacyPolicy from "./PrivacyPolicy";
 import TermsAndConditions from "./TermsAndConditions";
 import PageNotFound from "./PageNotFound";
 import AllCoupons from "./admin/AllCoupons";
+import AddTeam from "./admin/AddTeam";
+import AllTeam from "./admin/AllTeam";
+import UpdateTeam from "./admin/UpdateTeam";
 
 export {
     Home,
@@ -86,4 +89,7 @@ export {
     TermsAndConditions,
     PageNotFound,
     AllCoupons,
+    AddTeam,
+    AllTeam,
+    UpdateTeam,
 }

@@ -20,7 +20,20 @@ function CheckOutSuccess() {
                     setSession(data.data);
                     const sessionData = data.data;
                     try {
-                        const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/emails/order`, { fullName: sessionData.fullName, email: sessionData.email, phone: sessionData.phone, service: sessionData.service.title, addonsAndExtras: sessionData.addonsAndExtras || 'Not Included', document: sessionData.document, dateTime: sessionData.dateTime, notes: sessionData.notes || 'Not Provided', price: sessionData.price, sessionId: sessionData._id });
+                        const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/emails/order`, {
+                            fullName: sessionData.fullName,
+                            email: sessionData.email,
+                            phone: sessionData.phone,
+                            service: sessionData.service.title,
+                            addonsAndExtras: sessionData.serviceType === 'Package'
+                                ? [...sessionData.service.addons, ...sessionData.service.extras] 
+                                : sessionData.addonsAndExtras || ['Not Included'], 
+                            document: sessionData.document,
+                            dateTime: sessionData.dateTime,
+                            notes: sessionData.notes || 'Not Provided',
+                            price: sessionData.price,
+                            sessionId: sessionData._id
+                        });
                     } catch (error) {
                         console.error(error);
                     }
@@ -68,7 +81,7 @@ function CheckOutSuccess() {
                                                 <ul className="text-gray-600 space-y-2">
                                                     {
                                                         session.service.features.map(feature => (
-                                                            <li key={feature} className="flex items-start gap-1">
+                                                            <li key={feature} className="flex items-center gap-1">
                                                                 <Check className="text-blue-600" size={18} />
                                                                 <span>{feature}</span>
                                                             </li>
@@ -85,9 +98,43 @@ function CheckOutSuccess() {
                                                 <ul className="text-gray-600 space-y-2">
                                                     {
                                                         session.service.services.map(service => (
-                                                            <li key={service} className="flex items-start gap-1">
+                                                            <li key={service} className="flex items-center gap-1">
                                                                 <Settings className="text-blue-600" size={18} />
                                                                 <span>{service}</span>
+                                                            </li>
+                                                        ))
+                                                    }
+                                                </ul>
+                                            </>
+                                        }
+
+                                        {
+                                            session.serviceType == 'Package' && session.service.addons && session.service.addons.length > 0 &&
+                                            <>
+                                                <p className="text-gray-600 my-2 font-semibold text-left">Add-ons:</p>
+                                                <ul className="text-gray-600 space-y-2">
+                                                    {
+                                                        session.service.addons.map(addon => (
+                                                            <li key={addon} className="flex items-center gap-1 text-left">
+                                                                <Plus className="text-blue-600" size={18} />
+                                                                <span>{addon}</span>
+                                                            </li>
+                                                        ))
+                                                    }
+                                                </ul>
+                                            </>
+                                        }
+
+                                        {
+                                            session.serviceType == 'Package' && session.service.extras && session.service.extras.length > 0 &&
+                                            <>
+                                                <p className="text-gray-600 my-2 font-semibold text-left">Extras:</p>
+                                                <ul className="text-gray-600 space-y-2">
+                                                    {
+                                                        session.service.extras.map(extra => (
+                                                            <li key={extra} className="flex items-center gap-1 text-left">
+                                                                <Gift className="text-blue-600" size={18} />
+                                                                <span>{extra}</span>
                                                             </li>
                                                         ))
                                                     }
@@ -102,7 +149,7 @@ function CheckOutSuccess() {
                                                 <ul className="text-gray-600 space-y-2">
                                                     {
                                                         session.addonsAndExtras.map(addonAndExtra => (
-                                                            <li key={addonAndExtra} className="flex items-start gap-1">
+                                                            <li key={addonAndExtra} className="flex items-center gap-1">
                                                                 <Plus className="text-blue-600" size={18} />
                                                                 <span>{addonAndExtra}</span>
                                                             </li>

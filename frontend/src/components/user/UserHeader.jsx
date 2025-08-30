@@ -7,10 +7,10 @@ function UserHeader(){
     const navLinks = [
         { name: 'Home', href: '/' },
         { name: 'About', href: '/about' },
-        { name: 'Services', href: '/services' },
         { name: 'Blogs', href: '/blogs' },
-        { name: 'Testimonials', href: '/testimonials' },
         { name: 'Contact', href: '/contact' },
+        { name: 'Services', href: '/services' },
+        // { name: 'Testimonials', href: '/testimonials' },
     ];
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);

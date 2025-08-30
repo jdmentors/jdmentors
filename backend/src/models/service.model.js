@@ -37,6 +37,12 @@ const serviceSchema = new Schema({
         type: Number,
         required: true,
     },
+    order: {
+        type: Number,
+        required: false,
+        default: null,
+        index: true
+    },
     status: {
         type: Boolean,
         required: true,

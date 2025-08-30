@@ -19,6 +19,7 @@ function AddExtraForm({ extra }) {
             title: extra?.title || "",
             description: extra?.description || "",
             price: extra?.price || "",
+            order: extra?.order || null,
             status: extra?.status || true,
         }
     });
@@ -26,7 +27,7 @@ function AddExtraForm({ extra }) {
     const publishExtra = async (extraData) => {
         try {
             setIsPublishing(true);
-            const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/extras/create`, { title: extraData.title, description: extraData.description, price: extraData.price, status: extraData.status }, { headers: { Authorization: `Bearer ${user.accessToken}` } });
+            const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/extras/create`, { title: extraData.title, description: extraData.description, price: extraData.price, order: extraData.order, status: extraData.status }, { headers: { Authorization: `Bearer ${user.accessToken}` } });
 
             if (data && data.success) {
                 toast.success(data.message);
@@ -39,7 +40,7 @@ function AddExtraForm({ extra }) {
                 try {
                     const newAccessToken = await refreshAccessToken();
 
-                    const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/extras/create`, { title: extraData.title, description: extraData.description, price: extraData.price, status: extraData.status }, { headers: { Authorization: `Bearer ${newAccessToken}` } });
+                    const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/extras/create`, { title: extraData.title, description: extraData.description, price: extraData.price, order: extraData.order, status: extraData.status }, { headers: { Authorization: `Bearer ${newAccessToken}` } });
 
                     if (data && data.success) {
                         toast.success(data.message);
@@ -63,7 +64,7 @@ function AddExtraForm({ extra }) {
         try {
             setIsPublishing(true);
 
-            const { data } = await axios.put(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/extras/edit/${extra._id}`, { title: extraData.title, description: extraData.description, price: extraData.price, status: extraData.status }, { headers: { Authorization: `Bearer ${user.accessToken}` } });
+            const { data } = await axios.put(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/extras/edit/${extra._id}`, { title: extraData.title, description: extraData.description, price: extraData.price, order: extraData.order, status: extraData.status }, { headers: { Authorization: `Bearer ${user.accessToken}` } });
 
             if (data && data.success) {
                 toast.success(data.message);
@@ -76,7 +77,7 @@ function AddExtraForm({ extra }) {
                 try {
                     const newAccessToken = await refreshAccessToken();
 
-                    const { data } = await axios.put(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/extras/edit/${extra._id}`, { title: extraData.title, description: extraData.description, price: extraData.price, status: extraData.status }, { headers: { Authorization: `Bearer ${newAccessToken}` } });
+                    const { data } = await axios.put(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/extras/edit/${extra._id}`, { title: extraData.title, description: extraData.description, price: extraData.price, order: extraData.order, status: extraData.status }, { headers: { Authorization: `Bearer ${newAccessToken}` } });
 
                     if (data && data.success) {
                         toast.success(data.message);
@@ -98,7 +99,7 @@ function AddExtraForm({ extra }) {
     return (
         <form onSubmit={extra ? handleSubmit(editExtra) : handleSubmit(publishExtra)}>
             <div className="w-full grid grid-cols-1 md:grid-cols-5 gap-10 items-start">
-                <div className="border-2 border-blue-100 rounded-xl col-span-1 p-3 md:p-10 md:col-span-3 bg-blue-50">
+                <div className="border-2 border-blue-100 rounded-xl col-span-1 p-3 md:p-10 md:col-span-4 lg:col-span-3 bg-blue-50">
                     <div className="flex flex-col gap-2">
                         <label className="text-gray-700" htmlFor="title">Title: *</label>
                         <input className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="title" type="text" {...register('title', { required: true })} placeholder="Enter extra title here..." />
@@ -115,11 +116,17 @@ function AddExtraForm({ extra }) {
 
                     <br />
 
-                    <div className="grid grid-cols-2 gap-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
                         <div className="flex flex-col gap-2">
                             <label className="text-gray-700" htmlFor="price">Price: *</label>
                             <input className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="price" type="number" {...register('price', { required: true })} placeholder="Enter extra price here..." />
                             {errors.price && <p className="text-sm text-orange-500 font-light">Price is required.</p>}
+                        </div>
+
+                        <div className="flex flex-col gap-2">
+                            <label className="text-gray-700" htmlFor="order">Order:</label>
+                            <input className="border-2 bg-white border-blue-100 rounded p-2 focus:outline-2 focus:outline-blue-200 w-full" id="order" type="number" {...register('order', { required: false })} placeholder="Enter service order here..." />
+                            {errors.order && <p className="text-sm text-orange-500 font-light">Order is required.</p>}
                         </div>
 
                         <div className="flex flex-col gap-2">

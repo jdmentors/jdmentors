@@ -6,10 +6,9 @@ import { Instagram, Mail, Phone } from "lucide-react";
 
 function Footer() {
     const quickLinks = [
-        // { name: 'Home', href: '/' },
+        { name: 'Home', href: '/' },
         { name: 'About', href: '/about' },
         { name: 'Blogs', href: '/blogs' },
-        { name: 'Services', href: '/services' },
         // { name: 'Testimonials', href: '/testimonials' },
         { name: 'Check Session Status', href: '/session-status' },
     ];
@@ -17,6 +16,13 @@ function Footer() {
     const legalPolicies = [
         { name: 'Privacy Policy', href: '/privacy-policy' },
         { name: 'Terms & Conditions', href: '/terms-conditions' },
+    ];
+
+    const services = [
+        { name: 'All-In-One Solutions', href: '/services' },
+        { name: 'Focused Support', href: '/services' },
+        { name: 'Beyond the Application', href: '/services' },
+        { name: 'Others', href: '/services' },
     ];
 
     return (
@@ -47,6 +53,21 @@ function Footer() {
                                 quickLinks.map(link => (
                                     <li className="relative py-1" key={link.name}>
                                         <NavLink className={({ isActive }) => `text-white after:bg-white`} to={link.href}>{link.name}</NavLink>
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                    </div>
+
+                    <div>
+                        <p className='text-lg text-gray-300 font-semibold'>
+                            Services
+                        </p>
+                        <ul className='mt-3 flex flex-col gap-2 '>
+                            {
+                                services.map(service => (
+                                    <li className="relative py-1" key={service.name}>
+                                        <NavLink className={({ isActive }) => `text-white after:bg-white`} to={service.href}>{service.name}</NavLink>
                                     </li>
                                 ))
                             }
@@ -95,7 +116,7 @@ function Footer() {
                     <p>
                         <Link to="/">
                         JD Mentors
-                        </Link>. 
+                        </Link> 
                         {/* &nbsp; All rights reserved. &nbsp; */}
                     </p>
                     <div className="flex flex-row gap-2 items-center">

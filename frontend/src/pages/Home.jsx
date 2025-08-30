@@ -64,8 +64,8 @@ const testimonials = [
 
 const stats = [
     {
-        name: 'Students Helped',
-        data: '50+'
+        name: 'Law Schools Focus',
+        data: 'NY'
     },
     {
         name: 'Acceptance Rate',

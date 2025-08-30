@@ -5,7 +5,7 @@ const TermsAndConditions = () => {
   return (
     <section className="my-32 text-gray-800">
       <Container>
-        <h1 className="text-3xl font-bold mb-6 text-blue-950">Terms & Conditions</h1>
+        <h1 className="text-4xl md:text-5xl font-bold my-5 text-blue-950">Terms & Conditions</h1>
 
         <p className="mb-4">
           These Terms & Conditions (“Terms”) govern your use of JD Mentors’ website and consulting services. By using our site or booking services, you acknowledge that you have read, understood, and agreed to these Terms.
