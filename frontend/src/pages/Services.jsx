@@ -4,8 +4,7 @@ function Services() {
     return (
         <div className="mt-32 mb-16 min-h-[70vh]">
             <Container>
-                <h2 className="text-4xl md:text-5xl font-bold my-5 text-blue-950">Services</h2>
-                <p className="text-blue-950 mt-4 mb-10">From your first draft to your final review, we provide the expert tools and guidance to transform your complex documents into a foundation for your future.</p>
+                <h2 className="text-4xl md:text-5xl font-bold my-5 text-blue-950 text-center">Services</h2>
             </Container>
 
             <section className="my-14">
