@@ -28,7 +28,7 @@ function ServiceCard({ _id, title, description, features, price, process }) {
                 <div>
                     <div className="flex items-center mb-4">
                         <div className="bg-blue-100 p-2.5 rounded-full mr-4 w-10 h-10 flex items-center justify-center">
-                            <UserCheck2 className="text-blue-600" />
+                            <UserCheck2 className="text-blue-600 flex-shrink-0" />
                         </div>
                         <h3 className="text-lg font-semibold text-blue-950">{title}</h3>
                     </div>
@@ -36,7 +36,7 @@ function ServiceCard({ _id, title, description, features, price, process }) {
                     <ul className="text-gray-600 space-y-2 mb-6">
                         {features.map((offer) => (
                             <li key={offer} className="flex items-start gap-1">
-                                <Check className="text-blue-600" size={18} />
+                                <Check className="text-blue-600 flex-shrink-0" size={18} />
                                 <span>{offer}</span>
                             </li>
                         ))}
