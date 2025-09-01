@@ -82,7 +82,7 @@ function CheckOutSuccess() {
                                                     {
                                                         session.service.features.map(feature => (
                                                             <li key={feature} className="flex items-center gap-1">
-                                                                <Check className="text-blue-600" size={18} />
+                                                                <Check className="text-blue-600 flex-shrink-0" size={18} />
                                                                 <span>{feature}</span>
                                                             </li>
                                                         ))
@@ -99,7 +99,7 @@ function CheckOutSuccess() {
                                                     {
                                                         session.service.services.map(service => (
                                                             <li key={service} className="flex items-center gap-1">
-                                                                <Settings className="text-blue-600" size={18} />
+                                                                <Settings className="text-blue-600 flex-shrink-0" size={18} />
                                                                 <span>{service}</span>
                                                             </li>
                                                         ))
@@ -116,7 +116,7 @@ function CheckOutSuccess() {
                                                     {
                                                         session.service.addons.map(addon => (
                                                             <li key={addon} className="flex items-center gap-1 text-left">
-                                                                <Plus className="text-blue-600" size={18} />
+                                                                <Plus className="text-blue-600 flex-shrink-0" size={18} />
                                                                 <span>{addon}</span>
                                                             </li>
                                                         ))
@@ -133,7 +133,7 @@ function CheckOutSuccess() {
                                                     {
                                                         session.service.extras.map(extra => (
                                                             <li key={extra} className="flex items-center gap-1 text-left">
-                                                                <Gift className="text-blue-600" size={18} />
+                                                                <Gift className="text-blue-600 flex-shrink-0" size={18} />
                                                                 <span>{extra}</span>
                                                             </li>
                                                         ))
@@ -150,7 +150,7 @@ function CheckOutSuccess() {
                                                     {
                                                         session.addonsAndExtras.map(addonAndExtra => (
                                                             <li key={addonAndExtra} className="flex items-center gap-1">
-                                                                <Plus className="text-blue-600" size={18} />
+                                                                <Plus className="text-blue-600 flex-shrink-0" size={18} />
                                                                 <span>{addonAndExtra}</span>
                                                             </li>
                                                         ))

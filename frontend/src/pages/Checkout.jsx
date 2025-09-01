@@ -337,7 +337,7 @@ function Checkout() {
                                         <div className="bg-blue-100 p-2.5 rounded-full mr-4 w-10 h-10 flex items-center justify-center">
                                             <UserCheck2 className="text-blue-600" />
                                         </div>
-                                        <h3 className="text-lg font-semibold text-blue-950">{service.title}</h3>
+                                        <h3 className="text-xl font-semibold text-blue-950">{service.title}</h3>
                                     </div>
                                     <p className="text-gray-600 mb-4">
                                         {service.description}
@@ -349,7 +349,7 @@ function Checkout() {
                                             <ul className="text-gray-600 space-y-2">
                                                 {
                                                     service.features.map(feature => (
-                                                        <li key={feature} className="flex items-start gap-1">
+                                                        <li key={feature} className="flex items-center gap-1">
                                                             <Check className="text-blue-600" size={18} />
                                                             <span>{feature}</span>
                                                         </li>
@@ -366,8 +366,8 @@ function Checkout() {
                                             <ul className="text-gray-600 space-y-2">
                                                 {
                                                     addonsAndExtras.map(addonAndExtra => (
-                                                        <li key={addonAndExtra} className="flex items-start gap-1">
-                                                            <Plus className="text-blue-600" size={18} />
+                                                        <li key={addonAndExtra} className="flex items-center gap-1">
+                                                            <Plus className="text-blue-600 flex-shrink-0" size={18} />
                                                             <span>{addonAndExtra}</span>
                                                         </li>
                                                     ))
@@ -383,8 +383,8 @@ function Checkout() {
                                             <ul className="text-gray-600 space-y-2">
                                                 {
                                                     service.services.map(service => (
-                                                        <li key={service} className="flex items-start gap-1">
-                                                            <Settings className="text-blue-600" size={18} />
+                                                        <li key={service} className="flex items-center gap-1">
+                                                            <Settings className="text-blue-600 flex-shrink-0" size={18} />
                                                             <span>{service}</span>
                                                         </li>
                                                     ))
@@ -400,8 +400,8 @@ function Checkout() {
                                             <ul className="text-gray-600 space-y-2">
                                                 {
                                                     service.addons.map(addon => (
-                                                        <li key={addon} className="flex items-start gap-1">
-                                                            <Plus className="text-blue-600" size={18} />
+                                                        <li key={addon} className="flex items-center gap-1">
+                                                            <Plus className="text-blue-600 flex-shrink-0" size={18} />
                                                             <span>{addon}</span>
                                                         </li>
                                                     ))
@@ -417,8 +417,8 @@ function Checkout() {
                                             <ul className="text-gray-600 space-y-2">
                                                 {
                                                     service.extras.map(extra => (
-                                                        <li key={extra} className="flex items-start gap-1">
-                                                            <Gift className="text-blue-600" size={18} />
+                                                        <li key={extra} className="flex items-center gap-1">
+                                                            <Gift className="text-blue-600 flex-shrink-0" size={18} />
                                                             <span>{extra}</span>
                                                         </li>
                                                     ))

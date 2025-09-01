@@ -28,7 +28,7 @@ function ExtraCard({ _id, title, description, price }) {
                 <div>
                     <div className="flex items-center mb-4">
                         <div className="bg-blue-100 p-2.5 rounded-full mr-4 w-10 h-10 flex items-center justify-center">
-                            <Gift className="text-blue-600" />
+                            <Gift className="text-blue-600 flex-shrink-0" />
                         </div>
                         <h3 className="text-lg font-semibold text-blue-950">{title}</h3>
                     </div>

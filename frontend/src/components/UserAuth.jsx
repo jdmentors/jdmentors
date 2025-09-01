@@ -22,7 +22,7 @@ function UserAuth(){
                     <UserRegForm isLoginActive={isLoginActive} setIsLoginActive={setIsLoginActive} />
                 </div>
 
-                <X className="absolute top-5 right-5 cursor-pointer text-gray-600 text-2xl" onClick={() => dispatch(toggleShowUserAuthForm(false))} />
+                {/* <X className="absolute top-5 right-5 cursor-pointer text-gray-600 text-2xl" onClick={() => dispatch(toggleShowUserAuthForm(false))} /> */}
 
                 <div className="absolute top-5 left-1/2 -translate-x-1/2 flex gap-10 text-md">
                     <span className={`cursor-pointer pb-1 ${isLoginActive ? 'text-blue-600 border-b-2 border-b-blue-600': 'text-gray-600'}`} onClick={() => {setIsLoginActive(true); setIsForgotPasswordActive(false);}}>Login</span>
