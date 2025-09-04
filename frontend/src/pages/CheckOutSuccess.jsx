@@ -162,7 +162,7 @@ function CheckOutSuccess() {
                                         <div className="mt-5 text-gray-600 flex flex-col gap-3">
                                             <p className="flex justify-between">Preferred Time: <span>{session.dateTime ? new Date(session.dateTime).toDateString() + " " + `(${new Date(session.dateTime).toLocaleTimeString()})` : 'Not Specified'}</span></p>
                                             <div className="flex justify-between">
-                                                Document:
+                                                Document(s):
                                                 <div>
                                                     {session.document.map(document => {
                                                         return (<p key={document}>
