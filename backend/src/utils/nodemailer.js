@@ -53,7 +53,7 @@ const orderAdminEmail = async (fullName, phone, email, service, addonsAndExtras 
                         .join(', ')
                     }</p>
                     <p><b>Amount:</b> $${price}</p>
-                    <p><b>Document:</b> ${document.map((doc) => {
+                    <p><b>Document(s):</b> ${document.map((doc) => {
                     return doc + '<br /><br />'
                 })}</p>
                      <p><b>Notes:</b> ${notes ? notes : 'Not Specified'}</p>
@@ -81,7 +81,7 @@ const orderUserEmail = async (email, service, addonsAndExtras = [], document, da
                         .join(', ')
                     }</p>
                     <p><b>Amount:</b> $${price}</p>
-                    <p><b>Document:</b> ${document.map((doc) => {
+                    <p><b>Document(s):</b> ${document.map((doc) => {
                     return doc + '<br /><br />'
                 })}</p>
                     <p><b>Notes:</b> ${notes ? notes : 'Not Specified'}</p>

@@ -1,4 +1,4 @@
-import { Link, NavLink, useLocation } from "react-router";
+import { Link, NavLink, useLocation, useNavigate } from "react-router";
 import { Container } from "./";
 import { useEffect, useState } from "react";
 import { closeMenu, darkLogo, menuIcon } from "../assets";
@@ -12,6 +12,7 @@ function Header() {
     const [isOpen, setIsOpen] = useState(false);
     const { pathname } = useLocation();
     const isUserLoggedIn = useSelector(state => state.user.isUserLoggedIn);
+    const navigate = useNavigate();
 
     const navLinks = [
         { name: 'Home', href: '/' },
@@ -28,6 +29,15 @@ function Header() {
     //     { name: 'Add-ons', href: '/addons' },
     //     { name: 'Extras', href: '/extras' },
     // ];
+
+    const bookConsultationHandler = () => {
+        try {
+            navigate('/services');
+            scrollTo({top: 500, behavior: 'smooth'});
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     useEffect(() => {
         const handleScroll = () => {
@@ -83,11 +93,11 @@ function Header() {
                                         <span>Dashboard</span>
                                     </Link>
                                     :
-                                    <Link to='/services' className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700">
+                                    <button onClick={bookConsultationHandler} className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700 cursor-pointer">
                                         <Video size={24} strokeWidth={1.5} />
 
                                         <span>Book Consultation</span>
-                                    </Link>
+                                    </button>
                             }
                         </li>
 
