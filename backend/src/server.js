@@ -8,7 +8,7 @@ import blogRouter from "./routes/blog.route.js";
 import { configureCloudinary } from "./utils/cloudinary.js";
 import sessionRouter from "./routes/session.route.js";
 import verifyAdmin from "./middlewares/verifyAdmin.js";
-import { createAdmin, dashboard, sendContactEmail, sendOrderEmail } from "./controllers/other.controller.js";
+import { createAdmin, dashboard, sendAccommodationEmail, sendContactEmail, sendOrderEmail } from "./controllers/other.controller.js";
 import Stripe from "stripe";
 import axios from "axios";
 import compression from "compression";
@@ -18,6 +18,9 @@ import addonRouter from "./routes/addon.route.js";
 import extraRouter from "./routes/extra.route.js";
 import packageRouter from "./routes/package.router.js";
 import teamRouter from "./routes/team.routes.js";
+import accommodationRouter from "./routes/accommodation.route.js";
+import Accommodation from "./models/accommodation.model.js";
+import mongoose from "mongoose";
 
 const app = express();
 app.use(compression());
@@ -50,8 +53,13 @@ app.post(
       const sessionId = session.client_reference_id;
 
       try {
-        await Session.findByIdAndUpdate(sessionId, { payment: true }, { new: true });
+        const sessionUpdated = await Session.findByIdAndUpdate(sessionId, { payment: true }, { new: true });
         console.log("Payment updated for session:", sessionId);
+
+        if (!sessionUpdated) {
+          await Accommodation.findByIdAndUpdate(sessionId, { payment: true }, { new: true });
+          console.log("Payment updated for accommodation:", sessionId);
+        }
       } catch (err) {
         console.error("Error updating payment:", err);
       }
@@ -92,6 +100,7 @@ app.use('/api/v1/extras', extraRouter);
 app.use('/api/v1/packages', packageRouter);
 app.use('/api/v1/blogs', blogRouter);
 app.use('/api/v1/sessions', sessionRouter);
+app.use('/api/v1/accommodations', accommodationRouter);
 app.use('/api/v1/coupons', couponRouter);
 app.use('/api/v1/team', teamRouter);
 app.get('/api/v1/dashboard', verifyAdmin, dashboard);
@@ -128,7 +137,39 @@ app.post('/create-checkout-session', async (req, res) => {
   res.json({ url: session.url });
 });
 
+app.post('/create-checkout-accommodation', async (req, res) => {
+  const { accommodationId } = req.body;
+
+  const { data } = await axios.get(`${process.env.BACKEND_URL}/api/v1/accommodations/single/${accommodationId}`);
+
+  if (!data) {
+    return res.status(500).json({ success: false, message: 'Accommodation not found' });
+  }
+
+  const session = await stripe.checkout.sessions.create({
+    line_items: [
+      {
+        price_data: {
+          currency: 'usd',
+          product_data: {
+            name: `accommodation`,
+          },
+          unit_amount: Math.round(Number(data.data.price)) * 100,
+        },
+        quantity: 1,
+      },
+    ],
+    mode: 'payment',
+    success_url: `${process.env.FRONTEND_URL}/checkout-accommodation-success/${accommodationId}`,
+    cancel_url: `${process.env.FRONTEND_URL}/checkout-cancel`,
+    client_reference_id: accommodationId
+  });
+
+  res.json({ url: session.url });
+});
+
 app.post('/api/v1/emails/order', sendOrderEmail);
+app.post('/api/v1/emails/accommodation', sendAccommodationEmail);
 app.post('/api/v1/emails/contact', sendContactEmail);
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

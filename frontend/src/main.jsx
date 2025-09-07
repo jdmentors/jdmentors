@@ -12,6 +12,7 @@ import { lazy, Suspense } from 'react';
 
 const Contact = lazy(() => import('./pages/Contact'));
 const Services = lazy(() => import('./pages/Services'));
+const Accommodations = lazy(() => import('./pages/Accommodations'));
 const Addons = lazy(() => import('./pages/Addons'));
 const Extras = lazy(() => import('./pages/Extras'));
 const Packages = lazy(() => import('./pages/Packages'));
@@ -24,6 +25,8 @@ const Testimonials = lazy(() => import('./pages/Testimonials'));
 const ResetPassword = lazy(() => import('./pages/ResetPassword'));
 const PageNotFound = lazy(() => import('./pages/PageNotFound'));
 const Checkout = lazy(() => import('./pages/Checkout'));
+const CheckoutAccommodations = lazy(() => import('./pages/CheckoutAccommodations'));
+const CheckOutAccommodationSuccess = lazy(() => import('./pages/CheckoutAccommodationSuccess'));
 const CheckOutSuccess = lazy(() => import('./pages/CheckOutSuccess'));
 const SessionStatus = lazy(() => import('./pages/SessionStatus'));
 const CheckOutCancel = lazy(() => import('./pages/CheckOutCancel'));
@@ -66,15 +69,21 @@ createRoot(document.getElementById('root')).render(
                             <Route path='' element={<Home />} />
                             <Route path='/checkout-success/:sessionId' element={<Suspense fallback={<LoadingSpinner height={'850px'} />}><CheckOutSuccess /></Suspense>} />
 
+                            <Route path='/checkout-accommodation-success/:accommodationId' element={<Suspense fallback={<LoadingSpinner height={'850px'} />}><CheckOutAccommodationSuccess /></Suspense>} />
+
                             <Route path='/session-status' element={<Suspense fallback={<LoadingSpinner height={'850px'} />}><SessionStatus /></Suspense>} />
 
                             <Route path='/checkout-cancel' element={<Suspense fallback={<LoadingSpinner height={'850px'} />}><CheckOutCancel /></Suspense>} />
 
                             <Route path='/checkout/:serviceType/:serviceId' element={<Suspense fallback={<LoadingSpinner height={'850px'} />}><Checkout /></Suspense>} />
 
+                            <Route path='/checkout/accommodations' element={<Suspense fallback={<LoadingSpinner height={'850px'} />}><CheckoutAccommodations /></Suspense>} />
+
                             <Route path='/contact' element={<Suspense fallback={<LoadingSpinner height={'850px'} />}><Contact /></Suspense>} />
 
                             <Route path='/services' element={<Suspense fallback={<LoadingSpinner height={'725px'} />}><Services /></Suspense>} />
+
+                            <Route path='/accommodations' element={<Suspense fallback={<LoadingSpinner height={'725px'} />}><Accommodations /></Suspense>} />
 
                             <Route path='/addons' element={<Suspense fallback={<LoadingSpinner height={'725px'} />}><Addons /></Suspense>} />
 

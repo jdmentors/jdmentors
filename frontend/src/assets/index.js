@@ -5,6 +5,7 @@ import logo from "./logo.webp";
 import banner from "./banner.webp";
 import aboutUs from "./aboutUs.webp";
 import user from './user.webp';
+import AccommodationBanner from "./AccommodationBanner.webp";
 
 export {
     closeMenu,
@@ -14,4 +15,5 @@ export {
     banner,
     aboutUs,
     user,
+    AccommodationBanner,
 }

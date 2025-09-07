@@ -6,7 +6,7 @@ import Addon from "../models/addon.model.js";
 import Extra from "../models/extra.model.js";
 import Session from "../models/session.model.js";
 import { userExists } from "./user.controller.js";
-import { contactEmail, orderAdminEmail, orderUserEmail } from "../utils/nodemailer.js";
+import { accommodationAdminEmail, accommodationUserEmail, contactEmail, orderAdminEmail, orderUserEmail } from "../utils/nodemailer.js";
 
 const dashboard = async (req, res) => {
     try {
@@ -50,72 +50,95 @@ const dashboard = async (req, res) => {
     }
 }
 
-    const createAdmin = async (req, res) => {
-        try {
-            const { fullName, email, phone = '', image = '', password, userType = 'admin' } = req.body;
+const createAdmin = async (req, res) => {
+    try {
+        const { fullName, email, phone = '', image = '', password, userType = 'admin' } = req.body;
 
-            if (!fullName || !email || !password) {
-                return res.status(400).json({ success: false, message: 'All fields are required.' });
-            }
-
-            const existingUser = await userExists(email);
-
-            if (existingUser) {
-                return res.status(400).json({ success: false, message: 'Email already exists.' });
-            }
-
-            const createdUser = await User.create({ fullName, email, phone, password, image, userType });
-
-            return res.status(200).json({ success: true, message: 'Admin created' });
-        } catch (error) {
-            throw new Error(error);
+        if (!fullName || !email || !password) {
+            return res.status(400).json({ success: false, message: 'All fields are required.' });
         }
-    }
 
-    const sendOrderEmail = async (req, res) => {
-        try {
-            const { fullName, email, phone, service, addonsAndExtras='Not Included', document, dateTime = 'No Date', notes = 'Not Provided', price, sessionId } = req.body;
+        const existingUser = await userExists(email);
 
-            if (!fullName || !email || !phone || !service || !document || !price || !sessionId) {
-                return res.status(400).json({ success: false, message: 'All fields are required.' });
-            }
-
-            const adminEmailSent = await orderAdminEmail(fullName, phone, email, service, addonsAndExtras, document, dateTime, notes, price);
-            const userEmailSent = await orderUserEmail(email, service, addonsAndExtras, document, dateTime, notes, price, sessionId);
-
-            if (!adminEmailSent || !userEmailSent) {
-                return res.status(500).json({ success: false, message: 'Could not send email.' });
-            }
-
-            return res.status(200).json({ success: true });
-        } catch (error) {
-            throw new Error(error);
+        if (existingUser) {
+            return res.status(400).json({ success: false, message: 'Email already exists.' });
         }
+
+        const createdUser = await User.create({ fullName, email, phone, password, image, userType });
+
+        return res.status(200).json({ success: true, message: 'Admin created' });
+    } catch (error) {
+        throw new Error(error);
     }
+}
 
-    const sendContactEmail = async (req, res) => {
-        try {
-            const { name, email, phone, service, message } = req.body;
+const sendOrderEmail = async (req, res) => {
+    try {
+        const { fullName, email, phone, service, addonsAndExtras = 'Not Included', document, dateTime = 'No Date', notes = 'Not Provided', price, sessionId } = req.body;
 
-            if (!name || !email || !phone || !service || !message) {
-                return res.status(400).json({ success: false, message: 'All fields are required.' });
-            }
-
-            const contactEmailSent = await contactEmail(name, email, phone, service, message);
-
-            if (!contactEmailSent) {
-                return res.status(500).json({ success: false, message: 'Could not send email.' });
-            }
-
-            return res.status(200).json({ success: true, message: 'Message Sent' });
-        } catch (error) {
-            throw new Error(error);
+        if (!fullName || !email || !phone || !service || !document || !price || !sessionId) {
+            return res.status(400).json({ success: false, message: 'All fields are required.' });
         }
-    }
 
-    export {
-        dashboard,
-        createAdmin,
-        sendOrderEmail,
-        sendContactEmail
+        const adminEmailSent = await orderAdminEmail(fullName, phone, email, service, addonsAndExtras, document, dateTime, notes, price);
+        const userEmailSent = await orderUserEmail(email, service, addonsAndExtras, document, dateTime, notes, price, sessionId);
+
+        if (!adminEmailSent || !userEmailSent) {
+            return res.status(500).json({ success: false, message: 'Could not send email.' });
+        }
+
+        return res.status(200).json({ success: true });
+    } catch (error) {
+        throw new Error(error);
     }
+}
+
+const sendContactEmail = async (req, res) => {
+    try {
+        const { name, email, phone, service, message } = req.body;
+
+        if (!name || !email || !phone || !service || !message) {
+            return res.status(400).json({ success: false, message: 'All fields are required.' });
+        }
+
+        const contactEmailSent = await contactEmail(name, email, phone, service, message);
+
+        if (!contactEmailSent) {
+            return res.status(500).json({ success: false, message: 'Could not send email.' });
+        }
+
+        return res.status(200).json({ success: true, message: 'Message Sent' });
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+const sendAccommodationEmail = async (req, res) => {
+    try {
+        const { fullName, email, phone, preferredContact = 'Not Specified', exam = 'Not Specified', document = 'Not Provided', dateTime = 'Not Specified', seekingAccommodations = 'Not Specified', supportingDocumentation = 'Not Specified', previousAccommodation = 'Not Specified', additionalInfomation = 'Not Specified', price, accommodationId, payment = 'Pending' } = req.body;
+
+        if (!fullName || !email || !phone || !exam || !document || !price || !accommodationId) {
+            return res.status(400).json({ success: false, message: 'All fields are required.' });
+        }
+
+        const adminEmailSent = await accommodationAdminEmail(fullName, email, phone, preferredContact, exam, document, dateTime, seekingAccommodations, supportingDocumentation, previousAccommodation, additionalInfomation, price, accommodationId, payment);
+
+        const userEmailSent = await accommodationUserEmail(fullName, email, phone, preferredContact, exam, document, dateTime, seekingAccommodations, supportingDocumentation, previousAccommodation, additionalInfomation, price, accommodationId, payment);
+
+        if (!adminEmailSent || !userEmailSent) {
+            return res.status(500).json({ success: false, message: 'Could not send email.' });
+        }
+
+        return res.status(200).json({ success: true });
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+export {
+    dashboard,
+    createAdmin,
+    sendOrderEmail,
+    sendContactEmail,
+    sendAccommodationEmail,
+}

@@ -59,31 +59,6 @@ function Hero() {
                             </div>
                         </div>
                     </div>
-
-                    {/* <div className="w-full lg:w-1/2 h-full lg:h-96 xl:h-120 relative">
-                        <div className="relative w-full max-w-md mx-auto shadow-xl shadow-gray-500">
-                            <div className="relative bg-white rounded-xl shadow-2xl overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=600&amp;q=80" alt="Law student studying" className="w-full h-auto" />
-                                <div className="p-6">
-                                    <h3 className="text-xl font-semibold text-blue-950 mb-2">Why Choose Us?</h3>
-                                    <ul className="text-blue-600 space-y-2">
-                                        <li className="flex items-center gap-2">
-                                            <CheckCircleIcon size={20} />
-                                            <span className="text-blue-950">Former admissions committee experience</span>
-                                        </li>
-                                        <li className="flex items-center gap-2">
-                                            <CheckCircleIcon size={20} />
-                                            <span className="text-blue-950">Specialized in non-T14 school strategies</span>
-                                        </li>
-                                        <li className="flex items-center gap-2">
-                                            <CheckCircleIcon size={20} />
-                                            <span className="text-blue-950">Personalized 1-on-1 attention</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div> */}
                 </div>
 
             </Container>

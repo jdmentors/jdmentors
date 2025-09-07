@@ -2,7 +2,7 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router";
 import { Container } from "./";
 import { useEffect, useState } from "react";
 import { closeMenu, darkLogo, menuIcon } from "../assets";
-import { LayoutDashboard, Phone, Video } from 'lucide-react';
+import { CalendarCheck, LayoutDashboard, Phone, Video } from 'lucide-react';
 import { logo } from "../assets";
 import { useSelector } from "react-redux";
 
@@ -44,9 +44,10 @@ function Header() {
             setIsScrolled(window.scrollY > 10);
         }
 
-        setIsScrolled(pathname !== '/');
+        setIsScrolled(pathname !== '/' && pathname !== '/accommodations');
 
-        pathname === '/' && window.addEventListener('scroll', handleScroll)
+        pathname === '/' && window.addEventListener('scroll', handleScroll);
+        pathname === '/accommodations' && window.addEventListener('scroll', handleScroll);
 
         return () => window.removeEventListener('scroll', handleScroll);
     }, [pathname])
@@ -91,6 +92,14 @@ function Header() {
                                         <LayoutDashboard size={24} strokeWidth={1.5} />
 
                                         <span>Dashboard</span>
+                                    </Link>
+                                    :
+                                    pathname === '/accommodations'
+                                    ?
+                                    <Link to="/services" className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700 cursor-pointer">
+                                        <CalendarCheck size={24} strokeWidth={1.5} />
+
+                                        <span>Book Now @ $399</span>
                                     </Link>
                                     :
                                     <button onClick={bookConsultationHandler} className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700 cursor-pointer">
