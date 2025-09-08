@@ -44,6 +44,10 @@ import AllCoupons from "./admin/AllCoupons";
 import AddTeam from "./admin/AddTeam";
 import AllTeam from "./admin/AllTeam";
 import UpdateTeam from "./admin/UpdateTeam";
+import Accommodations from "./Accommodations";
+import CheckoutAccommodations from "./CheckoutAccommodations";
+import CheckOutAccommodationSuccess from "./CheckoutAccommodationSuccess";
+import AllSessionsAccommodations from "./admin/AllSessionsAccommodations";
 
 export {
     Home,
@@ -92,4 +96,8 @@ export {
     AddTeam,
     AllTeam,
     UpdateTeam,
+    Accommodations,
+    CheckoutAccommodations,
+    CheckOutAccommodationSuccess,
+    AllSessionsAccommodations,
 }

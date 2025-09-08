@@ -6,6 +6,7 @@ import useRefreshToken from "../../hooks/useRefreshToken";
 import { updateUser } from "../../features/forms/UserAuthSlice.js";
 import { useNavigate } from "react-router";
 import { useState } from "react";
+import { HelpCircle } from "lucide-react";
 
 function AddAddonForm({ addon }) {
     const user = useSelector(state => state.user.user);
@@ -21,13 +22,14 @@ function AddAddonForm({ addon }) {
             price: addon?.price || "",
             order: addon?.order || null,
             status: addon?.status || true,
+            isDocumentRequired: addon?.isDocumentRequired || false
         }
     });
 
     const publishAddon = async (addonData) => {
         try {
             setIsPublishing(true);
-            const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/addons/create`, { title: addonData.title, description: addonData.description, price: addonData.price, order: addonData.order, status: addonData.status }, { headers: { Authorization: `Bearer ${user.accessToken}` } });
+            const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/addons/create`, { title: addonData.title, description: addonData.description, price: addonData.price, order: addonData.order, status: addonData.status, isDocumentRequired: addonData.isDocumentRequired }, { headers: { Authorization: `Bearer ${user.accessToken}` } });
 
             if (data && data.success) {
                 toast.success(data.message);
@@ -40,7 +42,7 @@ function AddAddonForm({ addon }) {
                 try {
                     const newAccessToken = await refreshAccessToken();
 
-                    const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/addons/create`, { title: addonData.title, description: addonData.description, price: addonData.price, order: addonData.order, status: addonData.status }, { headers: { Authorization: `Bearer ${newAccessToken}` } });
+                    const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/addons/create`, { title: addonData.title, description: addonData.description, price: addonData.price, order: addonData.order, status: addonData.status, isDocumentRequired: addonData.isDocumentRequired }, { headers: { Authorization: `Bearer ${newAccessToken}` } });
 
                     if (data && data.success) {
                         toast.success(data.message);
@@ -53,7 +55,7 @@ function AddAddonForm({ addon }) {
                     toast.error(message);
                     setIsPublishing(false);
                 }
-            }else{
+            } else {
                 toast.error(message);
                 setIsPublishing(false);
             }
@@ -64,7 +66,7 @@ function AddAddonForm({ addon }) {
         try {
             setIsPublishing(true);
 
-            const { data } = await axios.put(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/addons/edit/${addon._id}`, { title: addonData.title, description: addonData.description, price: addonData.price, order: addonData.order, status: addonData.status }, { headers: { Authorization: `Bearer ${user.accessToken}` } });
+            const { data } = await axios.put(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/addons/edit/${addon._id}`, { title: addonData.title, description: addonData.description, price: addonData.price, order: addonData.order, status: addonData.status, isDocumentRequired: addonData.isDocumentRequired }, { headers: { Authorization: `Bearer ${user.accessToken}` } });
 
             if (data && data.success) {
                 toast.success(data.message);
@@ -77,7 +79,7 @@ function AddAddonForm({ addon }) {
                 try {
                     const newAccessToken = await refreshAccessToken();
 
-                    const { data } = await axios.put(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/addons/edit/${addon._id}`, { title: addonData.title, description: addonData.description, price: addonData.price, order: addonData.order, status: addonData.status }, { headers: { Authorization: `Bearer ${newAccessToken}` } });
+                    const { data } = await axios.put(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/addons/edit/${addon._id}`, { title: addonData.title, description: addonData.description, price: addonData.price, order: addonData.order, status: addonData.status, isDocumentRequired: addonData.isDocumentRequired }, { headers: { Authorization: `Bearer ${newAccessToken}` } });
 
                     if (data && data.success) {
                         toast.success(data.message);
@@ -89,7 +91,7 @@ function AddAddonForm({ addon }) {
                     toast.error(message);
                     setIsPublishing(false);
                 }
-            }else{
+            } else {
                 toast.error(message);
                 setIsPublishing(false);
             }
@@ -138,6 +140,14 @@ function AddAddonForm({ addon }) {
                             {errors.status && <p className="text-sm text-orange-500 font-light">Status is required.</p>}
                         </div>
                     </div>
+
+                    <br />
+
+                    <label className="flex items-center gap-2">
+                        <HelpCircle className="text-blue-600" size={18} />
+                        <input type="checkbox" {...register('isDocumentRequired', { required: false })} />
+                        <span >Is document upload required?</span>
+                    </label>
 
                     <br />
 

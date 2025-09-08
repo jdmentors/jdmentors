@@ -2,7 +2,7 @@ import Package from "../models/package.model.js";
 
 const createPackage = async (req, res) => {
     try {
-        const { title, description, process = '', services = [], addons = [], extras = [], price, order, status } = req.body;
+        const { title, description, process = '', services = [], addons = [], extras = [], price, order, status, isDocumentRequired } = req.body;
 
         const user = req.user;
 
@@ -16,7 +16,7 @@ const createPackage = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Package already exists with this title' });
         }
 
-        const ourPackage = await Package.create({ title, description, process, services, addons, extras, price, order, status, user: user._id });
+        const ourPackage = await Package.create({ title, description, process, services, addons, extras, price, order, status, user: user._id, isDocumentRequired });
 
         if (!ourPackage) {
             return res.status(500).json({ success: false, message: 'Error occured while creating package' });
@@ -106,7 +106,7 @@ const updateAvailability = async (req, res) => {
 
 const editPackage = async (req, res) => {
     try {
-        const { title, description, process = '', services = [], addons = [], extras = [], price, order, status } = req.body;
+        const { title, description, process = '', services = [], addons = [], extras = [], price, order, status, isDocumentRequired } = req.body;
 
         const { packageId } = req.params;
 
@@ -114,7 +114,7 @@ const editPackage = async (req, res) => {
             return res.status(400).json({ success: false, message: 'All fields are required.' });
         }
 
-        const ourPackage = await Package.findByIdAndUpdate(packageId, { title, description, process, services, addons, extras, price, order, status });
+        const ourPackage = await Package.findByIdAndUpdate(packageId, { title, description, process, services, addons, extras, price, order, status, isDocumentRequired });
 
         if (!ourPackage) {
             return res.status(500).json({ success: false, message: 'Error occured while updating package' });

@@ -52,6 +52,10 @@ const serviceSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
         ref: "User"
+    },
+    isDocumentRequired: {
+        type: Boolean,
+        default: false
     }
 }, {timestamps:true});
 

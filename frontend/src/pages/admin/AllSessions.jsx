@@ -93,7 +93,7 @@ function AllSessions() {
         setUserPopUpEmail(email);
         setShowUserPopUp(true);
     }
-    
+
     return (
         <section className="flex min-h-[90vh]">
             {
@@ -107,14 +107,14 @@ function AllSessions() {
 
             <AdminContainer>
                 <div className="max-w-full">
-                    <h2 className="text-3xl md:text-4xl font-bold mb-5 text-blue-950">All Sessions</h2>
-                    <p className="text-gray-600">Track and manage every scheduled session or consultation in one place. Stay informed and ensure seamless communication between users and experts.</p>
+                    <h2 className="text-3xl md:text-4xl font-bold mb-5 text-blue-950">All Sessions - Admissions</h2>
+                    <p className="text-gray-600">Track and manage every scheduled session or consultation for admission in one place. Stay informed and ensure seamless communication between users and experts.</p>
                 </div>
 
                 <div className="my-10 max-w-full">
                     <div className="overflow-hidden rounded-2xl border-2 border-blue-100 bg-white px-4 pb-3 pt-4 sm:px-6">
                         <div className="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between">
-                            <h3 className="text-lg font-semibold text-gray-800">Recent Sessions</h3>
+                            <h3 className="text-lg font-semibold text-gray-800">Recent Sessions - Admissions</h3>
                         </div>
 
                         <div className="my-5 overflow-x-auto">
@@ -163,11 +163,13 @@ function AllSessions() {
 
                                                             <div>
                                                                 {
-                                                                    session.document.map((doc) => {
+                                                                    session.document.length > 0 ? session.document.map((doc) => {
                                                                         return (
                                                                             <Link key={doc} target="_blank" to={`${doc}`} className="flex gap-1 items-center"><FileDownIcon size={18} /> <span className="text-blue-600 hover:underline">{cleanFileName(decodeURIComponent(doc))}</span></Link>
                                                                         )
                                                                     })
+                                                                        :
+                                                                        'Not Attached'
                                                                 }
                                                             </div>
 
@@ -227,11 +229,13 @@ function AllSessions() {
                                                                 <p className="text-gray-800">Doc(s):</p>
                                                                 <div>
                                                                     {
-                                                                        session.document.map((doc) => {
+                                                                        session.document.length > 0 ? session.document.map((doc) => {
                                                                             return (
                                                                                 <Link key={doc} target="_blank" to={`${doc}`} className="flex gap-1 items-center"><FileDownIcon size={18} /> <span className="text-blue-600 hover:underline">{cleanFileName(decodeURIComponent(doc))}</span></Link>
                                                                             )
                                                                         })
+                                                                            :
+                                                                            'Not Attached'
                                                                     }
                                                                 </div>
                                                             </div>

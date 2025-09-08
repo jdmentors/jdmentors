@@ -2,7 +2,7 @@ import Addon from "../models/addon.model.js";
 
 const createAddon = async (req, res) => {
     try {
-        const { title, description, price, order, status = true } = req.body;
+        const { title, description, price, order, status = true, isDocumentRequired } = req.body;
 
         const user = req.user;
 
@@ -20,7 +20,7 @@ const createAddon = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Addon already exists with this title' });
         }
 
-        const addon = await Addon.create({ title, description, price, order, status, user: user._id });
+        const addon = await Addon.create({ title, description, price, order, status, user: user._id, isDocumentRequired });
 
         if (!addon) {
             return res.status(500).json({ success: false, message: 'Error occured while creating addon' });
@@ -151,7 +151,7 @@ const getAnAddon = async (req, res) => {
 
 const editAddon = async (req, res) => {
     try {
-        const { title, description, price, order, status = true } = req.body;
+        const { title, description, price, order, status = true, isDocumentRequired } = req.body;
 
         const { addonId } = req.params;
 
@@ -159,7 +159,7 @@ const editAddon = async (req, res) => {
             return res.status(400).json({ success: false, message: 'All fields are required.' });
         }
 
-        const addon = await Addon.findByIdAndUpdate(addonId, { title, description, price, order, status });
+        const addon = await Addon.findByIdAndUpdate(addonId, { title, description, price, order, status, isDocumentRequired });
 
         if (!addon) {
             return res.status(500).json({ success: false, message: 'Error occured while updating add-on' });

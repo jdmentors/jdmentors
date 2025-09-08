@@ -1,6 +1,6 @@
 import { model, Schema } from "mongoose";
 
-const sessionSchema = new Schema({
+const accommodationSchema = new Schema({
     fullName: {
         type: String,
         required: true,
@@ -17,32 +17,43 @@ const sessionSchema = new Schema({
         required: true,
         trim: true
     },
-    service: {
-        type: Schema.Types.ObjectId,
-        refPath: 'serviceType',
-        required: true
+    preferredContact: {
+        type: Array,
+        required: false
     },
-    serviceType: {
+    exam: {
+        type: Array,
+        required: false
+    },
+    seekingAccommodations: {
         type: String,
-        enum: ['Service', 'Package', 'Addon', 'Extra'],
-        required: true,
-        default: 'Service'
+        required: false
     },
     price: {
         type: Number,
         required: true,
     },
-    addonsAndExtras: {
-        type: Array,
-        required: false,
-    },
     dateTime: {
         type: Date,
         default: null
     },
-    notes: {
+    supportingDocumentation: {
+        type: String,
+        required: false,
+    },
+    previousAccommodation: {
+        type: String,
+        default: null
+    },
+    providedAccommodations: {
+        type: String,
+        default: null
+    },
+    additionalInfomation: {
         type: String,
         trim: true,
+        default: null,
+        required: false
     },
     document: {
         type: [String],
@@ -64,6 +75,6 @@ const sessionSchema = new Schema({
     }
 }, { timestamps: true });
 
-const Session = model('Session', sessionSchema);
+const Accommodation = model('Accommodation', accommodationSchema);
 
-export default Session;
+export default Accommodation;

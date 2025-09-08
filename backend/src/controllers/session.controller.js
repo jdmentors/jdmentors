@@ -3,7 +3,7 @@ import { uploadDocsOnCloudinary } from "../utils/cloudinary.js";
 
 const createSession = async (req, res) => {
     try {
-        const { fullName, email, phone, dateTime = null, notes = null, service, serviceType, price, addonsAndExtras=[] } = req.body;
+        const { fullName, email, phone, dateTime = null, notes = 'Not Provided', service, serviceType, price, addonsAndExtras=[] } = req.body;
 
         const document = req.files;
 
@@ -12,12 +12,24 @@ const createSession = async (req, res) => {
         }
 
         // let uploaded = await uploadDocsOnCloudinary(document);
-        let uploadArray = document.map((doc) => uploadDocsOnCloudinary(doc));
+        // let uploadArray = document.map((doc) => uploadDocsOnCloudinary(doc));
 
-        const uploaded = await Promise.all(uploadArray);
+        // const uploaded = await Promise.all(uploadArray);
 
-        if (!uploaded) {
-            return res.status(500).json({ success: false, message: 'Failed to upload docs.' });
+        // if (!uploaded) {
+        //     return res.status(500).json({ success: false, message: 'Failed to upload docs.' });
+        // }
+
+        let uploadArray;
+        let uploaded = '';
+
+        if(document){
+            uploadArray = document.map((doc) => uploadDocsOnCloudinary(doc));
+            uploaded = await Promise.all(uploadArray);
+
+            if (!uploaded) {
+                return res.status(500).json({ success: false, message: 'Failed to upload docs.' });
+            }
         }
 
         const session = await Session.create({ fullName, email, phone, service, serviceType, price, addonsAndExtras, dateTime, notes, document: uploaded || '' });
@@ -88,7 +100,7 @@ const getASession = async (req, res) => {
 
         const session = await Session.findById(sessionId)
             .populate('service')
-            .select('fullName email phone price addonsAndExtras serviceType dateTime notes document status payment createAt');
+            .select('fullName email phone price addonsAndExtras serviceType dateTime notes document status payment createAt emailSent');
 
         if (!session) {
             return res.status(500).json({ success: false, message: 'Could not find the session.' });
@@ -100,10 +112,32 @@ const getASession = async (req, res) => {
     }
 }
 
+const updateSessionEmailStatus = async (req, res) => {
+    try {
+        const { sessionId } = req.params;
+        const { emailSent } = req.body;
+
+        if (!sessionId) {
+            return res.status(400).json({ success: false, message: 'Session ID is needed.' });
+        }
+
+        const session = await Session.findByIdAndUpdate(sessionId, { emailSent }, { new: true });
+
+        if (!session) {
+            return res.status(500).json({ success: false, message: 'Failed to update status.' });
+        }
+
+        return res.status(200).json({ success: true, message: 'Status marked as done', data: session });
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
 export {
     createSession,
     getSessionsOfUser,
     getAllSessions,
     updateSessionStatus,
-    getASession
+    getASession,
+    updateSessionEmailStatus,
 }

@@ -6,6 +6,7 @@ import useRefreshToken from "../../hooks/useRefreshToken";
 import { updateUser } from "../../features/forms/UserAuthSlice.js";
 import { useNavigate } from "react-router";
 import { useState } from "react";
+import { HelpCircle } from "lucide-react";
 
 function AddExtraForm({ extra }) {
     const user = useSelector(state => state.user.user);
@@ -21,13 +22,14 @@ function AddExtraForm({ extra }) {
             price: extra?.price || "",
             order: extra?.order || null,
             status: extra?.status || true,
+            isDocumentRequired: extra?.isDocumentRequired || false
         }
     });
 
     const publishExtra = async (extraData) => {
         try {
             setIsPublishing(true);
-            const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/extras/create`, { title: extraData.title, description: extraData.description, price: extraData.price, order: extraData.order, status: extraData.status }, { headers: { Authorization: `Bearer ${user.accessToken}` } });
+            const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/extras/create`, { title: extraData.title, description: extraData.description, price: extraData.price, order: extraData.order, status: extraData.status, isDocumentRequired: extraData.isDocumentRequired }, { headers: { Authorization: `Bearer ${user.accessToken}` } });
 
             if (data && data.success) {
                 toast.success(data.message);
@@ -40,7 +42,7 @@ function AddExtraForm({ extra }) {
                 try {
                     const newAccessToken = await refreshAccessToken();
 
-                    const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/extras/create`, { title: extraData.title, description: extraData.description, price: extraData.price, order: extraData.order, status: extraData.status }, { headers: { Authorization: `Bearer ${newAccessToken}` } });
+                    const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/extras/create`, { title: extraData.title, description: extraData.description, price: extraData.price, order: extraData.order, status: extraData.status, isDocumentRequired: extraData.isDocumentRequired }, { headers: { Authorization: `Bearer ${newAccessToken}` } });
 
                     if (data && data.success) {
                         toast.success(data.message);
@@ -53,7 +55,7 @@ function AddExtraForm({ extra }) {
                     toast.error(message);
                     setIsPublishing(false);
                 }
-            }else{
+            } else {
                 toast.error(message);
                 setIsPublishing(false);
             }
@@ -64,7 +66,7 @@ function AddExtraForm({ extra }) {
         try {
             setIsPublishing(true);
 
-            const { data } = await axios.put(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/extras/edit/${extra._id}`, { title: extraData.title, description: extraData.description, price: extraData.price, order: extraData.order, status: extraData.status }, { headers: { Authorization: `Bearer ${user.accessToken}` } });
+            const { data } = await axios.put(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/extras/edit/${extra._id}`, { title: extraData.title, description: extraData.description, price: extraData.price, order: extraData.order, status: extraData.status, isDocumentRequired: extraData.isDocumentRequired }, { headers: { Authorization: `Bearer ${user.accessToken}` } });
 
             if (data && data.success) {
                 toast.success(data.message);
@@ -77,7 +79,7 @@ function AddExtraForm({ extra }) {
                 try {
                     const newAccessToken = await refreshAccessToken();
 
-                    const { data } = await axios.put(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/extras/edit/${extra._id}`, { title: extraData.title, description: extraData.description, price: extraData.price, order: extraData.order, status: extraData.status }, { headers: { Authorization: `Bearer ${newAccessToken}` } });
+                    const { data } = await axios.put(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/extras/edit/${extra._id}`, { title: extraData.title, description: extraData.description, price: extraData.price, order: extraData.order, status: extraData.status, isDocumentRequired: extraData.isDocumentRequired }, { headers: { Authorization: `Bearer ${newAccessToken}` } });
 
                     if (data && data.success) {
                         toast.success(data.message);
@@ -89,7 +91,7 @@ function AddExtraForm({ extra }) {
                     toast.error(message);
                     setIsPublishing(false);
                 }
-            }else{
+            } else {
                 toast.error(message);
                 setIsPublishing(false);
             }
@@ -138,6 +140,14 @@ function AddExtraForm({ extra }) {
                             {errors.status && <p className="text-sm text-orange-500 font-light">Status is required.</p>}
                         </div>
                     </div>
+
+                    <br />
+
+                    <label className="flex items-center gap-2">
+                        <HelpCircle className="text-blue-600" size={18} />
+                        <input type="checkbox" {...register('isDocumentRequired', { required: false })} />
+                        <span >Is document upload required?</span>
+                    </label>
 
                     <br />
 
