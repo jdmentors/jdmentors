@@ -1,8 +1,26 @@
 import { Link } from "react-router";
 import { CallToActionAccommodations, Container, Hero, HeroAccommodations } from "../components";
 import { CalendarCheck } from "lucide-react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 function Accommodations() {
+    const [accommodationPrice, setAccommodationPrice] = useState(null);
+
+    useEffect(() => {
+        const getAllOthers = async () => {
+            try {
+                const { data } = await axios.get(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/others/all`);
+                if (data && data.success) {
+                    setAccommodationPrice(data.data[0].accommodationPrice);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        getAllOthers();
+    }, [])
+
     return (
         <div className="min-h-[70vh]">
             <HeroAccommodations />
@@ -31,7 +49,7 @@ function Accommodations() {
 
                     <div className="md:col-span-2 flex flex-col gap-5">
                         <div className="flex flex-col gap-2">
-                            <h2 className="text-3xl md:text-4xl font-bold text-blue-600">Disability Accommodations: $399</h2>
+                            <h2 className="text-3xl md:text-4xl font-bold text-blue-600">Disability Accommodations: ${accommodationPrice}</h2>
                             <p className="font-semibold text-blue-950">Undergraduate | LSAT Prep | GRE Prep | Praxis Exams | Law & Graduate Programs | MPRE & Bar Exam</p>
                         </div>
 
@@ -51,10 +69,10 @@ function Accommodations() {
                             <li>Proven Success: We have a 100% success rate helping eligible students submit accommodation requests to the Law School Admission Council, college disability offices, and graduate/law school disability services.</li>
                         </ul>
 
-                        <Link to='/services' className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700 md:self-start self-center">
+                        <Link to='/checkout/accommodations' className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700 md:self-start self-center">
                             <CalendarCheck size={24} strokeWidth={1.5} />
 
-                            <span>Book Now @ $399</span>
+                            <span>Book Now @ ${accommodationPrice}</span>
                         </Link>
                     </div>
                 </Container>

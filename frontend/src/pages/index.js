@@ -47,6 +47,7 @@ import UpdateTeam from "./admin/UpdateTeam";
 import Accommodations from "./Accommodations";
 import CheckoutAccommodations from "./CheckoutAccommodations";
 import CheckOutAccommodationSuccess from "./CheckoutAccommodationSuccess";
+import AllSessionsAccommodations from "./admin/AllSessionsAccommodations";
 
 export {
     Home,
@@ -98,4 +99,5 @@ export {
     Accommodations,
     CheckoutAccommodations,
     CheckOutAccommodationSuccess,
+    AllSessionsAccommodations,
 }

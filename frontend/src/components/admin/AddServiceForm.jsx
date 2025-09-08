@@ -7,6 +7,7 @@ import useRefreshToken from "../../hooks/useRefreshToken";
 import { updateUser } from "../../features/forms/UserAuthSlice.js";
 import { useNavigate } from "react-router";
 import { useState } from "react";
+import { HelpCircle } from "lucide-react";
 
 function AddServiceForm({ service }) {
     const user = useSelector(state => state.user.user);
@@ -22,18 +23,19 @@ function AddServiceForm({ service }) {
             description: service?.description || "",
             price: service?.price || "",
             process: service?.process || "",
-            features: service?.features || [""],
-            addons: service?.addons || [""],
-            extras: service?.extras || [""],
+            features: service?.features || [],
+            addons: service?.addons || [],
+            extras: service?.extras || [],
             order: service?.order || null,
             status: service?.status || true,
+            isDocumentRequired: service?.isDocumentRequired || false
         }
     });
 
     const publishService = async (serviceData) => {
         try {
             setIsPublishing(true);
-            const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/services/create`, { title: serviceData.title, slug: serviceData.slug, description: serviceData.description, price: serviceData.price, process: serviceData.process || '', features: serviceData.features || [], addons: serviceData.addons || [], extras: serviceData.extras || [], order: serviceData.order, status: serviceData.status }, { headers: { Authorization: `Bearer ${user.accessToken}` } });
+            const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/services/create`, { title: serviceData.title, slug: serviceData.slug, description: serviceData.description, price: serviceData.price, process: serviceData.process || '', features: serviceData.features || [], addons: serviceData.addons || [], extras: serviceData.extras || [], order: serviceData.order, status: serviceData.status, isDocumentRequired: serviceData.isDocumentRequired }, { headers: { Authorization: `Bearer ${user.accessToken}` } });
 
             if (data && data.success) {
                 toast.success(data.message);
@@ -46,7 +48,7 @@ function AddServiceForm({ service }) {
                 try {
                     const newAccessToken = await refreshAccessToken();
 
-                    const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/services/create`, { title: serviceData.title, slug: serviceData.slug, description: serviceData.description, price: serviceData.price, process: serviceData.process || '', features: serviceData.features || [], addons: serviceData.addons || [], extras: serviceData.extras || [], order: serviceData.order, status: serviceData.status }, { headers: { Authorization: `Bearer ${newAccessToken}` } });
+                    const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/services/create`, { title: serviceData.title, slug: serviceData.slug, description: serviceData.description, price: serviceData.price, process: serviceData.process || '', features: serviceData.features || [], addons: serviceData.addons || [], extras: serviceData.extras || [], order: serviceData.order, status: serviceData.status, isDocumentRequired: serviceData.isDocumentRequired }, { headers: { Authorization: `Bearer ${newAccessToken}` } });
 
                     if (data && data.success) {
                         toast.success(data.message);
@@ -70,7 +72,7 @@ function AddServiceForm({ service }) {
         try {
             setIsPublishing(true);
 
-            const { data } = await axios.put(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/services/edit/${service._id}`, { title: serviceData.title, slug: serviceData.slug, description: serviceData.description, price: serviceData.price, process: serviceData.process || '', features: serviceData.features || [], addons: serviceData.addons || [], extras: serviceData.extras || [], order: serviceData.order, status: serviceData.status }, { headers: { Authorization: `Bearer ${user.accessToken}` } });
+            const { data } = await axios.put(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/services/edit/${service._id}`, { title: serviceData.title, slug: serviceData.slug, description: serviceData.description, price: serviceData.price, process: serviceData.process || '', features: serviceData.features || [], addons: serviceData.addons || [], extras: serviceData.extras || [], order: serviceData.order, status: serviceData.status, isDocumentRequired: serviceData.isDocumentRequired }, { headers: { Authorization: `Bearer ${user.accessToken}` } });
 
             if (data && data.success) {
                 toast.success(data.message);
@@ -83,7 +85,7 @@ function AddServiceForm({ service }) {
                 try {
                     const newAccessToken = await refreshAccessToken();
 
-                    const { data } = await axios.put(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/services/edit/${service._id}`, { title: serviceData.title, slug: serviceData.slug, description: serviceData.description, price: serviceData.price, process: serviceData.process || '', features: serviceData.features || [], addons: serviceData.addons || [], extras: serviceData.extras || [], order: serviceData.order, status: serviceData.status }, { headers: { Authorization: `Bearer ${newAccessToken}` } });
+                    const { data } = await axios.put(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/services/edit/${service._id}`, { title: serviceData.title, slug: serviceData.slug, description: serviceData.description, price: serviceData.price, process: serviceData.process || '', features: serviceData.features || [], addons: serviceData.addons || [], extras: serviceData.extras || [], order: serviceData.order, status: serviceData.status, isDocumentRequired: serviceData.isDocumentRequired }, { headers: { Authorization: `Bearer ${newAccessToken}` } });
 
                     if (data && data.success) {
                         toast.success(data.message);
@@ -290,6 +292,14 @@ function AddServiceForm({ service }) {
                             {errors.status && <p className="text-sm text-orange-500 font-light">Status is required.</p>}
                         </div>
                     </div>
+
+                    <br />
+
+                    <label className="flex items-center gap-2">
+                        <HelpCircle className="text-blue-600" size={18} />
+                        <input type="checkbox" {...register('isDocumentRequired', {required: false})}/>
+                        <span >Is document upload required?</span>
+                    </label>
 
                     <br />
 

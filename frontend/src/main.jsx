@@ -32,6 +32,7 @@ const SessionStatus = lazy(() => import('./pages/SessionStatus'));
 const CheckOutCancel = lazy(() => import('./pages/CheckOutCancel'));
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
 const AllSessions = lazy(() => import('./pages/admin/AllSessions'));
+const AllSessionsAccommodations = lazy(() => import('./pages/admin/AllSessionsAccommodations'));
 const AllCoupons = lazy(() => import('./pages/admin/AllCoupons'));
 const AllBlogs = lazy(() => import('./pages/admin/AllBlogs'));
 const AllUsers = lazy(() => import('./pages/admin/AllUsers'));
@@ -121,7 +122,9 @@ createRoot(document.getElementById('root')).render(
                         <Route path='/admin' element={<AdminRoute><AdminLayout /></AdminRoute>}>
                             <Route path='/admin/dashboard' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><AdminDashboard /></Suspense>} />
 
-                            <Route path='/admin/sessions' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><AllSessions /></Suspense>} />
+                            <Route path='/admin/admissions' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><AllSessions /></Suspense>} />
+
+                            <Route path='/admin/accommodations' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><AllSessionsAccommodations /></Suspense>} />
 
                             <Route path='/admin/coupons' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><AllCoupons /></Suspense>} />
 

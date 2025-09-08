@@ -3,7 +3,7 @@ import { uploadDocsOnCloudinary } from "../utils/cloudinary.js";
 
 const createAccommodation = async (req, res) => {
     try {
-        const { fullName, email, phone, dateTime = '', preferredContact = [], exam = [], seekingAccommodations = '', price, supportingDocumentation = '', previousAccommodation = '', additionalInfomation = '' } = req.body;
+        const { fullName, email, phone, dateTime = '', preferredContact = [], exam = [], seekingAccommodations = '', price, supportingDocumentation = '', previousAccommodation = '', providedAccommodations = '', additionalInfomation = '' } = req.body;
 
         const document = req.files;
 
@@ -20,7 +20,7 @@ const createAccommodation = async (req, res) => {
             return res.status(500).json({ success: false, message: 'Failed to upload docs.' });
         }
 
-        const accommodation = await Accommodation.create({ fullName, email, phone, preferredContact, exam, seekingAccommodations, supportingDocumentation, dateTime, previousAccommodation, additionalInfomation, document: uploaded || '', price });
+        const accommodation = await Accommodation.create({ fullName, email, phone, preferredContact, exam, seekingAccommodations, supportingDocumentation, dateTime, previousAccommodation, providedAccommodations, additionalInfomation, document: uploaded || '', price });
 
         if (!accommodation) {
             return res.status(500).json({ success: false, message: 'Failed to book accommodation.' });
@@ -48,7 +48,82 @@ const getAnAccommodation = async (req, res) => {
     }
 }
 
+const getAllAccommodations = async (req, res) => {
+    try {
+        const accommodations = await Accommodation.find().sort({ createdAt: -1 });
+
+        if (!accommodations) {
+            return res.status(500).json({ success: false, message: 'Could not find the accommodations.' });
+        }
+
+        return res.status(200).json({ success: true, message: 'Accommodations fetched', data: accommodations });
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+const updateAccommodationStatus = async (req, res) => {
+    try {
+        const { accommodationId } = req.params;
+
+        if (!accommodationId) {
+            return res.status(400).json({ success: false, message: 'Accommodation ID is needed.' });
+        }
+
+        const accommodation = await Accommodation.findByIdAndUpdate(accommodationId, { status: true }, { new: true });
+
+        if (!accommodation) {
+            return res.status(500).json({ success: false, message: 'Failed to update status.' });
+        }
+
+        return res.status(200).json({ success: true, message: 'Status marked as done', data: accommodation });
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+const getAccommodationsOfUser = async (req, res) => {
+    try {
+        const user = req.user;
+
+        const accommodations = await Accommodation.find({ email: user.email }).sort({ createdAt: -1 });
+
+        if (!accommodations) {
+            return res.status(500).json({ success: false, message: 'Could not find the accommodations.' });
+        }
+
+        return res.status(200).json({ success: true, message: 'accommodations fetched', data: accommodations });
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+const updateAccommodationEmailStatus = async (req, res) => {
+    try {
+        const { accommodationId } = req.params;
+        const { emailSent } = req.body;
+
+        if (!accommodationId) {
+            return res.status(400).json({ success: false, message: 'Accommodation ID is needed.' });
+        }
+
+        const accommodation = await Accommodation.findByIdAndUpdate(accommodationId, { emailSent }, { new: true });
+
+        if (!accommodation) {
+            return res.status(500).json({ success: false, message: 'Failed to update status.' });
+        }
+
+        return res.status(200).json({ success: true, message: 'Status marked as done', data: accommodation });
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
 export {
     createAccommodation,
     getAnAccommodation,
+    getAllAccommodations,
+    updateAccommodationStatus,
+    getAccommodationsOfUser,
+    updateAccommodationEmailStatus,
 }

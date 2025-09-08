@@ -1,7 +1,7 @@
 import { CalendarDays, Contact, File, HelpCircle, LockKeyholeIcon, Mail, Phone, User, UserCheck2 } from "lucide-react";
 import { Container, FileInput } from "../components";
 import { Link } from "react-router";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
@@ -10,12 +10,28 @@ import { updateUser } from "../features/forms/UserAuthSlice.js";
 import toast from "react-hot-toast";
 
 function CheckoutAccommodations() {
+    const [basePrice, setBasePrice] = useState(null);
+
+    useEffect(() => {
+        const getAllOthers = async () => {
+            try {
+                const { data } = await axios.get(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/others/all`);
+                if (data && data.success) {
+                    setBasePrice(data.data[0].accommodationPrice);
+                    setDiscountedPrice(data.data[0].accommodationPrice);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        getAllOthers();
+    }, [])
+
     const formRef = useRef();
     const [isBooking, setIsBooking] = useState(false);
     const user = useSelector(state => state.user.user);
     const [isChecked, setIsChecked] = useState(false);
     const [termsWarning, setTermsWarning] = useState(false);
-    const [basePrice, setBasePrice] = useState(399);
     const [discountedPrice, setDiscountedPrice] = useState(basePrice);
 
     const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm({
@@ -27,6 +43,7 @@ function CheckoutAccommodations() {
             exam: [],
             seekingAccommodations: '',
             previousAccommodation: '',
+            providedAccommodations: '',
             supportingDocumentation: '',
             additionalInfomation: '',
             dateTime: '',
@@ -39,6 +56,7 @@ function CheckoutAccommodations() {
     const [couponApplied, setCouponApplied] = useState(false);
     const [discount, setDiscount] = useState(0);
     const dispatch = useDispatch();
+    const [showAccommodationProvided, setShowAccommodationProvided] = useState(false);
 
     const handleCoupon = async (couponData) => {
         try {
@@ -79,6 +97,7 @@ function CheckoutAccommodations() {
 
             formData.append('seekingAccommodations', userData.seekingAccommodations);
             formData.append('previousAccommodation', userData.previousAccommodation);
+            formData.append('providedAccommodations', userData.providedAccommodations);
             formData.append('supportingDocumentation', userData.supportingDocumentation);
             formData.append('additionalInfomation', userData.additionalInfomation);
             formData.append('dateTime', userData.dateTime);
@@ -126,6 +145,7 @@ function CheckoutAccommodations() {
 
                     formData.append('seekingAccommodations', userData.seekingAccommodations);
                     formData.append('previousAccommodation', userData.previousAccommodation);
+                    formData.append('providedAccommodations', userData.providedAccommodations);
                     formData.append('supportingDocumentation', userData.supportingDocumentation);
                     formData.append('additionalInfomation', userData.additionalInfomation);
                     formData.append('dateTime', userData.dateTime);
@@ -279,18 +299,25 @@ function CheckoutAccommodations() {
                             <div>
                                 <p className="flex items-center gap-1"><HelpCircle size={18} /> <span>Have you previously received accommodations?</span></p>
 
-                                <div className="my-2">
+                                <div className={`my-2`}>
                                     <label className="flex items-center gap-1">
-                                        <input type="radio" value="Yes" {...register('previousAccommodation', { required: false })} />
+                                        <input type="radio" onClick={() => setShowAccommodationProvided(true)} value="Yes" {...register('previousAccommodation', { required: false })} />
                                         <span>Yes</span>
                                     </label>
 
                                     <label className="flex items-center gap-1">
-                                        <input type="radio" value="No" {...register('previousAccommodation', { required: false })} />
+                                        <input type="radio" onClick={() => setShowAccommodationProvided(false)} value="No" {...register('previousAccommodation', { required: false })} />
                                         <span>No</span>
                                     </label>
                                 </div>
                                 {errors.previousAccommodation && <p className="text-sm text-orange-500 font-light">Previous accommodation is required.</p>}
+                            </div>
+
+                            <div className={`grid grid-cols-1 my-2 md:my-3 gap-2 ${showAccommodationProvided ? 'block' : 'hidden'}`}>
+                                <label htmlFor="providedAccommodations" className="flex items-center gap-1"><HelpCircle size={18} /> <span>Describe what accommodations were provided and how they helped</span></label>
+
+                                <textarea id="providedAccommodations" placeholder="You can share anything important about your situation. It can be helpful." className="text-black border-2 border-blue-100 py-1.5 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200" rows={4} {...register('providedAccommodations', { required: false })}></textarea>
+                                {errors.providedAccommodations && <p className="text-sm text-orange-500 font-light">Accommodations provided is required.</p>}
                             </div>
 
                             <p className="font-bold text-blue-950 my-4">Documentation</p>
@@ -300,7 +327,7 @@ function CheckoutAccommodations() {
 
                                 <div className="my-2">
                                     <label className="flex items-center gap-1">
-                                        <input type="radio" value="Yes" {...register('supportingDocumentation', { required: false })} />
+                                        <input type="radio" value="Yes (ready to submit)" {...register('supportingDocumentation', { required: false })} />
                                         <span>Yes (ready to submit)</span>
                                     </label>
 
@@ -310,7 +337,7 @@ function CheckoutAccommodations() {
                                     </label>
 
                                     <label className="flex items-center gap-1">
-                                        <input type="radio" value="No" {...register('supportingDocumentation', { required: false })} />
+                                        <input type="radio" value="No (need guidance)" {...register('supportingDocumentation', { required: false })} />
                                         <span>No (need guidance)</span>
                                     </label>
                                 </div>

@@ -45,6 +45,10 @@ const accommodationSchema = new Schema({
         type: String,
         default: null
     },
+    providedAccommodations: {
+        type: String,
+        default: null
+    },
     additionalInfomation: {
         type: String,
         trim: true,
@@ -65,6 +69,10 @@ const accommodationSchema = new Schema({
         required: true,
         default: false
     },
+    emailSent: {
+        type: Boolean,
+        default: false
+    }
 }, { timestamps: true });
 
 const Accommodation = model('Accommodation', accommodationSchema);

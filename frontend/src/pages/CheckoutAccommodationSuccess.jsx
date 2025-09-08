@@ -1,4 +1,4 @@
-import { Check, CheckCircle2, Gift, Plus, Settings, UserCheck2 } from "lucide-react";
+import { CheckCircle2, UserCheck2 } from "lucide-react";
 import Container from "../components/Container";
 import { Link, useParams } from "react-router";
 import { useEffect } from "react";
@@ -19,25 +19,32 @@ function CheckOutAccommodationSuccess() {
                 if (data && data.success) {
                     setAccommodation(data.data);
                     const accommodationData = data.data;
-                    try {
-                        const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/emails/accommodation`, {
-                            fullName: accommodationData.fullName,
-                            email: accommodationData.email,
-                            phone: accommodationData.phone,
-                            preferredContact: accommodationData.preferredContact,
-                            exam: accommodationData.exam,
-                            seekingAccommodations: accommodationData.seekingAccommodations,
-                            supportingDocumentation: accommodationData.supportingDocumentation,
-                            previousAccommodation: accommodationData.previousAccommodation,
-                            additionalInfomation: accommodationData.additionalInfomation,
-                            document: accommodationData.document,
-                            dateTime: accommodationData.dateTime,
-                            price: accommodationData.price,
-                            payment: accommodationData.payment,
-                            accommodationId: accommodationData._id
-                        });
-                    } catch (error) {
-                        console.error(error);
+                    if (!accommodationData.emailSent) {
+                        try {
+                            const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/emails/accommodation`, {
+                                fullName: accommodationData.fullName,
+                                email: accommodationData.email,
+                                phone: accommodationData.phone,
+                                preferredContact: accommodationData.preferredContact,
+                                exam: accommodationData.exam,
+                                seekingAccommodations: accommodationData.seekingAccommodations,
+                                supportingDocumentation: accommodationData.supportingDocumentation,
+                                previousAccommodation: accommodationData.previousAccommodation,
+                                providedAccommodations: accommodationData.providedAccommodations,
+                                additionalInfomation: accommodationData.additionalInfomation,
+                                document: accommodationData.document,
+                                dateTime: accommodationData.dateTime,
+                                price: accommodationData.price,
+                                payment: accommodationData.payment,
+                                accommodationId: accommodationData._id
+                            });
+
+                            if(data && data.success){
+                                const { data } = await axios.patch(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/accommodations/email-status/${accommodationId}`, {emailSent: true});
+                            }
+                        } catch (error) {
+                            console.error(error);
+                        }
                     }
                 }
             } catch (error) {
@@ -99,7 +106,7 @@ function CheckOutAccommodationSuccess() {
                                                         .join(', ')
                                                     : 'Not Specified'}</span></p>
 
-                                            <p className="flex justify-between">Upcoming Exam/Test Date: <span>{accommodation.dateTime.split('T')[0] || 'Not Specified'}</span></p>
+                                            <p className="flex justify-between">Upcoming Exam/Test Date: <span>{new Date(accommodation.dateTime).toDateString() || 'Not Specified'}</span></p>
 
                                             <p className="flex justify-between">Previous Accommodations: <span>{accommodation.previousAccommodation || 'Not Specified'}</span></p>
 

@@ -6,6 +6,7 @@ import useRefreshToken from "../../hooks/useRefreshToken";
 import { updateUser } from "../../features/forms/UserAuthSlice.js";
 import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
+import { HelpCircle } from "lucide-react";
 
 function AddPackageForm({ ourPackage }) {
     const user = useSelector(state => state.user.user);
@@ -25,13 +26,14 @@ function AddPackageForm({ ourPackage }) {
             extras: ourPackage?.extras || [""],
             order: ourPackage?.order || null,
             status: ourPackage?.status || true,
+            isDocumentRequired: ourPackage?.isDocumentRequired || false
         }
     });
 
     const publishPackage = async (packageData) => {
         try {
             setIsPublishing(true);
-            const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/packages/create`, { title: packageData.title, slug: packageData.slug, description: packageData.description, price: packageData.price, process: packageData.process || '', services: packageData.services || '', addons: packageData.addons || '', extras: packageData.extras || '', order: packageData.order, status: packageData.status }, { headers: { Authorization: `Bearer ${user.accessToken}` } });
+            const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/packages/create`, { title: packageData.title, slug: packageData.slug, description: packageData.description, price: packageData.price, process: packageData.process || '', services: packageData.services || '', addons: packageData.addons || '', extras: packageData.extras || '', order: packageData.order, status: packageData.status, isDocumentRequired: packageData.isDocumentRequired }, { headers: { Authorization: `Bearer ${user.accessToken}` } });
 
             if (data && data.success) {
                 toast.success(data.message);
@@ -44,7 +46,7 @@ function AddPackageForm({ ourPackage }) {
                 try {
                     const newAccessToken = await refreshAccessToken();
 
-                    const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/packages/create`, { title: packageData.title, slug: packageData.slug, description: packageData.description, price: packageData.price, process: packageData.process || '', services: packageData.services || '', addons: packageData.addons || '', extras: packageData.extras || '', order: packageData.order, status: packageData.status }, { headers: { Authorization: `Bearer ${newAccessToken}` } });
+                    const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/packages/create`, { title: packageData.title, slug: packageData.slug, description: packageData.description, price: packageData.price, process: packageData.process || '', services: packageData.services || '', addons: packageData.addons || '', extras: packageData.extras || '', order: packageData.order, status: packageData.status, isDocumentRequired: packageData.isDocumentRequired }, { headers: { Authorization: `Bearer ${newAccessToken}` } });
 
                     if (data && data.success) {
                         toast.success(data.message);
@@ -68,7 +70,7 @@ function AddPackageForm({ ourPackage }) {
         try {
             setIsPublishing(true);
 
-            const { data } = await axios.put(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/packages/edit/${ourPackage._id}`, { title: packageData.title, slug: packageData.slug, description: packageData.description, price: packageData.price, process: packageData.process || '', services: packageData.services || '', addons: packageData.addons || '', extras: packageData.extras || '', order: packageData.order, status: packageData.status }, { headers: { Authorization: `Bearer ${user.accessToken}` } });
+            const { data } = await axios.put(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/packages/edit/${ourPackage._id}`, { title: packageData.title, slug: packageData.slug, description: packageData.description, price: packageData.price, process: packageData.process || '', services: packageData.services || '', addons: packageData.addons || '', extras: packageData.extras || '', order: packageData.order, status: packageData.status, isDocumentRequired: packageData.isDocumentRequired }, { headers: { Authorization: `Bearer ${user.accessToken}` } });
 
             if (data && data.success) {
                 toast.success(data.message);
@@ -81,7 +83,7 @@ function AddPackageForm({ ourPackage }) {
                 try {
                     const newAccessToken = await refreshAccessToken();
 
-                    const { data } = await axios.put(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/packages/edit/${ourPackage._id}`, { title: packageData.title, slug: packageData.slug, description: packageData.description, price: packageData.price, process: packageData.process || '', services: packageData.services || '', addons: packageData.addons || '', extras: packageData.extras || '', order: packageData.order, status: packageData.status }, { headers: { Authorization: `Bearer ${newAccessToken}` } });
+                    const { data } = await axios.put(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/packages/edit/${ourPackage._id}`, { title: packageData.title, slug: packageData.slug, description: packageData.description, price: packageData.price, process: packageData.process || '', services: packageData.services || '', addons: packageData.addons || '', extras: packageData.extras || '', order: packageData.order, status: packageData.status, isDocumentRequired: packageData.isDocumentRequired }, { headers: { Authorization: `Bearer ${newAccessToken}` } });
 
                     if (data && data.success) {
                         toast.success(data.message);
@@ -252,6 +254,14 @@ function AddPackageForm({ ourPackage }) {
                             {errors.status && <p className="text-sm text-orange-500 font-light">Status is required.</p>}
                         </div>
                     </div>
+
+                    <br />
+
+                    <label className="flex items-center gap-2">
+                        <HelpCircle className="text-blue-600" size={18} />
+                        <input type="checkbox" {...register('isDocumentRequired', {required: false})}/>
+                        <span >Is document upload required?</span>
+                    </label>
 
                     <br />
 

@@ -48,14 +48,14 @@ const orderAdminEmail = async (fullName, phone, email, service, addonsAndExtras 
                     <p><b>Phone No.:</b> ${phone}</p>
                     <p><b>Email:</b> ${email}</p>
                     <p><b>Service:</b> ${service}</p>
-                    <p><b>Add-ons & Extras:</b> ${addonsAndExtras
+                    <p><b>Add-ons & Extras:</b> ${addonsAndExtras.length > 0 ? addonsAndExtras
                     .map(addonAndExtra => addonAndExtra.split(',')[0])
-                    .join(', ')
+                    .join(', ') : 'Not Included'
                 }</p>
                     <p><b>Amount:</b> $${price}</p>
-                    <p><b>Document(s):</b> ${document.map((doc) => {
+                    <p><b>Document(s):</b> ${document.length > 0 ? document.map((doc) => {
                     return doc + '<br /><br />'
-                })}</p>
+                }) : 'Not Attached'}</p>
                      <p><b>Notes:</b> ${notes ? notes : 'Not Specified'}</p>
                     <p><b>Preferred Time:</b> ${dateTime ? new Date(dateTime).toDateString() + " " + `(${new Date(dateTime).toLocaleTimeString()})` : 'Not Specified'}</p>
                     `,
@@ -76,14 +76,14 @@ const orderUserEmail = async (email, service, addonsAndExtras = [], document, da
             html: `
                     <p>Your session on JD Mentors has been booked. We will reach out to you soon. Here is the booking summary:</p>
                     <p><b>Service:</b> ${service}</p>
-                    <p><b>Add-ons & Extras:</b> ${addonsAndExtras
+                    <p><b>Add-ons & Extras:</b> ${addonsAndExtras.length > 0 ? addonsAndExtras
                     .map(addonAndExtra => addonAndExtra.split(',')[0])
-                    .join(', ')
+                    .join(', ') : 'Not Included'
                 }</p>
                     <p><b>Amount:</b> $${price}</p>
-                    <p><b>Document(s):</b> ${document.map((doc) => {
+                    <p><b>Document(s):</b> ${document.length > 0 ? document.map((doc) => {
                     return doc + '<br /><br />'
-                })}</p>
+                }) : 'Not Attached'}</p>
                     <p><b>Notes:</b> ${notes ? notes : 'Not Specified'}</p>
                     <p><b>Preferred Time:</b> ${dateTime ? new Date(dateTime).toDateString() + " " + `(${new Date(dateTime).toLocaleTimeString()})` : 'Not Specified'}</p>
                     <p><b>Session ID:</b> ${sessionId}</p>
@@ -98,7 +98,7 @@ const orderUserEmail = async (email, service, addonsAndExtras = [], document, da
     }
 }
 
-const accommodationAdminEmail = async (fullName, email, phone, preferredContact = 'Not Specified', exam = 'Not Specified', document = 'Not Provided', dateTime = 'Not Specified', seekingAccommodations = 'Not Specified', supportingDocumentation = 'Not Specified', previousAccommodation = 'Not Specified', additionalInfomation = 'Not Specified', price, accommodationId, payment = 'Pending') => {
+const accommodationAdminEmail = async (fullName, email, phone, preferredContact = 'Not Specified', exam = 'Not Specified', document = 'Not Provided', dateTime = 'Not Specified', seekingAccommodations = 'Not Specified', supportingDocumentation = 'Not Specified', previousAccommodation = 'Not Specified', providedAccommodations = 'Not Specified', additionalInfomation = 'Not Specified', price, accommodationId, payment = 'Pending') => {
     try {
         const info = await transporter.sendMail({
             from: `"JD Mentors" <${process.env.EMAIL_USER}>`,
@@ -110,38 +110,38 @@ const accommodationAdminEmail = async (fullName, email, phone, preferredContact 
                     <p><b>Phone No.:</b> ${phone}</p>
                     <p><b>Email:</b> ${email}</p>
                     <p><b>Service:</b> ${'Accommodations'}</p>
-                    <p><b>Preferred Contact Method:</b> ${
-                        (typeof preferredContact == 'object' && preferredContact.length > 0)
-                        ?
-                        preferredContact
-                            .map(preferred => preferred.split(',')[0])
-                            .join(', ')
-                        :
-                        'Not Specified'
-                    }</p>
+                    <p><b>Preferred Contact Method:</b> ${(typeof preferredContact == 'object' && preferredContact.length > 0)
+                    ?
+                    preferredContact
+                        .map(preferred => preferred.split(',')[0])
+                        .join(', ')
+                    :
+                    'Not Specified'
+                }</p>
                     <p><b>Exam/Program:</b> ${(typeof exam == 'object' && exam.length > 0)
-                        ?
-                        exam
-                            .map(ex => ex.split(',')[0])
-                            .join(', ')
-                        :
-                        'Not Specified'
-                    }</p>
+                    ?
+                    exam
+                        .map(ex => ex.split(',')[0])
+                        .join(', ')
+                    :
+                    'Not Specified'
+                }</p>
+                    <p><b>Exam/Test Date:</b> ${dateTime ? new Date(dateTime).toDateString() : 'Not Specified'}</p>
                     <p><b>Supporting Documentation:</b> ${supportingDocumentation ? supportingDocumentation : 'Not Specified'}</p>
                     <p><b>Previous Accommodation:</b> ${previousAccommodation ? previousAccommodation : 'Not Specified'}</p>
+                    <p><b>Previously Received Accommodation:</b> ${providedAccommodations ? providedAccommodations : 'Not Specified'}</p>
                     <p><b>Seeking Accommodation For:</b> ${seekingAccommodations ? seekingAccommodations : 'Not Specified'}</p>
                     <p><b>Additional Information:</b> ${additionalInfomation ? additionalInfomation : 'Not Specified'}</p>
                     <p><b>Payment:</b> ${payment ? 'Done' : 'Pending'}</p>
                     <p><b>Amount:</b> $${price}</p>
                     <p><b>Document(s):</b> ${typeof document === 'object'
-                        ?
-                        document.map((doc) => {
-                            return doc + '<br /><br />'
-                        })
-                        :
-                        'Not Provided'
-                    }</p>
-                    <p><b>Exam/Test Date:</b> ${dateTime ? new Date(dateTime).toDateString() : 'Not Specified'}</p>
+                    ?
+                    document.map((doc) => {
+                        return doc + '<br /><br />'
+                    })
+                    :
+                    'Not Provided'
+                }</p>
                     `,
         });
 
@@ -151,7 +151,7 @@ const accommodationAdminEmail = async (fullName, email, phone, preferredContact 
     }
 }
 
-const accommodationUserEmail = async (fullName, email, phone, preferredContact = 'Not Specified', exam = 'Not Specified', document = 'Not Provided', dateTime = 'Not Specified', seekingAccommodations = 'Not Specified', supportingDocumentation = 'Not Specified', previousAccommodation = 'Not Specified', additionalInfomation = 'Not Specified', price, accommodationId, payment = 'Pending') => {
+const accommodationUserEmail = async (fullName, email, phone, preferredContact = 'Not Specified', exam = 'Not Specified', document = 'Not Provided', dateTime = 'Not Specified', seekingAccommodations = 'Not Specified', supportingDocumentation = 'Not Specified', previousAccommodation = 'Not Specified', providedAccommodations = 'Not Specified', additionalInfomation = 'Not Specified', price, accommodationId, payment = 'Pending') => {
     try {
         const info = await transporter.sendMail({
             from: `"JD Mentors" <${process.env.EMAIL_USER}>`,
@@ -163,38 +163,38 @@ const accommodationUserEmail = async (fullName, email, phone, preferredContact =
                     <p><b>Phone No.:</b> ${phone}</p>
                     <p><b>Email:</b> ${email}</p>
                     <p><b>Service:</b> ${'Accommodations'}</p>
-                    <p><b>Preferred Contact Method:</b> ${
-                        (typeof preferredContact == 'object' && preferredContact.length > 0)
-                        ?
-                        preferredContact
-                            .map(preferred => preferred.split(',')[0])
-                            .join(', ')
-                        :
-                        'Not Specified'
-                    }</p>
+                    <p><b>Preferred Contact Method:</b> ${(typeof preferredContact == 'object' && preferredContact.length > 0)
+                    ?
+                    preferredContact
+                        .map(preferred => preferred.split(',')[0])
+                        .join(', ')
+                    :
+                    'Not Specified'
+                }</p>
                     <p><b>Exam/Program:</b> ${(typeof exam == 'object' && exam.length > 0)
-                        ?
-                        exam
-                            .map(ex => ex.split(',')[0])
-                            .join(', ')
-                        :
-                        'Not Specified'
-                    }</p>
+                    ?
+                    exam
+                        .map(ex => ex.split(',')[0])
+                        .join(', ')
+                    :
+                    'Not Specified'
+                }</p>
+                    <p><b>Exam/Test Date:</b> ${dateTime ? new Date(dateTime).toDateString() : 'Not Specified'}</p>
                     <p><b>Supporting Documentation:</b> ${supportingDocumentation ? supportingDocumentation : 'Not Specified'}</p>
                     <p><b>Previous Accommodation:</b> ${previousAccommodation ? previousAccommodation : 'Not Specified'}</p>
+                    <p><b>Previously Received Accommodation:</b> ${providedAccommodations ? providedAccommodations : 'Not Specified'}</p>
                     <p><b>Seeking Accommodation For:</b> ${seekingAccommodations ? seekingAccommodations : 'Not Specified'}</p>
                     <p><b>Additional Information:</b> ${additionalInfomation ? additionalInfomation : 'Not Specified'}</p>
                     <p><b>Payment:</b> ${payment ? 'Done' : 'Pending'}</p>
                     <p><b>Amount:</b> $${price}</p>
                     <p><b>Document(s):</b> ${typeof document === 'object'
-                        ?
-                        document.map((doc) => {
-                            return doc + '<br /><br />'
-                        })
-                        :
-                        document
-                    }</p>
-                    <p><b>Exam/Test Date:</b> ${dateTime ? new Date(dateTime).toDateString() : 'Not Specified'}</p>
+                    ?
+                    document.map((doc) => {
+                        return doc + '<br /><br />'
+                    })
+                    :
+                    document
+                }</p>
                     <p><b>Accommodation Session ID:</b> ${accommodationId}</p>
                     <p>To check the status of your session, please visit <a href='${process.env.FRONTEND_URL}/session-status'>${process.env.FRONTEND_URL}/session-status</a> and search the above session ID.</p><br />
                     <p>If you registered, then you can simply login to your account and visist the user dashboard page or can also use the above method.</p>

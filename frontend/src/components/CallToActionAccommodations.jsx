@@ -1,8 +1,26 @@
+import axios from "axios";
 import { CalendarCheck, Shield, Video } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
 function CallToActionAccommodations() {
     const navigate = useNavigate();
+    const [accommodationPrice, setAccommodationPrice] = useState(null);
+
+    useEffect(() => {
+        const getAllOthers = async () => {
+            try {
+                const { data } = await axios.get(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/others/all`);
+                if (data && data.success) {
+                    setAccommodationPrice(data.data[0].accommodationPrice);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        getAllOthers();
+    }, [])
+    
     return (
         <section className="max-w-full bg-gray-900 text-white border-b border-b-gray-800">
             <div className="flex flex-col items-center justify-center text-center py-10 px-2 ">
@@ -22,9 +40,9 @@ function CallToActionAccommodations() {
                 </p>
 
                 <div className="flex gap-3 flex-wrap items-center justify-center my-4">
-                    <button onClick={() => navigate('/services')} type="button" className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md font-medium h-12 px-8 bg-blue-600 hover:bg-blue-700 cursor-pointer">
+                    <button onClick={() => navigate('/checkout/accommodations')} type="button" className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md font-medium h-12 px-8 bg-blue-600 hover:bg-blue-700 cursor-pointer">
                         <CalendarCheck strokeWidth={1.5} />
-                        Book Now @ $399
+                        Book Now @ ${accommodationPrice}
                     </button>
                 </div>
 

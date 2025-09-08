@@ -1,6 +1,6 @@
-import { DollarSign, Verified } from "lucide-react";
+import { DollarSign, FilePen, FilePlus, Sparkles, Verified, Video } from "lucide-react";
 import { aboutUs, banner, user } from "../assets";
-import { CallToAction, Container } from "../components";
+import { CallToAction, Container, HowItWorksCard } from "../components";
 import { useState } from "react";
 import { useEffect } from "react";
 import useGetAllTeam from "../hooks/useGetAllTeam";
@@ -28,6 +28,29 @@ const stats = [
     }
 ];
 
+const HowItWorks = [
+    {
+        icon: <FilePlus />,
+        title: 'Submit Draft to Begin',
+        description: 'We review your draft as soon as it’s received.'
+    },
+    {
+        icon: <FilePen />,
+        title: 'Get Expert Review & Feedback',
+        description: 'Clear, actionable advice delivered the same day.'
+    },
+    {
+        icon: <Video />,
+        title: 'Meet for a Strategy Session',
+        description: 'A focused call to align on your goals and needs.'
+    },
+    {
+        icon: <Sparkles />,
+        title: 'Revise & Polish Until Ready',
+        description: 'Fast updates so you feel confident and prepared.'
+    }
+];
+
 function AboutUs() {
     const [members, setMembers] = useState([]);
     const getAllMembers = useGetAllTeam();
@@ -40,7 +63,7 @@ function AboutUs() {
     }, [])
     
     return (
-        <section className="pt-32 bg-blue-100 max-w-full">
+        <section className="pt-32 bg-blue-100 max-w-full text-gray-600">
             <Container>
                 <h2 className="text-4xl md:text-5xl font-bold my-5 text-blue-950">About</h2>
                 <p className="text-blue-950 mt-4 mb-10">Every well-crafted document begins with the right tools and advice. Discover how our mission is to provide both, ensuring you're prepared for every step ahead.</p>
@@ -88,6 +111,7 @@ function AboutUs() {
             </Container>
 
             <Container>
+                {/* Our vision and mission */}
                 <section className="grid grid-cols-1 md:grid-cols-2 gap-10 bg-white px-5 py-8 sm:p-8 md:p-12 lg:p-14 rounded-2xl mb-16">
                     <div>
                         <h5 className="font-semibold text-blue-600">Our Vision</h5>
@@ -104,6 +128,23 @@ function AboutUs() {
                     </div>
                 </section>
 
+                {/* How it works Section */}
+                <section className="bg-white p-8 md:p-12 lg:p-14 rounded-2xl mb-16">
+                    <h5 className="font-semibold text-blue-600">How It Works</h5>
+                    <h2 className="text-2xl md:text-3xl font-semibold my-5 text-blue-950">Quick, Clear, and Focused on Results</h2>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 xl:gap-8">
+                        {
+                            HowItWorks && HowItWorks.map(howItWork => {
+                                return (
+                                    <HowItWorksCard key={howItWork.title} icon={howItWork.icon} title={howItWork.title} description={howItWork.description} />
+                                )
+                            })
+                        }
+                    </div>
+                </section>
+
+                {/* Team Section */}
                 <section className="bg-white p-8 md:p-12 lg:p-14 rounded-2xl mb-16">
                     <h5 className="font-semibold text-blue-600">Meet Our Team</h5>
                     <h2 className="text-2xl md:text-3xl font-semibold my-5 text-blue-950">Meet Our Team of Consultants</h2>
@@ -115,7 +156,7 @@ function AboutUs() {
                                     <div key={member._id} className="h-80 rounded-2xl overflow-hidden relative">
                                         <img src={member.image || user} loading="lazy" alt="consultant" className="w-full h-full object-cover" />
                                         <div className="absolute py-2 rounded-xl bg-white bottom-5 w-10/12 text-center right-1/2 translate-x-1/2 text-sm">
-                                            <p className="text-base font-semibold">{member.fullName}</p>
+                                            <p className="text-base font-semibold text-blue-950">{member.fullName}</p>
                                             <p className="text-gray-600">{member.designation}</p>
                                         </div>
                                     </div>
@@ -123,6 +164,9 @@ function AboutUs() {
                             })
                         }
                     </div>
+
+                    <h4 className="text-lg font-semibold text-blue-950 mt-8 mb-2">About Our Team</h4>
+                    <p>Our team is made up of dedicated professionals with backgrounds in education, law, and disability advocacy. We combine expertise in standardized testing with a deep understanding of accessibility needs to ensure every student has the tools and support they deserve. From reviewing documentation to guiding you through the accommodation process, our staff is committed to making your academic journey fair, inclusive, and stress-free.</p>
                 </section>
 
                 {/* <section className="bg-white p-8 md:p-12 lg:p-14 rounded-2xl mb-16">

@@ -20,19 +20,17 @@ function Header() {
         { name: 'Blogs', href: '/blogs' },
         // { name: 'Testimonials', href: '/testimonials' },
         { name: 'Contact', href: '/contact' },
-        { name: 'Services', href: '/services' },
     ];
 
-    // const services = [
-    //     { name: 'Core Services', href: '/services' },
-    //     { name: 'Packages', href: '/packages' },
-    //     { name: 'Add-ons', href: '/addons' },
-    //     { name: 'Extras', href: '/extras' },
-    // ];
+    const services = [
+        { name: 'Admissions', href: '/services' },
+        { name: 'Accommodations', href: '/accommodations' },
+    ];
 
     const bookConsultationHandler = () => {
         try {
             navigate('/services');
+            setIsMenuOpen(false);
             scrollTo({top: 500, behavior: 'smooth'});
         } catch (error) {
             console.error(error);
@@ -51,6 +49,7 @@ function Header() {
 
         return () => window.removeEventListener('scroll', handleScroll);
     }, [pathname])
+
     return (
         <header className="w-full fixed top-0 left-0 z-40">
             <Container className={`flex items-center justify-between py-5 ${isScrolled && 'shadow-lg bg-white'}`}>
@@ -67,7 +66,7 @@ function Header() {
                                 </li>
                             ))
                         }
-                        {/* <li className="flex items-center relative" onClick={() => setIsOpen(!isOpen)}>
+                        <li className="flex items-center relative" onClick={() => setIsOpen(!isOpen)}>
                             <Link className={`${isScrolled ? 'text-blue-950 after:bg-blue-950' : 'text-white'}`}>Services</Link>
 
                             <svg className={`w-5 h-5 inline float-right transition-transform cursor-pointer duration-200 ${isOpen ? "rotate-0" : "-rotate-90"}`} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke={`${isScrolled ? '#172554' : '#fff'}`} >
@@ -75,7 +74,7 @@ function Header() {
                             </svg>
 
                             {isOpen && (
-                                <ul onClick={() => setIsOpen(false)} className="w-36 bg-white border border-gray-300 rounded shadow-md mt-1 py-2 absolute top-7">
+                                <ul onClick={() => setIsOpen(false)} className="w-40 bg-white border border-white rounded shadow-md mt-2 absolute top-7">
                                     {services.map((service) => (
                                         <li key={service.name} className="px-4 py-2 hover:bg-blue-600 hover:text-white cursor-pointer" >
                                             <Link className="block" to={service.href}>{service.name}</Link>
@@ -83,7 +82,7 @@ function Header() {
                                     ))}
                                 </ul>
                             )}
-                        </li> */}
+                        </li>
                         <li>
                             {
                                 isUserLoggedIn
@@ -96,7 +95,7 @@ function Header() {
                                     :
                                     pathname === '/accommodations'
                                     ?
-                                    <Link to="/services" className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700 cursor-pointer">
+                                    <Link to="/checkout/accommodations" className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700 cursor-pointer">
                                         <CalendarCheck size={24} strokeWidth={1.5} />
 
                                         <span>Book Now @ $399</span>
@@ -123,7 +122,7 @@ function Header() {
                                 </li>
                             ))
                         }
-                        {/* <li className="flex items-center justify-center relative mx-5 py-2" onClick={() => setIsOpen(!isOpen)}>
+                        <li className="flex items-center justify-center relative mx-5 py-2" onClick={() => setIsOpen(!isOpen)}>
                             <Link className={`text-blue-950 after:bg-blue-950`}>Services</Link>
 
                             <svg className={`w-5 h-5 inline float-right transition-transform cursor-pointer duration-200 ${isOpen ? "rotate-0" : "-rotate-90"}`} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke={`#172554`} >
@@ -131,7 +130,7 @@ function Header() {
                             </svg>
 
                             {isOpen && (
-                                <ul onClick={() => {setIsOpen(false); setIsMenuOpen(false);}} className="w-36 bg-white border border-gray-300 rounded shadow-md mt-1 py-2 absolute top-7">
+                                <ul onClick={() => {setIsOpen(false); setIsMenuOpen(false);}} className="w-40 bg-white border border-gray-300 rounded shadow-md mt-2 absolute top-7">
                                     {services.map((service) => (
                                         <li key={service.name} className="px-4 py-2 hover:bg-blue-600 hover:text-white cursor-pointer" >
                                             <Link className="block" to={service.href}>{service.name}</Link>
@@ -139,24 +138,31 @@ function Header() {
                                     ))}
                                 </ul>
                             )}
-                        </li> */}
-                        {
-                            isUserLoggedIn
-                            &&
-                            <li onClick={() => setIsMenuOpen(false)} className="py-2">
-                                <Link to='/user/dashboard' className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700">
-                                    <LayoutDashboard size={24} strokeWidth={1.5} />
+                        </li>
+                        <li>
+                            {
+                                isUserLoggedIn
+                                    ?
+                                    <Link to='/user/dashboard' className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700">
+                                        <LayoutDashboard size={24} strokeWidth={1.5} />
 
-                                    <span>Dashboard</span>
-                                </Link>
-                            </li>
-                        }
-                        <li onClick={() => setIsMenuOpen(false)} className="py-2">
-                            <Link to='tel:+13476992020' className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700">
-                                <Phone size={18} />
+                                        <span>Dashboard</span>
+                                    </Link>
+                                    :
+                                    pathname === '/accommodations'
+                                    ?
+                                    <Link onClick={() => {setIsMenuOpen(false);}} to="/checkout/accommodations" className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700 cursor-pointer">
+                                        <CalendarCheck size={24} strokeWidth={1.5} />
 
-                                (347) 699-2020
-                            </Link>
+                                        <span>Book Now @ $399</span>
+                                    </Link>
+                                    :
+                                    <button onClick={bookConsultationHandler} className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700 cursor-pointer">
+                                        <Video size={24} strokeWidth={1.5} />
+
+                                        <span>Book Consultation</span>
+                                    </button>
+                            }
                         </li>
                     </ul>
                 </nav>

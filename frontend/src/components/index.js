@@ -50,6 +50,7 @@ import AboutUs from '../components/AboutUs';
 import TeamForm from "./admin/TeamForm";
 import HeroAccommodations from "./HeroAccommodations";
 import CallToActionAccommodations from "./CallToActionAccommodations";
+import HowItWorksCard from "./HowItWorksCard";
 
 export {
     Header,
@@ -104,4 +105,5 @@ export {
     TeamForm,
     HeroAccommodations,
     CallToActionAccommodations,
+    HowItWorksCard,
 }

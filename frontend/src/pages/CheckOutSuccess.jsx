@@ -19,23 +19,29 @@ function CheckOutSuccess() {
                 if (data && data.success) {
                     setSession(data.data);
                     const sessionData = data.data;
-                    try {
-                        const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/emails/order`, {
-                            fullName: sessionData.fullName,
-                            email: sessionData.email,
-                            phone: sessionData.phone,
-                            service: sessionData.service.title,
-                            addonsAndExtras: sessionData.serviceType === 'Package'
-                                ? [...sessionData.service.addons, ...sessionData.service.extras] 
-                                : sessionData.addonsAndExtras || ['Not Included'], 
-                            document: sessionData.document,
-                            dateTime: sessionData.dateTime,
-                            notes: sessionData.notes || 'Not Provided',
-                            price: sessionData.price,
-                            sessionId: sessionData._id
-                        });
-                    } catch (error) {
-                        console.error(error);
+                    if (!sessionData.emailSent) {
+                        try {
+                            const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/emails/order`, {
+                                fullName: sessionData.fullName,
+                                email: sessionData.email,
+                                phone: sessionData.phone,
+                                service: sessionData.service.title,
+                                addonsAndExtras: sessionData.serviceType === 'Package'
+                                    ? [...sessionData.service.addons, ...sessionData.service.extras]
+                                    : sessionData.addonsAndExtras || ['Not Included'],
+                                document: sessionData.document,
+                                dateTime: sessionData.dateTime,
+                                notes: sessionData.notes || 'Not Provided',
+                                price: sessionData.price,
+                                sessionId: sessionData._id
+                            });
+
+                            if (data && data.success) {
+                                const { data } = await axios.patch(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/sessions/email-status/${sessionId}`, { emailSent: true });
+                            }
+                        } catch (error) {
+                            console.error(error);
+                        }
                     }
                 }
             } catch (error) {
@@ -164,11 +170,11 @@ function CheckOutSuccess() {
                                             <div className="flex justify-between">
                                                 Document(s):
                                                 <div>
-                                                    {session.document.map(document => {
+                                                    {session.document.length > 0 ? session.document.map(document => {
                                                         return (<p key={document}>
                                                             <Link target="_blank" to={document} className="text-blue-600 underline">{cleanFileName(decodeURIComponent(document))}</Link>
                                                         </p>)
-                                                    })}
+                                                    }) : 'Not Attached'}
                                                 </div>
                                             </div>
                                             <p className="flex justify-between">Total Price: <span className="font-semibold text-xl text-black">${Math.round(session.price)}</span></p>

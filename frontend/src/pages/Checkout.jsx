@@ -31,6 +31,7 @@ function Checkout() {
     const [service, setService] = useState(null);
     const refreshAccessToken = useRefreshToken();
     const dispatch = useDispatch();
+    const [isDocumentRequired, setIsDocumentRequired] = useState(false);
 
     const { serviceType, serviceId } = useParams();
     const capitalize = (str) => str ? str.charAt(0).toUpperCase() + str.slice(1).toLowerCase() : '';
@@ -44,6 +45,7 @@ function Checkout() {
                 if (data && data.success) {
                     setService(data.data);
                     setDiscountedPrice(data.data.price);
+                    setIsDocumentRequired(data.data.isDocumentRequired);
                 }
             } catch (error) {
                 console.error(error);
@@ -191,7 +193,7 @@ function Checkout() {
     return (
         <section className="min-h-[70vh] pt-24 md:pt-32 relative">
             {
-                (showAddonsAndExtraPopUp && service) && (serviceType == 'service') && (service.addons.length > 0 || service.extras.length > 0) &&
+                (showAddonsAndExtraPopUp && service) && (serviceType == 'service') && (service?.addons.length > 0 || service?.extras.length > 0) &&
                 (
                     <section className="fixed top-0 right-0 left-0 bottom-0 bg-black/70 z-50">
                         <div className="absolute bg-white w-lg max-w-full top-1/2 left-1/2 -translate-1/2 p-6 space-y-4 max-h-[100vh] overflow-y-auto">
@@ -204,7 +206,7 @@ function Checkout() {
                             </p>
 
                             {
-                                service.addons.map(addon => (
+                                service?.addons.length > 0 && service?.addons.map(addon => (
                                     <label key={addon.title} className="flex items-start space-x-3 p-4 border border-blue-200 rounded-lg hover:border-blue-400 cursor-pointer">
                                         <input
                                             type="checkbox"
@@ -224,7 +226,7 @@ function Checkout() {
                             }
 
                             {
-                                service.extras.map(extra => (
+                                service?.extras.map(extra => (
                                     <label key={extra.title} className="flex items-start space-x-3 p-4 border border-blue-200 rounded-lg hover:border-blue-400 cursor-pointer">
                                         <input
                                             type="checkbox"
@@ -314,10 +316,10 @@ function Checkout() {
                                 {errors.notes && <p className="text-sm text-orange-500 font-light">something wrong with notes</p>}
                             </div>
 
-                            <div className="text-gray-600 grid grid-cols-1 my-2 md:my-3">
-                                <label className="flex items-center gap-1 text-sm"><File size={18} /> <span>Document(s) to be reviewed *</span></label>
+                            <div className={`text-gray-600 my-2 md:my-3 ${isDocumentRequired ? 'grid grid-cols-1' : 'hidden'}`}>
+                                <label className="flex items-center gap-1 text-sm"><File size={18} /> <span>Document(s) to be reviewed</span></label>
 
-                                <FileInput {...register('document', { required: true })} />
+                                <FileInput {...register('document', { required: false })} />
                                 {errors.document && <p className="text-sm text-orange-500 font-light">Please attach at least one document</p>}
                             </div>
                         </form>

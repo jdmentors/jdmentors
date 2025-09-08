@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Gift, LaptopIcon, LayoutDashboard, LogOut, Newspaper, Package, Plus, Puzzle, Settings, Tags, UserCircle, UserPlus, Users } from "lucide-react";
+import { Gift, GraduationCap, Handshake, LayoutDashboard, LogOut, Newspaper, Package, Plus, Puzzle, Settings, Tags, UserCircle, UserPlus, Users } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router";
 import { toggleIsUserLoggedIn, updateUser } from "../../features/forms/UserAuthSlice.js";
@@ -8,7 +8,8 @@ import useRefreshToken from "../../hooks/useRefreshToken";
 
 const navigation = [
     { name: 'Dashboard', path: '/admin/dashboard', icon: <LayoutDashboard size={25} strokeWidth={1.5} /> },
-    { name: 'Sessions', path: '/admin/sessions', icon: <LaptopIcon size={25} strokeWidth={1.5} /> },
+    { name: 'Admissions', path: '/admin/admissions', icon: <GraduationCap size={25} strokeWidth={1.5} /> },
+    { name: 'Accommodations', path: '/admin/accommodations', icon: <Handshake size={25} strokeWidth={1.5} /> },
     { name: 'Users', path: '/admin/users', icon: <Users size={25} strokeWidth={1.5} /> },
     { name: 'Services', path: '/admin/services', icon: <Settings size={25} strokeWidth={1.5} /> },
     { name: 'Packages', path: '/admin/packages', icon: <Package size={25} strokeWidth={1.5} /> },
@@ -60,6 +61,7 @@ function AdminSidebar() {
             }
         }
     }
+    
     return (
         <aside className="border-r-2 bg-gray-900 text-white border-r-blue-100 w-1/6">
             <nav>

@@ -21,6 +21,7 @@ import teamRouter from "./routes/team.routes.js";
 import accommodationRouter from "./routes/accommodation.route.js";
 import Accommodation from "./models/accommodation.model.js";
 import mongoose from "mongoose";
+import otherRouter from "./routes/other.route.js";
 
 const app = express();
 app.use(compression());
@@ -105,6 +106,7 @@ app.use('/api/v1/coupons', couponRouter);
 app.use('/api/v1/team', teamRouter);
 app.get('/api/v1/dashboard', verifyAdmin, dashboard);
 app.post('/api/v1/admin/register', verifyAdmin, createAdmin);
+app.use('/api/v1/others', otherRouter);
 
 app.post('/create-checkout-session', async (req, res) => {
   const { sessionId } = req.body;

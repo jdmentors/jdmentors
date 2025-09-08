@@ -7,10 +7,13 @@ import Extra from "../models/extra.model.js";
 import Session from "../models/session.model.js";
 import { userExists } from "./user.controller.js";
 import { accommodationAdminEmail, accommodationUserEmail, contactEmail, orderAdminEmail, orderUserEmail } from "../utils/nodemailer.js";
+import Accommodation from "../models/accommodation.model.js";
+import Team from "../models/team.model.js";
+import Other from "../models/other.model.js";
 
 const dashboard = async (req, res) => {
     try {
-        const [userCount, blogCount, serviceCount, packageCount, addonCount, extraCount, sessionCount, adminCount, revenue] = await Promise.all([
+        const [userCount, blogCount, serviceCount, packageCount, addonCount, extraCount, sessionCount, accommodationCount, adminCount, teamCount, revenue, accommodationRevenue] = await Promise.all([
             User.countDocuments(),
             Blog.countDocuments(),
             Service.countDocuments(),
@@ -18,8 +21,18 @@ const dashboard = async (req, res) => {
             Addon.countDocuments(),
             Extra.countDocuments(),
             Session.countDocuments(),
+            Accommodation.countDocuments(),
             User.countDocuments({ userType: 'admin' }),
+            Team.countDocuments(),
             Session.aggregate([
+                {
+                    $group: {
+                        _id: null,
+                        totalPrice: { $sum: '$price' }
+                    }
+                }
+            ]),
+            Accommodation.aggregate([
                 {
                     $group: {
                         _id: null,
@@ -30,6 +43,7 @@ const dashboard = async (req, res) => {
         ]);
 
         const totalRevenue = revenue.length > 0 ? revenue[0].totalPrice : 0;
+        const totalAccommodationRevenue = accommodationRevenue.length > 0 ? accommodationRevenue[0].totalPrice : 0;
 
         return res.status(200).json({
             success: true,
@@ -41,8 +55,11 @@ const dashboard = async (req, res) => {
                 addonCount,
                 extraCount,
                 sessionCount,
+                accommodationCount,
                 adminCount,
-                totalRevenue
+                teamCount,
+                totalRevenue,
+                totalAccommodationRevenue,
             }
         });
     } catch (error) {
@@ -115,15 +132,15 @@ const sendContactEmail = async (req, res) => {
 
 const sendAccommodationEmail = async (req, res) => {
     try {
-        const { fullName, email, phone, preferredContact = 'Not Specified', exam = 'Not Specified', document = 'Not Provided', dateTime = 'Not Specified', seekingAccommodations = 'Not Specified', supportingDocumentation = 'Not Specified', previousAccommodation = 'Not Specified', additionalInfomation = 'Not Specified', price, accommodationId, payment = 'Pending' } = req.body;
+        const { fullName, email, phone, preferredContact = 'Not Specified', exam = 'Not Specified', document = 'Not Provided', dateTime = 'Not Specified', seekingAccommodations = 'Not Specified', supportingDocumentation = 'Not Specified', previousAccommodation = 'Not Specified', providedAccommodations = 'Not specified', additionalInfomation = 'Not Specified', price, accommodationId, payment = 'Pending' } = req.body;
 
         if (!fullName || !email || !phone || !exam || !document || !price || !accommodationId) {
             return res.status(400).json({ success: false, message: 'All fields are required.' });
         }
 
-        const adminEmailSent = await accommodationAdminEmail(fullName, email, phone, preferredContact, exam, document, dateTime, seekingAccommodations, supportingDocumentation, previousAccommodation, additionalInfomation, price, accommodationId, payment);
+        const adminEmailSent = await accommodationAdminEmail(fullName, email, phone, preferredContact, exam, document, dateTime, seekingAccommodations, supportingDocumentation, previousAccommodation, providedAccommodations, additionalInfomation, price, accommodationId, payment);
 
-        const userEmailSent = await accommodationUserEmail(fullName, email, phone, preferredContact, exam, document, dateTime, seekingAccommodations, supportingDocumentation, previousAccommodation, additionalInfomation, price, accommodationId, payment);
+        const userEmailSent = await accommodationUserEmail(fullName, email, phone, preferredContact, exam, document, dateTime, seekingAccommodations, supportingDocumentation, previousAccommodation, providedAccommodations, additionalInfomation, price, accommodationId, payment);
 
         if (!adminEmailSent || !userEmailSent) {
             return res.status(500).json({ success: false, message: 'Could not send email.' });
@@ -135,10 +152,46 @@ const sendAccommodationEmail = async (req, res) => {
     }
 }
 
+const updateAccommodationPrice = async (req, res) => {
+    try {
+        const { price } = req.body;
+
+        if (!price) {
+            return res.status(400).json({ success: false, message: 'Price is required.' });
+        }
+
+        const accommodation = await Other.findByIdAndUpdate('68bec5594f93415fb2f735c9', {accommodationPrice: price}, {new: true});
+
+        if (!accommodation) {
+            return res.status(500).json({ success: false, message: 'Could not update price.' });
+        }
+
+        return res.status(200).json({success: true, message: 'Price updated', data: accommodation,})
+    } catch (error) {
+        return res.status(500).json({success: false, message: error?.message});
+    }
+}
+
+const getAllOthers = async (req, res) => {
+    try {
+        const others = await Other.find();
+
+        if (!others) {
+            return res.status(500).json({ success: false, message: 'Could not find the other data.' });
+        }
+
+        return res.status(200).json({success: true, message: 'Price fetched', data: others})
+    } catch (error) {
+        return res.status(500).json({success: false, message: error?.message});
+    }
+}
+
 export {
     dashboard,
     createAdmin,
     sendOrderEmail,
     sendContactEmail,
     sendAccommodationEmail,
+    updateAccommodationPrice,
+    getAllOthers,
 }

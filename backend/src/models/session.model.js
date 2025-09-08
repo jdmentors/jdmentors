@@ -43,11 +43,10 @@ const sessionSchema = new Schema({
     notes: {
         type: String,
         trim: true,
-        default: null
     },
     document: {
         type: [String],
-        required: true
+        required: false
     },
     status: {
         type: Boolean,
@@ -59,6 +58,10 @@ const sessionSchema = new Schema({
         required: true,
         default: false
     },
+    emailSent: {
+        type: Boolean,
+        default: false
+    }
 }, { timestamps: true });
 
 const Session = model('Session', sessionSchema);
