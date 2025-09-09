@@ -111,23 +111,6 @@ function AboutUs() {
             </Container>
 
             <Container>
-                {/* Our vision and mission */}
-                <section className="grid grid-cols-1 md:grid-cols-2 gap-10 bg-white px-5 py-8 sm:p-8 md:p-12 lg:p-14 rounded-2xl mb-16">
-                    <div>
-                        <h5 className="font-semibold text-blue-600">Our Vision</h5>
-                        <h2 className="text-2xl md:text-3xl font-semibold my-3 text-blue-950">Every Student Deserves a Fair Shot</h2>
-
-                        <p className="text-gray-600">We believe that law school admissions shouldn't be limited by privilege, connections, or confusing processes. Every student deserves expert support and clear guidance. That’s why we’re committed to make the lawyer the world needs.</p>
-                    </div>
-
-                    <div>
-                        <h5 className="font-semibold text-blue-600">Our Mission</h5>
-                        <h2 className="text-2xl md:text-3xl font-semibold my-3 text-blue-950">Personalized Help. Proven Outcomes.</h2>
-
-                        <p className="text-gray-600">From crafting standout personal statements to addressing academic gaps with clarity, we provide focused, strategic support that’s helped hundreds of students gain admission and scholarships at top law schools across the country.</p>
-                    </div>
-                </section>
-
                 {/* How it works Section */}
                 <section className="bg-white p-8 md:p-12 lg:p-14 rounded-2xl mb-16">
                     <h5 className="font-semibold text-blue-600">How It Works</h5>
@@ -167,6 +150,23 @@ function AboutUs() {
 
                     <h4 className="text-lg font-semibold text-blue-950 mt-8 mb-2">About Our Team</h4>
                     <p>Our team is made up of dedicated professionals with backgrounds in education, law, and disability advocacy. We combine expertise in standardized testing with a deep understanding of accessibility needs to ensure every student has the tools and support they deserve. From reviewing documentation to guiding you through the accommodation process, our staff is committed to making your academic journey fair, inclusive, and stress-free.</p>
+                </section>
+
+                {/* Our vision and mission */}
+                <section className="grid grid-cols-1 md:grid-cols-2 gap-10 bg-white px-5 py-8 sm:p-8 md:p-12 lg:p-14 rounded-2xl mb-16">
+                    <div>
+                        <h5 className="font-semibold text-blue-600">Our Vision</h5>
+                        <h2 className="text-2xl md:text-3xl font-semibold my-3 text-blue-950">Every Student Deserves a Fair Shot</h2>
+
+                        <p className="text-gray-600">We believe that law school admissions shouldn't be limited by privilege, connections, or confusing processes. Every student deserves expert support and clear guidance. That’s why we’re committed to make the lawyer the world needs.</p>
+                    </div>
+
+                    <div>
+                        <h5 className="font-semibold text-blue-600">Our Mission</h5>
+                        <h2 className="text-2xl md:text-3xl font-semibold my-3 text-blue-950">Personalized Help. Proven Outcomes.</h2>
+
+                        <p className="text-gray-600">From crafting standout personal statements to addressing academic gaps with clarity, we provide focused, strategic support that’s helped hundreds of students gain admission and scholarships at top law schools across the country.</p>
+                    </div>
                 </section>
 
                 {/* <section className="bg-white p-8 md:p-12 lg:p-14 rounded-2xl mb-16">

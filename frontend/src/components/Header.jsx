@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { closeMenu, darkLogo, menuIcon } from "../assets";
 import { CalendarCheck, LayoutDashboard, Phone, Video } from 'lucide-react';
 import { logo } from "../assets";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleShowUserAuthForm } from "../features/forms/UserAuthSlice.js";
 
 function Header() {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -13,6 +14,7 @@ function Header() {
     const { pathname } = useLocation();
     const isUserLoggedIn = useSelector(state => state.user.isUserLoggedIn);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const navLinks = [
         { name: 'Home', href: '/' },
@@ -50,6 +52,33 @@ function Header() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, [pathname])
 
+    useEffect(() => {
+        const hideIsOpen = () => {
+            setIsOpen(false);
+        }
+
+        window.addEventListener('click', hideIsOpen);
+        return () => window.removeEventListener('click', hideIsOpen);
+    }, [])
+
+    const handleClick = () => {
+        try {
+            if (isUserLoggedIn) {
+                navigate(`/checkout/accommodations`);
+            } else {
+                dispatch(toggleShowUserAuthForm(true));
+                navigate(`/checkout/accommodations`);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const handleIsOpen = (e) => {
+        setIsOpen(!isOpen);
+        e.stopPropagation();
+    }
+
     return (
         <header className="w-full fixed top-0 left-0 z-40">
             <Container className={`flex items-center justify-between py-5 ${isScrolled && 'shadow-lg bg-white'}`}>
@@ -66,7 +95,7 @@ function Header() {
                                 </li>
                             ))
                         }
-                        <li className="flex items-center relative" onClick={() => setIsOpen(!isOpen)}>
+                        <li className="flex items-center relative" onClick={(e) => handleIsOpen(e)}>
                             <Link className={`${isScrolled ? 'text-blue-950 after:bg-blue-950' : 'text-white'}`}>Services</Link>
 
                             <svg className={`w-5 h-5 inline float-right transition-transform cursor-pointer duration-200 ${isOpen ? "rotate-0" : "-rotate-90"}`} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke={`${isScrolled ? '#172554' : '#fff'}`} >
@@ -95,11 +124,11 @@ function Header() {
                                     :
                                     pathname === '/accommodations'
                                     ?
-                                    <Link to="/checkout/accommodations" className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700 cursor-pointer">
+                                    <button onClick={handleClick} className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700 cursor-pointer">
                                         <CalendarCheck size={24} strokeWidth={1.5} />
 
-                                        <span>Book Now @ $399</span>
-                                    </Link>
+                                        <span>Get Started</span>
+                                    </button>
                                     :
                                     <button onClick={bookConsultationHandler} className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700 cursor-pointer">
                                         <Video size={24} strokeWidth={1.5} />
@@ -122,7 +151,7 @@ function Header() {
                                 </li>
                             ))
                         }
-                        <li className="flex items-center justify-center relative mx-5 py-2" onClick={() => setIsOpen(!isOpen)}>
+                        <li className="flex items-center justify-center relative mx-5 py-2" onClick={(e) => handleIsOpen(e)}>
                             <Link className={`text-blue-950 after:bg-blue-950`}>Services</Link>
 
                             <svg className={`w-5 h-5 inline float-right transition-transform cursor-pointer duration-200 ${isOpen ? "rotate-0" : "-rotate-90"}`} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke={`#172554`} >
@@ -151,11 +180,11 @@ function Header() {
                                     :
                                     pathname === '/accommodations'
                                     ?
-                                    <Link onClick={() => {setIsMenuOpen(false);}} to="/checkout/accommodations" className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700 cursor-pointer">
+                                    <button onClick={() => {setIsMenuOpen(false); handleClick()}} className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700 cursor-pointer">
                                         <CalendarCheck size={24} strokeWidth={1.5} />
 
-                                        <span>Book Now @ $399</span>
-                                    </Link>
+                                        <span>Get Started</span>
+                                    </button>
                                     :
                                     <button onClick={bookConsultationHandler} className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700 cursor-pointer">
                                         <Video size={24} strokeWidth={1.5} />

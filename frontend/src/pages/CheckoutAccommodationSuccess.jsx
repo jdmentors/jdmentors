@@ -26,6 +26,7 @@ function CheckOutAccommodationSuccess() {
                                 email: accommodationData.email,
                                 phone: accommodationData.phone,
                                 preferredContact: accommodationData.preferredContact,
+                                otherContactMethod: accommodationData.otherContactMethod,
                                 exam: accommodationData.exam,
                                 seekingAccommodations: accommodationData.seekingAccommodations,
                                 supportingDocumentation: accommodationData.supportingDocumentation,
@@ -99,14 +100,14 @@ function CheckOutAccommodationSuccess() {
                                                 'Not Specified'}</span></p>
 
                                             <p className="flex justify-between">Exam/Program: <span>{
-                                                typeof accommodation.exam == 'object'
+                                                typeof accommodation.exam == 'object' && accommodation.exam.length > 0
                                                     ?
                                                     accommodation.exam
                                                         .map(ex => ex.split(',')[0])
                                                         .join(', ')
                                                     : 'Not Specified'}</span></p>
 
-                                            <p className="flex justify-between">Upcoming Exam/Test Date: <span>{new Date(accommodation.dateTime).toDateString() || 'Not Specified'}</span></p>
+                                            <p className="flex justify-between">Upcoming Exam/Test Date: <span>{accommodation.dateTime ? new Date(accommodation.dateTime).toDateString() : 'Not Specified'}</span></p>
 
                                             <p className="flex justify-between">Previous Accommodations: <span>{accommodation.previousAccommodation || 'Not Specified'}</span></p>
 
@@ -115,11 +116,11 @@ function CheckOutAccommodationSuccess() {
                                             <div className="flex justify-between">
                                                 Document(s):
                                                 <div>
-                                                    {accommodation.document.map(document => {
+                                                    {accommodation.document.length > 0 ? accommodation.document.map(document => {
                                                         return (<p key={document}>
                                                             <Link target="_blank" to={document} className="text-blue-600 underline">{cleanFileName(decodeURIComponent(document))}</Link>
                                                         </p>)
-                                                    })}
+                                                    }) : 'Not Attached'}
                                                 </div>
                                             </div>
 

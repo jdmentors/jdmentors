@@ -223,7 +223,7 @@ function UserDashboard() {
                         </div>
 
                         <div className="my-5 overflow-x-auto">
-                            <div className="hidden sm:grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr] gap-5 items-center py-3 border-b-2 border-b-blue-100">
+                            <div className="hidden sm:grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr] gap-5 items-center py-3 border-b-2 border-b-blue-100">
                                 <h5 className="text-lg">Exam/Program</h5>
                                 <h5 className="text-lg">Exam/Test Date</h5>
                                 <h5 className="text-lg">Documentation</h5>
@@ -240,24 +240,22 @@ function UserDashboard() {
                                             <div className="hidden sm:block">
                                                 {
                                                     userAccommodations.map(accommodation => (
-                                                        <div key={accommodation._id} className="md:grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr] gap-5 items-center py-5 text-gray-600">
+                                                        <div key={accommodation._id} className="md:grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr] gap-5 items-center py-5 text-gray-600">
 
                                                             <div>
                                                                 {
                                                                     accommodation.exam && accommodation.exam.length > 0
                                                                         ?
-                                                                        accommodation.exam.map((ex) => {
-                                                                            return (
-                                                                                <p key={ex}>{ex}</p>
-                                                                            )
-                                                                        })
+                                                                        accommodation.exam
+                                                                            .map(ex => ex.split(',')[0])
+                                                                            .join(', ')
                                                                         :
-                                                                        <p>Not Specified</p>
+                                                                        'Not Specified'
                                                                 }
                                                             </div>
 
                                                             <p className="">
-                                                                {new Date(accommodation.dateTime).toDateString() || 'Not Specified'}
+                                                                {accommodation.dateTime ? new Date(accommodation.dateTime).toDateString() : 'Not Specified'}
                                                             </p>
 
                                                             <p className="">
@@ -268,11 +266,13 @@ function UserDashboard() {
 
                                                             <div>
                                                                 {
-                                                                    accommodation.document.map((doc) => {
+                                                                    accommodation.document.length > 0 ? accommodation.document.map((doc) => {
                                                                         return (
                                                                             <Link key={doc} target="_blank" to={`${doc}`} className="flex gap-1 items-center"><FileDownIcon size={18} /> <span className="text-blue-600 hover:underline">{cleanFileName(decodeURIComponent(doc))}</span></Link>
                                                                         )
                                                                     })
+                                                                        :
+                                                                        'Not Attached'
                                                                 }
                                                             </div>
 
@@ -293,20 +293,18 @@ function UserDashboard() {
                                                                     {
                                                                         accommodation.exam && accommodation.exam.length > 0
                                                                             ?
-                                                                            accommodation.exam.map((ex) => {
-                                                                                return (
-                                                                                    <p key={ex}>{ex}</p>
-                                                                                )
-                                                                            })
+                                                                            accommodation.exam
+                                                                                .map(ex => ex.split(',')[0])
+                                                                                .join(', ')
                                                                             :
-                                                                            <p>Not Included</p>
+                                                                            'Not Specified'
                                                                     }
                                                                 </div>
                                                             </div>
 
                                                             <div className="flex gap-2">
                                                                 <p className="text-gray-800">Exam/Test Date:</p>
-                                                                <p>{new Date(accommodation.dateTime).toDateString()}</p>
+                                                                <p>{accommodation.dateTime ? new Date(accommodation.dateTime).toDateString() : 'Not Specified'}</p>
                                                             </div>
 
                                                             <div className="flex gap-2">
@@ -323,11 +321,13 @@ function UserDashboard() {
                                                                 <p className="text-gray-800">Doc(s):</p>
                                                                 <div>
                                                                     {
-                                                                        accommodation.document.map((doc) => {
+                                                                        accommodation.document.length > 0 ? accommodation.document.map((doc) => {
                                                                             return (
                                                                                 <Link key={doc} target="_blank" to={`${doc}`} className="flex gap-1 items-center"><FileDownIcon size={18} /> <span className="text-blue-600 hover:underline">{cleanFileName(decodeURIComponent(doc))}</span></Link>
                                                                             )
                                                                         })
+                                                                            :
+                                                                            'Not Attached'
                                                                     }
                                                                 </div>
                                                             </div>

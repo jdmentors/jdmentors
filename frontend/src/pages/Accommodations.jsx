@@ -1,8 +1,10 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { CallToActionAccommodations, Container, Hero, HeroAccommodations } from "../components";
 import { CalendarCheck } from "lucide-react";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleShowUserAuthForm } from "../features/forms/UserAuthSlice";
 
 function Accommodations() {
     const [accommodationPrice, setAccommodationPrice] = useState(null);
@@ -21,6 +23,23 @@ function Accommodations() {
         getAllOthers();
     }, [])
 
+    const dispatch = useDispatch();
+    const isUserLoggedIn = useSelector(state => state.user.isUserLoggedIn);
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        try {
+            if (isUserLoggedIn) {
+                navigate(`/checkout/accommodations`);
+            } else {
+                dispatch(toggleShowUserAuthForm(true));
+                navigate(`/checkout/accommodations`);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     return (
         <div className="min-h-[70vh]">
             <HeroAccommodations />
@@ -33,7 +52,7 @@ function Accommodations() {
                             Eligibility
                         </h2>
                         <div className="flex flex-col gap-5">
-                            <p>To qualify for disability accommodations on the LSAT, a student must meet the following requirements:</p>
+                            <p>To receive disability accommodations on the LSAT, students must meet certain eligibility requirements. These standards ensure that accommodations are applied fairly and appropriately.</p>
 
                             <ul className="flex flex-col gap-5 list-decimal list-inside">
                                 <li>The student must have a physical, visual, or mental impairment that substantially limits one or more major life functions.</li>
@@ -43,37 +62,45 @@ function Accommodations() {
                                 <li>The disability must meaningfully impact the student’s ability to take the LSAT under standard testing conditions.</li>
                             </ul>
 
-                            <p>Students who do not meet these criteria will not be eligible for our accommodation services.</p>
+                            <p>Only applicants who meet these criteria and provide valid documentation of a qualifying disability are eligible for accommodation services.</p>
                         </div>
                     </div>
 
                     <div className="md:col-span-2 flex flex-col gap-5">
                         <div className="flex flex-col gap-2">
                             <h2 className="text-3xl md:text-4xl font-bold text-blue-600">Disability Accommodations: ${accommodationPrice}</h2>
-                            <p className="font-semibold text-blue-950">Undergraduate | LSAT Prep | GRE Prep | Praxis Exams | Law & Graduate Programs | MPRE & Bar Exam</p>
+                            <p className="font-semibold text-blue-950">Undergraduate | LSAT Prep | GRE Prep | Law & Graduate Programs | MPRE & Bar Exam</p>
                         </div>
 
                         <ul className="flex flex-col gap-2 list-disc list-inside">
-                            <li>Initial Consultation: We start by reviewing all reasonable accommodations for your disability and test-day challenges, then recommend the options that will best support your needs.</li>
+                            <li>Comprehensive Initial Consultation:
+                                We begin by carefully reviewing all potential accommodations related to your disability and anticipated test-day challenges. From there, we recommend the strategies and accommodations most likely to support your specific needs.</li>
 
-                            <li>Practice Assignments: We provide exercises to help you use your accommodations effectively, so you can manage your symptoms confidently on test day.</li>
+                            <li>Personalized Step-by-Step Guidance
+                                Throughout the process, we provide ongoing support via email—helping you navigate each stage, from coordinating with your qualified professional to ensuring the necessary documentation of your disability is gathered and properly prepared.</li>
 
-                            <li>Step-by-Step Guidance: Through email, we guide you through each stage of the process, including coordinating with your qualified professional to gather documentation of your disability.</li>
+                            <li>Document Preparation & Submission Assistance:
+                                We supply clear, detailed instructions for compiling and submitting paperwork to LSAC or other relevant offices. Before submission, we review and “clear” your materials to confirm that every requirement is satisfied.
+                            </li>
 
-                            <li>Document Submission Support: We provide clear instructions for submitting your paperwork to LSAC (or other relevant offices) and “clear” your submission once everything meets our final approval.</li>
+                            <li>Structured Timeline Management:
+                                In most cases, the process can be completed in about one week, provided your professional responds promptly. Timelines may extend if your provider requires additional protocols for releasing or verifying medical records, and we help you manage these steps efficiently.
+                            </li>
 
-                            <li>Free Resources: You’ll receive a complimentary copy of our Logical Reasoning ebook, packed with strategies to manage test anxiety, maintain mental clarity, and sharpen logical reasoning skills during the exam.</li>
+                            <li>Proven Track Record of Success:
+                                Our approach has resulted in a 100% success rate for eligible students requesting accommodations from the Law School Admission Council, college disability offices, and graduate or law school disability services.
+                            </li>
 
-                            <li>Timeline: The process usually takes about a week if your professional responds promptly, though it may take longer if your provider has specific protocols for sharing medical records.</li>
-
-                            <li>Proven Success: We have a 100% success rate helping eligible students submit accommodation requests to the Law School Admission Council, college disability offices, and graduate/law school disability services.</li>
+                            <li>Confidentiality and Professional Care:
+                                All information you share with us is handled with the utmost discretion. We maintain strict confidentiality throughout the process to protect your privacy while ensuring your request is presented with maximum effectiveness.
+                            </li>
                         </ul>
 
-                        <Link to='/checkout/accommodations' className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700 md:self-start self-center">
+                        <button onClick={handleClick} className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700 md:self-start self-center cursor-pointer">
                             <CalendarCheck size={24} strokeWidth={1.5} />
 
-                            <span>Book Now @ ${accommodationPrice}</span>
-                        </Link>
+                            <span>Get Started</span>
+                        </button>
                     </div>
                 </Container>
             </section>
