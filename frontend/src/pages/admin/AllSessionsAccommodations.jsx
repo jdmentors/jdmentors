@@ -143,7 +143,7 @@ function AllAccommodations() {
             }
         }
     }
-    
+
     return (
         <section className="flex min-h-[90vh]">
             {
@@ -223,18 +223,16 @@ function AllAccommodations() {
                                                                 {
                                                                     accommodation.exam && accommodation.exam.length > 0
                                                                         ?
-                                                                        accommodation.exam.map((ex) => {
-                                                                            return (
-                                                                                <p key={ex}>{ex}</p>
-                                                                            )
-                                                                        })
+                                                                        accommodation.exam
+                                                                            .map(ex => ex.split(',')[0])
+                                                                            .join(', ')
                                                                         :
-                                                                        <p>Not Specified</p>
+                                                                        'Not Specified'
                                                                 }
                                                             </div>
 
                                                             <p className="">
-                                                                {new Date(accommodation.dateTime).toDateString() || 'Not Specified'}
+                                                                {accommodation.dateTime ? new Date(accommodation.dateTime).toDateString() : 'Not Specified'}
                                                             </p>
 
                                                             <p className="">
@@ -245,11 +243,13 @@ function AllAccommodations() {
 
                                                             <div>
                                                                 {
-                                                                    accommodation.document.map((doc) => {
+                                                                    accommodation.document.length > 0 ? accommodation.document.map((doc) => {
                                                                         return (
                                                                             <Link key={doc} target="_blank" to={`${doc}`} className="flex gap-1 items-center"><FileDownIcon size={18} /> <span className="text-blue-600 hover:underline">{cleanFileName(decodeURIComponent(doc))}</span></Link>
                                                                         )
                                                                     })
+                                                                        :
+                                                                        'Not Attached'
                                                                 }
                                                             </div>
 
@@ -283,20 +283,18 @@ function AllAccommodations() {
                                                                     {
                                                                         accommodation.exam && accommodation.exam.length > 0
                                                                             ?
-                                                                            accommodation.exam.map((ex) => {
-                                                                                return (
-                                                                                    <p key={ex}>{ex}</p>
-                                                                                )
-                                                                            })
+                                                                            accommodation.exam
+                                                                                .map(ex => ex.split(',')[0])
+                                                                                .join(', ')
                                                                             :
-                                                                            <p>Not Included</p>
+                                                                            'Not Specified'
                                                                     }
                                                                 </div>
                                                             </div>
 
                                                             <div className="flex gap-2">
                                                                 <p className="text-gray-800">Exam/Test Date:</p>
-                                                                <p>{new Date(accommodation.dateTime).toDateString()}</p>
+                                                                <p>{accommodation.dateTime ? new Date(accommodation.dateTime).toDateString() : 'Not Specified'}</p>
                                                             </div>
 
                                                             <div className="flex gap-2">
@@ -313,11 +311,13 @@ function AllAccommodations() {
                                                                 <p className="text-gray-800">Doc(s):</p>
                                                                 <div>
                                                                     {
-                                                                        accommodation.document.map((doc) => {
+                                                                        accommodation.document.length > 0 ? accommodation.document.map((doc) => {
                                                                             return (
                                                                                 <Link key={doc} target="_blank" to={`${doc}`} className="flex gap-1 items-center"><FileDownIcon size={18} /> <span className="text-blue-600 hover:underline">{cleanFileName(decodeURIComponent(doc))}</span></Link>
                                                                             )
                                                                         })
+                                                                            :
+                                                                            'Not Attached'
                                                                     }
                                                                 </div>
                                                             </div>

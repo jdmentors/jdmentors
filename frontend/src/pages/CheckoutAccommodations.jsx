@@ -1,4 +1,4 @@
-import { CalendarDays, Contact, File, HelpCircle, LockKeyholeIcon, Mail, Phone, User, UserCheck2 } from "lucide-react";
+import { CalendarDays, File, LockKeyholeIcon, Mail, Phone, User, UserCheck2 } from "lucide-react";
 import { Container, FileInput } from "../components";
 import { Link } from "react-router";
 import { useEffect, useRef, useState } from "react";
@@ -57,6 +57,7 @@ function CheckoutAccommodations() {
     const [discount, setDiscount] = useState(0);
     const dispatch = useDispatch();
     const [showAccommodationProvided, setShowAccommodationProvided] = useState(false);
+    const [isOtherContactVisible, setIsOtherContactVisible] = useState(false);
 
     const handleCoupon = async (couponData) => {
         try {
@@ -95,6 +96,7 @@ function CheckoutAccommodations() {
                 formData.append('exam[]', ex);
             });
 
+            formData.append('otherContactMethod', userData.otherContactMethod);
             formData.append('seekingAccommodations', userData.seekingAccommodations);
             formData.append('previousAccommodation', userData.previousAccommodation);
             formData.append('providedAccommodations', userData.providedAccommodations);
@@ -143,6 +145,7 @@ function CheckoutAccommodations() {
                         formData.append('exam[]', ex);
                     });
 
+                    formData.append('otherContactMethod', userData.otherContactMethod);
                     formData.append('seekingAccommodations', userData.seekingAccommodations);
                     formData.append('previousAccommodation', userData.previousAccommodation);
                     formData.append('providedAccommodations', userData.providedAccommodations);
@@ -210,7 +213,7 @@ function CheckoutAccommodations() {
                                 </div>
                             </div>
 
-                            <div className="grid md:grid-cols-2 md:gap-3">
+                            <div className="grid md:grid-cols-2 md:gap-3 items-start">
                                 <div className="text-gray-600 grid grid-cols-1 my-2 md:my-3">
                                     <label className="flex items-center gap-1 text-sm" htmlFor='phoneCheckout'>
                                         <Phone size={18} /> <span>Phone *</span>
@@ -240,38 +243,44 @@ function CheckoutAccommodations() {
                                 </div>
 
                                 <div className="text-gray-600 grid grid-cols-1 my-2 md:my-3">
-                                    <label className="flex items-center gap-1 text-sm" htmlFor='dateTime'><CalendarDays size={18} /> <span>Upcoming Exam/Test Date (optional)</span></label>
+                                    <label className="flex items-center gap-1 text-sm" htmlFor='dateTime'><CalendarDays size={18} /> <span>Upcoming Exam Date (optional)</span></label>
                                     <input id="dateTime" type="date" className="text-black border-2 border-blue-100 py-1.5 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200" {...register('dateTime', { required: false })} />
                                     {errors.dateTime && <p className="text-sm text-orange-500 font-light">Something wrong with Date</p>}
                                 </div>
+                            </div>
 
-                                <div>
-                                    <p className="flex items-center gap-1 text-sm"><HelpCircle size={18} /> <span>What's your preferred contact method?</span></p>
+                            <div>
+                                <p className="flex items-center gap-1"><span>What's your preferred contact method?</span></p>
 
-                                    <div className="my-2">
-                                        <label className="flex items-center gap-1">
-                                            <input type="checkbox" value="E-mail" {...register('preferredContact[]', { required: false })} />
-                                            <span>E-mail</span>
-                                        </label>
+                                <div className="my-2">
+                                    <label className="flex items-center gap-1">
+                                        <input type="checkbox" value="E-mail" {...register('preferredContact[]', { required: false })} />
+                                        <span>E-mail</span>
+                                    </label>
 
-                                        <label className="flex items-center gap-1">
-                                            <input type="checkbox" value="Phone" {...register('preferredContact[]', { required: false })} />
-                                            <span>Phone</span>
-                                        </label>
+                                    <label className="flex items-center gap-1">
+                                        <input type="checkbox" value="Phone" {...register('preferredContact[]', { required: false })} />
+                                        <span>Phone</span>
+                                    </label>
 
-                                        <label className="flex items-center gap-1">
-                                            <input type="checkbox" value="Other" {...register('preferredContact[]', { required: false })} />
-                                            <span>Other</span>
-                                        </label>
-                                    </div>
-                                    {errors.exam && <p className="text-sm text-orange-500 font-light">Exam or programme requesting accommodation for is required.</p>}
+                                    <label className="flex items-center gap-1">
+                                        <input onClick={() => setIsOtherContactVisible(!isOtherContactVisible)} type="checkbox" value="Other" {...register('preferredContact[]', { required: false })} />
+                                        <span>Other</span>
+                                    </label>
+                                </div>
+                                {errors.exam && <p className="text-sm text-orange-500 font-light">Exam or programme requesting accommodation for is required.</p>}
+
+                                <div className={`text-black my-2 md:my-3 ${isOtherContactVisible ? 'grid grid-cols-1' : 'hidden'}`}>
+                                    <label className="flex items-center gap-1" htmlFor='otherContactMethod'> <span>Tell us the other method to contact you</span></label>
+                                    <input id="otherContactMethod" type="text" placeholder="Any way to reach out to you" className="text-black border-2 border-blue-100 py-1.5 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200" {...register('otherContactMethod', { required: false })} />
+                                    {errors.otherContactMethod && <p className="text-sm text-orange-500 font-light">Other contact method is required</p>}
                                 </div>
                             </div>
 
                             <p className="font-bold text-blue-950 my-4">Exam/School Information</p>
 
                             <div>
-                                <p className="flex items-center gap-1"><HelpCircle size={18} /> <span>Which exam or program are you requesting accommodation for?</span></p>
+                                <p className="flex items-center gap-1"><span>Which exam or program are you requesting accommodation for?</span></p>
 
                                 <div className="my-2">
                                     <label className="flex items-center gap-1">
@@ -283,6 +292,26 @@ function CheckoutAccommodations() {
                                         <input type="checkbox" value="Law School" {...register('exam[]', { required: false })} />
                                         <span>Law School</span>
                                     </label>
+
+                                    <label className="flex items-center gap-1">
+                                        <input type="checkbox" value="Undergraduate" {...register('exam[]', { required: false })} />
+                                        <span>Undergraduate</span>
+                                    </label>
+
+                                    <label className="flex items-center gap-1">
+                                        <input type="checkbox" value="GRE" {...register('exam[]', { required: false })} />
+                                        <span>GRE</span>
+                                    </label>
+
+                                    <label className="flex items-center gap-1">
+                                        <input type="checkbox" value="MPRE" {...register('exam[]', { required: false })} />
+                                        <span>MPRE</span>
+                                    </label>
+
+                                    <label className="flex items-center gap-1">
+                                        <input type="checkbox" value="Bar Exam" {...register('exam[]', { required: false })} />
+                                        <span>Bar Exam</span>
+                                    </label>
                                 </div>
                                 {errors.exam && <p className="text-sm text-orange-500 font-light">Exam or programme requesting accommodation for is required.</p>}
                             </div>
@@ -290,14 +319,14 @@ function CheckoutAccommodations() {
                             <p className="font-bold text-blue-950 my-4">Accommodation Needs Information</p>
 
                             <div className="grid grid-cols-1 my-2 md:my-3 gap-2">
-                                <label htmlFor="seekingAccommodations" className="flex items-center gap-1"><HelpCircle size={18} /> <span>What specific accommodations are you seeking?</span></label>
+                                <label htmlFor="seekingAccommodations" className="flex items-center gap-1"><span>What specific accommodations are you seeking?</span></label>
 
                                 <textarea id="seekingAccommodations" placeholder="e.g. extended time, separate room, stop-the-clock breaks, paper exam, etc..." className="text-black border-2 border-blue-100 py-1.5 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200" rows={4} {...register('seekingAccommodations', { required: false })}></textarea>
                                 {errors.seekingAccommodations && <p className="text-sm text-orange-500 font-light">Accommodation information is required.</p>}
                             </div>
 
                             <div>
-                                <p className="flex items-center gap-1"><HelpCircle size={18} /> <span>Have you previously received accommodations?</span></p>
+                                <p className="flex items-center gap-1"><span>Have you previously received accommodations?</span></p>
 
                                 <div className={`my-2`}>
                                     <label className="flex items-center gap-1">
@@ -314,7 +343,7 @@ function CheckoutAccommodations() {
                             </div>
 
                             <div className={`grid grid-cols-1 my-2 md:my-3 gap-2 ${showAccommodationProvided ? 'block' : 'hidden'}`}>
-                                <label htmlFor="providedAccommodations" className="flex items-center gap-1"><HelpCircle size={18} /> <span>Describe what accommodations were provided and how they helped</span></label>
+                                <label htmlFor="providedAccommodations" className="flex items-center gap-1"><span>Describe what accommodations were provided and how they helped</span></label>
 
                                 <textarea id="providedAccommodations" placeholder="You can share anything important about your situation. It can be helpful." className="text-black border-2 border-blue-100 py-1.5 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200" rows={4} {...register('providedAccommodations', { required: false })}></textarea>
                                 {errors.providedAccommodations && <p className="text-sm text-orange-500 font-light">Accommodations provided is required.</p>}
@@ -323,7 +352,7 @@ function CheckoutAccommodations() {
                             <p className="font-bold text-blue-950 my-4">Documentation</p>
 
                             <div>
-                                <p className="flex items-center gap-1"><HelpCircle size={18} /> <span>Do you already have supporting medical or psychological documentation?</span></p>
+                                <p className="flex items-center gap-1"><span>Do you already have supporting medical or psychological documentation?</span></p>
 
                                 <div className="my-2">
                                     <label className="flex items-center gap-1">
@@ -347,14 +376,14 @@ function CheckoutAccommodations() {
                             <div className="text-gray-600 grid grid-cols-1 my-4">
                                 <label className="flex items-center gap-1 text-sm"><File size={18} /> <span>Upload relevant documentation (if available)</span></label>
 
-                                <FileInput {...register('document', { required: true })} />
+                                <FileInput {...register('document', { required: false })} />
                                 {errors.document && <p className="text-sm text-orange-500 font-light">Please attach at least one document</p>}
                             </div>
 
                             <p className="font-bold text-blue-950 my-4">Additional Information</p>
 
                             <div className="grid grid-cols-1 my-2 md:my-3 gap-2">
-                                <label htmlFor="additionalInfomation" className="flex items-center gap-1"><HelpCircle size={18} /> <span>Anything else we should know about your situation?</span></label>
+                                <label htmlFor="additionalInfomation" className="flex items-center gap-1"><span>Anything else we should know about your situation?</span></label>
 
                                 <textarea id="additionalInfomation" placeholder="You can share anything important about your situation. It can be helpful." className="text-black border-2 border-blue-100 py-1.5 px-2 rounded my-1 focus-within:outline-2 focus-within:outline-blue-200" rows={4} {...register('additionalInfomation', { required: false })}></textarea>
                                 {errors.additionalInfomation && <p className="text-sm text-orange-500 font-light">Additional information is required.</p>}

@@ -3,7 +3,7 @@ import { uploadDocsOnCloudinary } from "../utils/cloudinary.js";
 
 const createAccommodation = async (req, res) => {
     try {
-        const { fullName, email, phone, dateTime = '', preferredContact = [], exam = [], seekingAccommodations = '', price, supportingDocumentation = '', previousAccommodation = '', providedAccommodations = '', additionalInfomation = '' } = req.body;
+        const { fullName, email, phone, dateTime = '', preferredContact = [], otherContactMethod = '', exam = [], seekingAccommodations = '', price, supportingDocumentation = '', previousAccommodation = '', providedAccommodations = '', additionalInfomation = '' } = req.body;
 
         const document = req.files;
 
@@ -12,15 +12,27 @@ const createAccommodation = async (req, res) => {
         }
 
         // let uploaded = await uploadDocsOnCloudinary(document);
-        let uploadArray = document.map((doc) => uploadDocsOnCloudinary(doc));
+        // let uploadArray = document.map((doc) => uploadDocsOnCloudinary(doc));
 
-        const uploaded = await Promise.all(uploadArray);
+        // const uploaded = await Promise.all(uploadArray);
 
-        if (!uploaded) {
-            return res.status(500).json({ success: false, message: 'Failed to upload docs.' });
+        // if (!uploaded) {
+        //     return res.status(500).json({ success: false, message: 'Failed to upload docs.' });
+        // }
+
+        let uploadArray;
+        let uploaded = '';
+
+        if(document){
+            uploadArray = document.map((doc) => uploadDocsOnCloudinary(doc));
+            uploaded = await Promise.all(uploadArray);
+
+            if (!uploaded) {
+                return res.status(500).json({ success: false, message: 'Failed to upload docs.' });
+            }
         }
 
-        const accommodation = await Accommodation.create({ fullName, email, phone, preferredContact, exam, seekingAccommodations, supportingDocumentation, dateTime, previousAccommodation, providedAccommodations, additionalInfomation, document: uploaded || '', price });
+        const accommodation = await Accommodation.create({ fullName, email, phone, preferredContact, otherContactMethod, exam, seekingAccommodations, supportingDocumentation, dateTime, previousAccommodation, providedAccommodations, additionalInfomation, document: uploaded || '', price });
 
         if (!accommodation) {
             return res.status(500).json({ success: false, message: 'Failed to book accommodation.' });

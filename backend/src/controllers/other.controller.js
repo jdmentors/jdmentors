@@ -132,15 +132,15 @@ const sendContactEmail = async (req, res) => {
 
 const sendAccommodationEmail = async (req, res) => {
     try {
-        const { fullName, email, phone, preferredContact = 'Not Specified', exam = 'Not Specified', document = 'Not Provided', dateTime = 'Not Specified', seekingAccommodations = 'Not Specified', supportingDocumentation = 'Not Specified', previousAccommodation = 'Not Specified', providedAccommodations = 'Not specified', additionalInfomation = 'Not Specified', price, accommodationId, payment = 'Pending' } = req.body;
+        const { fullName, email, phone, preferredContact = 'Not Specified', otherContactMethod= '', exam = 'Not Specified', document = 'Not Provided', dateTime = 'Not Specified', seekingAccommodations = 'Not Specified', supportingDocumentation = 'Not Specified', previousAccommodation = 'Not Specified', providedAccommodations = 'Not specified', additionalInfomation = 'Not Specified', price, accommodationId, payment = 'Pending' } = req.body;
 
         if (!fullName || !email || !phone || !exam || !document || !price || !accommodationId) {
             return res.status(400).json({ success: false, message: 'All fields are required.' });
         }
 
-        const adminEmailSent = await accommodationAdminEmail(fullName, email, phone, preferredContact, exam, document, dateTime, seekingAccommodations, supportingDocumentation, previousAccommodation, providedAccommodations, additionalInfomation, price, accommodationId, payment);
+        const adminEmailSent = await accommodationAdminEmail(fullName, email, phone, preferredContact, otherContactMethod, exam, document, dateTime, seekingAccommodations, supportingDocumentation, previousAccommodation, providedAccommodations, additionalInfomation, price, accommodationId, payment);
 
-        const userEmailSent = await accommodationUserEmail(fullName, email, phone, preferredContact, exam, document, dateTime, seekingAccommodations, supportingDocumentation, previousAccommodation, providedAccommodations, additionalInfomation, price, accommodationId, payment);
+        const userEmailSent = await accommodationUserEmail(fullName, email, phone, preferredContact, otherContactMethod, exam, document, dateTime, seekingAccommodations, supportingDocumentation, previousAccommodation, providedAccommodations, additionalInfomation, price, accommodationId, payment);
 
         if (!adminEmailSent || !userEmailSent) {
             return res.status(500).json({ success: false, message: 'Could not send email.' });

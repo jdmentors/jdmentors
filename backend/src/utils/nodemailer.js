@@ -98,7 +98,7 @@ const orderUserEmail = async (email, service, addonsAndExtras = [], document, da
     }
 }
 
-const accommodationAdminEmail = async (fullName, email, phone, preferredContact = 'Not Specified', exam = 'Not Specified', document = 'Not Provided', dateTime = 'Not Specified', seekingAccommodations = 'Not Specified', supportingDocumentation = 'Not Specified', previousAccommodation = 'Not Specified', providedAccommodations = 'Not Specified', additionalInfomation = 'Not Specified', price, accommodationId, payment = 'Pending') => {
+const accommodationAdminEmail = async (fullName, email, phone, preferredContact = 'Not Specified', otherContactMethod = '', exam = 'Not Specified', document = 'Not Provided', dateTime = 'Not Specified', seekingAccommodations = 'Not Specified', supportingDocumentation = 'Not Specified', previousAccommodation = 'Not Specified', providedAccommodations = 'Not Specified', additionalInfomation = 'Not Specified', price, accommodationId, payment = 'Pending') => {
     try {
         const info = await transporter.sendMail({
             from: `"JD Mentors" <${process.env.EMAIL_USER}>`,
@@ -118,6 +118,7 @@ const accommodationAdminEmail = async (fullName, email, phone, preferredContact 
                     :
                     'Not Specified'
                 }</p>
+                     ${otherContactMethod && `<p><b>Other Contact Method: </b>${otherContactMethod}</p>`}
                     <p><b>Exam/Program:</b> ${(typeof exam == 'object' && exam.length > 0)
                     ?
                     exam
@@ -134,13 +135,13 @@ const accommodationAdminEmail = async (fullName, email, phone, preferredContact 
                     <p><b>Additional Information:</b> ${additionalInfomation ? additionalInfomation : 'Not Specified'}</p>
                     <p><b>Payment:</b> ${payment ? 'Done' : 'Pending'}</p>
                     <p><b>Amount:</b> $${price}</p>
-                    <p><b>Document(s):</b> ${typeof document === 'object'
+                    <p><b>Document(s):</b> ${Array.isArray(document) && document.length > 0
                     ?
                     document.map((doc) => {
                         return doc + '<br /><br />'
                     })
                     :
-                    'Not Provided'
+                    'Not Attached'
                 }</p>
                     `,
         });
@@ -151,7 +152,7 @@ const accommodationAdminEmail = async (fullName, email, phone, preferredContact 
     }
 }
 
-const accommodationUserEmail = async (fullName, email, phone, preferredContact = 'Not Specified', exam = 'Not Specified', document = 'Not Provided', dateTime = 'Not Specified', seekingAccommodations = 'Not Specified', supportingDocumentation = 'Not Specified', previousAccommodation = 'Not Specified', providedAccommodations = 'Not Specified', additionalInfomation = 'Not Specified', price, accommodationId, payment = 'Pending') => {
+const accommodationUserEmail = async (fullName, email, phone, preferredContact = 'Not Specified', otherContactMethod = '', exam = 'Not Specified', document = 'Not Provided', dateTime = 'Not Specified', seekingAccommodations = 'Not Specified', supportingDocumentation = 'Not Specified', previousAccommodation = 'Not Specified', providedAccommodations = 'Not Specified', additionalInfomation = 'Not Specified', price, accommodationId, payment = 'Pending') => {
     try {
         const info = await transporter.sendMail({
             from: `"JD Mentors" <${process.env.EMAIL_USER}>`,
@@ -171,6 +172,7 @@ const accommodationUserEmail = async (fullName, email, phone, preferredContact =
                     :
                     'Not Specified'
                 }</p>
+                ${otherContactMethod && `<p><b>Other Contact Method: </b>${otherContactMethod}</p>`}
                     <p><b>Exam/Program:</b> ${(typeof exam == 'object' && exam.length > 0)
                     ?
                     exam
@@ -187,13 +189,13 @@ const accommodationUserEmail = async (fullName, email, phone, preferredContact =
                     <p><b>Additional Information:</b> ${additionalInfomation ? additionalInfomation : 'Not Specified'}</p>
                     <p><b>Payment:</b> ${payment ? 'Done' : 'Pending'}</p>
                     <p><b>Amount:</b> $${price}</p>
-                    <p><b>Document(s):</b> ${typeof document === 'object'
+                    <p><b>Document(s):</b> ${Array.isArray(document) && document.length > 0
                     ?
                     document.map((doc) => {
                         return doc + '<br /><br />'
                     })
                     :
-                    document
+                    'Not Attached'
                 }</p>
                     <p><b>Accommodation Session ID:</b> ${accommodationId}</p>
                     <p>To check the status of your session, please visit <a href='${process.env.FRONTEND_URL}/session-status'>${process.env.FRONTEND_URL}/session-status</a> and search the above session ID.</p><br />

@@ -18,11 +18,16 @@ function Footer() {
         { name: 'Terms & Conditions', href: '/terms-conditions' },
     ];
 
+    // const services = [
+    //     { name: 'All-In-One Solutions', href: '/services' },
+    //     { name: 'Focused Support', href: '/services' },
+    //     { name: 'Beyond the Application', href: '/services' },
+    //     { name: 'Others', href: '/services' },
+    // ];
+
     const services = [
-        { name: 'All-In-One Solutions', href: '/services' },
-        { name: 'Focused Support', href: '/services' },
-        { name: 'Beyond the Application', href: '/services' },
-        { name: 'Others', href: '/services' },
+        { name: 'Admissions', href: '/services' },
+        { name: 'Accommodations', href: '/accommodations' },
     ];
 
     return (

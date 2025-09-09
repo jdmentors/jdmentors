@@ -21,6 +21,10 @@ const accommodationSchema = new Schema({
         type: Array,
         required: false
     },
+    otherContactMethod: {
+        type: String,
+        required: false
+    },
     exam: {
         type: Array,
         required: false
