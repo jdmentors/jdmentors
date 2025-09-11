@@ -127,7 +127,7 @@ function Header() {
                                     <button onClick={handleClick} className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700 cursor-pointer">
                                         <CalendarCheck size={24} strokeWidth={1.5} />
 
-                                        <span>Get Started</span>
+                                        <span>Schedule A Consultation</span>
                                     </button>
                                     :
                                     <button onClick={bookConsultationHandler} className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700 cursor-pointer">
@@ -183,7 +183,7 @@ function Header() {
                                     <button onClick={() => {setIsMenuOpen(false); handleClick()}} className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700 cursor-pointer">
                                         <CalendarCheck size={24} strokeWidth={1.5} />
 
-                                        <span>Get Started</span>
+                                        <span>Schedule A Consultation</span>
                                     </button>
                                     :
                                     <button onClick={bookConsultationHandler} className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md text-sm font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700 cursor-pointer">

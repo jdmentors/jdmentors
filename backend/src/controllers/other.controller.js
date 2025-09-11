@@ -134,7 +134,7 @@ const sendAccommodationEmail = async (req, res) => {
     try {
         const { fullName, email, phone, preferredContact = 'Not Specified', otherContactMethod= '', exam = 'Not Specified', document = 'Not Provided', dateTime = 'Not Specified', seekingAccommodations = 'Not Specified', supportingDocumentation = 'Not Specified', previousAccommodation = 'Not Specified', providedAccommodations = 'Not specified', additionalInfomation = 'Not Specified', price, accommodationId, payment = 'Pending' } = req.body;
 
-        if (!fullName || !email || !phone || !exam || !document || !price || !accommodationId) {
+        if (!fullName || !email || !phone || !exam || !document || !accommodationId) {
             return res.status(400).json({ success: false, message: 'All fields are required.' });
         }
 

@@ -68,7 +68,7 @@ function Accommodations() {
 
                     <div className="md:col-span-2 flex flex-col gap-5">
                         <div className="flex flex-col gap-2">
-                            <h2 className="text-3xl md:text-4xl font-bold text-blue-600">Disability Accommodations: ${accommodationPrice}</h2>
+                            <h2 className="text-3xl md:text-4xl font-bold text-blue-600">Disability Accommodations</h2>
                             <p className="font-semibold text-blue-950">Undergraduate | LSAT Prep | GRE Prep | Law & Graduate Programs | MPRE & Bar Exam</p>
                         </div>
 
@@ -99,7 +99,7 @@ function Accommodations() {
                         <button onClick={handleClick} className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700 md:self-start self-center cursor-pointer">
                             <CalendarCheck size={24} strokeWidth={1.5} />
 
-                            <span>Get Started</span>
+                            <span>Schedule A Consultation</span>
                         </button>
                     </div>
                 </Container>
