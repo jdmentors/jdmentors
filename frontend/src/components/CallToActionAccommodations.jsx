@@ -44,7 +44,7 @@ function CallToActionAccommodations() {
                 <div className="flex gap-3 flex-wrap items-center justify-center my-4">
                     <button onClick={handleClick} type="button" className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md font-medium h-12 px-8 bg-blue-600 hover:bg-blue-700 cursor-pointer">
                         <CalendarCheck strokeWidth={1.5} />
-                        Get Started
+                        Schedule A Consultation
                     </button>
                 </div>
 

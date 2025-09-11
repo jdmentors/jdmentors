@@ -163,7 +163,7 @@ function CheckoutAccommodations() {
                     if (data && data.success) {
                         toast.success(data.message);
                         dispatch(updateUser({ ...user, accessToken: newAccessToken }));
-                        const sessionId = data.data._id;
+                        const accommodationId = data.data._id;
                         try {
                             const { data } = await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/create-checkout-accommodation`, { accommodationId: accommodationId });
 

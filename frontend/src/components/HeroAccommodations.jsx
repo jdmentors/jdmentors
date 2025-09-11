@@ -44,7 +44,7 @@ function HeroAccommodations() {
                             <button onClick={handleClick} className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700 cursor-pointer">
                                 <CalendarCheck size={24} strokeWidth={1.5} />
 
-                                <span>Get Started</span>
+                                <span>Schedule A Consultation</span>
                             </button>
 
                             <Link to='/contact' className={`inline-flex items-center justify-center gap-1 whitespace-nowrap h-10 bg-white text-blue-600 hover:bg-blue-600 hover:text-white px-4 py-4 font-semibold rounded-md transition-all duration-300 cursor-pointer`}>

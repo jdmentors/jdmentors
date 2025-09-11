@@ -18,6 +18,7 @@ function CheckOutAccommodationSuccess() {
 
                 if (data && data.success) {
                     setAccommodation(data.data);
+                    console.log(data.data)
                     const accommodationData = data.data;
                     if (!accommodationData.emailSent) {
                         try {
