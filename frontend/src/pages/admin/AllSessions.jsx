@@ -138,7 +138,7 @@ function AllSessions() {
                                                     allSessions.map(session => (
                                                         <div key={session._id} className="md:grid grid-cols-[2fr_1fr_2fr_1fr_1fr_1fr_1fr] gap-5 items-center py-5 text-gray-600">
                                                             <p className="text-gray-800">
-                                                                {session.service.title}
+                                                                {session?.service?.title || 'Unknown'}
                                                             </p>
 
                                                             <p className="text-blue-600 underline">
@@ -192,7 +192,7 @@ function AllSessions() {
                                                             <div className="flex gap-2">
                                                                 <p className="text-gray-800">Service:</p>
                                                                 <p className="text-gray-600">
-                                                                    {session.service.title}
+                                                                    {session?.service?.title || 'Unknown'}
                                                                 </p>
                                                             </div>
 
