@@ -4,6 +4,8 @@ import darkLogo from "./darkLogo.webp";
 import logo from "./logo.webp";
 import banner from "./banner.webp";
 import aboutUs from "./aboutUs.webp";
+import popular from "./popular.webp";
+import ultimate from "./ultimate.webp";
 import user from './user.webp';
 import AccommodationBanner from "./AccommodationBanner.webp";
 
@@ -16,4 +18,6 @@ export {
     aboutUs,
     user,
     AccommodationBanner,
+    popular,
+    ultimate,
 }

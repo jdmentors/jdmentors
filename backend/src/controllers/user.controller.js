@@ -128,8 +128,8 @@ const getAllUsers = async (req, res) => {
             {
                 $lookup: {
                     from: 'sessions',
-                    localField: '_id',
-                    foreignField: 'user',
+                    localField: 'email',
+                    foreignField: 'email',
                     as: 'sessions'
                 }
             },
@@ -140,40 +140,57 @@ const getAllUsers = async (req, res) => {
                 }
             },
             {
-                $lookup: {
-                    from: 'services',
-                    localField: 'sessions.service',
-                    foreignField: '_id',
-                    as: 'services'
-                }
-            },
-            {
-                $unwind: {
-                    path: '$services',
-                    preserveNullAndEmptyArrays: true
-                }
-            },
-            {
                 $group: {
                     _id: '$_id',
                     fullName: { $first: '$fullName' },
                     email: { $first: '$email' },
                     phone: { $first: '$phone' },
                     createdAt: { $first: '$createdAt' },
-                    sessionCount: { $sum: { $cond: [{ $ifNull: ['$sessions', false] }, 1, 0] } },
-                    totalSpent: { $sum: { $ifNull: ['$services.price', 0] } }
+                    sessionCount: { 
+                        $sum: { 
+                            $cond: [
+                                { $ifNull: ['$sessions._id', false] }, 
+                                1, 
+                                0
+                            ] 
+                        } 
+                    },
+                    totalSpent: { 
+                        $sum: { 
+                            $ifNull: ['$sessions.price', 0] 
+                        } 
+                    }
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    fullName: 1,
+                    email: 1,
+                    phone: 1,
+                    createdAt: 1,
+                    sessionCount: 1,
+                    totalSpent: { $round: ['$totalSpent', 2] }
                 }
             }
         ]);
 
-
-        if (!allUsers) {
+        if (!allUsers || allUsers.length === 0) {
             return res.status(404).json({ success: false, message: 'No Users found' });
         }
 
-        return res.status(200).json({ success: true, message: 'Users found', data: allUsers });
+        return res.status(200).json({ 
+            success: true, 
+            message: 'Users found', 
+            data: allUsers 
+        });
     } catch (error) {
-        return res.status(500).json({ success: false, message: 'Failed to get User' });
+        console.error('Error in getAllUsers:', error);
+        return res.status(500).json({ 
+            success: false, 
+            message: 'Failed to get Users',
+            error: error.message 
+        });
     }
 }
 
