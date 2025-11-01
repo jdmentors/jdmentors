@@ -2,6 +2,7 @@ import { CalendarCheck2, Gift, Package, Plus, Settings } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
 import { toggleShowUserAuthForm } from "../features/forms/UserAuthSlice.js";
+import { popular, ultimate } from "../assets/index.js";
 
 function PackageCard({ _id, title, description, services = [], addons = [], extras = [], price, process }) {
     const dispatch = useDispatch();
@@ -29,8 +30,9 @@ function PackageCard({ _id, title, description, services = [], addons = [], extr
                 {/* Top section */}
                 <div>
                     <div className="flex items-center mb-4">
-                        <div className={`${_id == '68b01ac311cd8661cbde73f8'? 'bg-white' : _id == '68b01b7311cd8661cbde73fe' ? 'bg-orange-100' : 'bg-blue-100'} p-2.5 rounded-full mr-4 w-10 h-10 flex items-center justify-center`}>
-                            <Package className={`text-sm mt-1 ${_id == '68b01b7311cd8661cbde73fe' ? 'text-orange-400' : 'text-blue-600'}`} />
+                        <div className={`relative ${_id == '68b01ac311cd8661cbde73f8'? 'bg-white' : _id == '68b01b7311cd8661cbde73fe' ? 'bg-orange-100' : 'bg-blue-100'} p-2.5 rounded-full mr-4 w-10 h-10 flex items-center justify-center`}>
+                            {/* <Package className={`text-sm mt-1 ${_id == '68b01b7311cd8661cbde73fe' ? 'text-orange-400' : 'text-blue-600'}`} /> */}
+                            {_id == '68b01ac311cd8661cbde73f8' ? <img src={popular} alt="popular" className="absolute rounded-full" /> : _id == '68b01b7311cd8661cbde73fe' ? <img src={ultimate} alt="ultimate" className="absolute rounded-full" /> : <Package className="text-sm mt-1 text-blue-600" />}
                         </div>
                         <h3 className={`text-2xl font-semibold ${_id == '68b01ac311cd8661cbde73f8'? 'text-white' : _id == '68b01b7311cd8661cbde73fe' ? 'text-black' : 'text-blue-950'}`}>{title}</h3>
                     </div>
