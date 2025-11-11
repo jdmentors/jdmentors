@@ -49,7 +49,7 @@ function UserRegForm({ isLoginActive, setIsLoginActive }) {
     return (
         <section className={`w-1/2 ${isLoginActive && 'translate-x-10'}`}>
             <form onSubmit={handleSubmit(registerFormHandler)}>
-                <h3 className="text-2xl text-center my-5 text-blue-950">Register</h3>
+                <h3 className="text-2xl text-center my-5 text-blue-950">User Registeration</h3>
 
                 <div className="text-gray-600 grid grid-cols-1 my-2">
                     <label className="flex items-center gap-1" htmlFor='fullName'><User size={18} /> <span>Full Name</span></label>

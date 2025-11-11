@@ -1,5 +1,5 @@
 import axios from "axios";
-import { LayoutDashboard, LogOut } from "lucide-react";
+import { GraduationCap, Handshake, LayoutDashboard, LogOut, Video } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router";
 import { toggleIsUserLoggedIn, toggleShowUserAuthForm, updateUser } from "../../features/forms/UserAuthSlice.js";
@@ -8,6 +8,9 @@ import useRefreshToken from "../../hooks/useRefreshToken.jsx";
 
 const navigation = [
     { name: 'Dashboard', path: '/user/dashboard', icon: <LayoutDashboard size={25} strokeWidth={1.5} /> },
+    { name: 'Admissions', path: '/user/admissions', icon: <GraduationCap size={25} strokeWidth={1.5} /> },
+    { name: 'Accommodations', path: '/user/accommodations', icon: <Handshake size={25} strokeWidth={1.5} /> },
+    { name: 'LSAT Tutoring', path: '/user/lsat', icon: <Video size={25} strokeWidth={1.5} /> },
 ];
 
 function UserSidebar() {

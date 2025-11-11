@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Gift, GraduationCap, Handshake, LayoutDashboard, LogOut, Newspaper, Package, Plus, Puzzle, Settings, Tags, UserCircle, UserPlus, Users } from "lucide-react";
+import { Gift, GraduationCap, Handshake, LayoutDashboard, LogOut, Newspaper, Package, Plus, Puzzle, Settings, ShieldUser, Tags, UserCircle, UserPlus, Users, Video } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router";
 import { toggleIsUserLoggedIn, updateUser } from "../../features/forms/UserAuthSlice.js";
@@ -10,14 +10,17 @@ const navigation = [
     { name: 'Dashboard', path: '/admin/dashboard', icon: <LayoutDashboard size={25} strokeWidth={1.5} /> },
     { name: 'Admissions', path: '/admin/admissions', icon: <GraduationCap size={25} strokeWidth={1.5} /> },
     { name: 'Accommodations', path: '/admin/accommodations', icon: <Handshake size={25} strokeWidth={1.5} /> },
+    { name: 'LSAT Tutoring', path: '/admin/lsat-sessions', icon: <Video size={25} strokeWidth={1.5} /> },
     { name: 'Users', path: '/admin/users', icon: <Users size={25} strokeWidth={1.5} /> },
     { name: 'Services', path: '/admin/services', icon: <Settings size={25} strokeWidth={1.5} /> },
     { name: 'Packages', path: '/admin/packages', icon: <Package size={25} strokeWidth={1.5} /> },
     { name: 'Add-ons', path: '/admin/addons', icon: <Puzzle size={25} strokeWidth={1.5} /> },
     { name: 'Extras', path: '/admin/extras', icon: <Gift size={25} strokeWidth={1.5} /> },
+    { name: 'LSAT Packages', path: '/admin/lsat-packages', icon: <Package size={25} strokeWidth={1.5} /> },
     { name: 'Blogs', path: '/admin/blogs', icon: <Newspaper size={25} strokeWidth={1.5} /> },
     { name: 'Coupons', path: '/admin/coupons', icon: <Tags size={25} strokeWidth={1.5} /> },
     { name: 'Team', path: '/admin/team/all', icon: <UserPlus size={25} strokeWidth={1.5} /> },
+    { name: 'Tutors', path: '/admin/tutors/all', icon: <ShieldUser size={25} strokeWidth={1.5} /> },
     { name: 'Profile', path: '/admin/profile', icon: <UserCircle size={25} strokeWidth={1.5} /> },
     { name: 'Create Admin', path: '/admin/create', icon: <Plus size={25} strokeWidth={1.5} /> },
 ];

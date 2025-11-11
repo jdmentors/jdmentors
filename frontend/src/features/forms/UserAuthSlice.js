@@ -3,11 +3,12 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     showUserAuthForm: false,
     isUserLoggedIn: false,
-    user:{},
+    user: {},
+    authType: 'user', // 'user' or 'tutor'
 };
 
 const UserAuthFormSlice = createSlice({
-    name:'userAuthForm',
+    name: 'userAuthForm',
     initialState,
     reducers: {
         toggleShowUserAuthForm: (state, action) => {
@@ -20,10 +21,26 @@ const UserAuthFormSlice = createSlice({
 
         updateUser: (state, action) => {
             state.user = action.payload;
+        },
+
+        setAuthType: (state, action) => {
+            state.authType = action.payload;
+        },
+
+        // Combined action to show auth form with specific type
+        showAuthForm: (state, action) => {
+            state.showUserAuthForm = true;
+            state.authType = action.payload || 'user';
         }
     }
 })
 
-export const { toggleShowUserAuthForm, toggleIsUserLoggedIn, updateUser } = UserAuthFormSlice.actions;
+export const { 
+    toggleShowUserAuthForm, 
+    toggleIsUserLoggedIn, 
+    updateUser, 
+    setAuthType,
+    showAuthForm 
+} = UserAuthFormSlice.actions;
 
 export const UserAuthFormReducers = UserAuthFormSlice.reducer;

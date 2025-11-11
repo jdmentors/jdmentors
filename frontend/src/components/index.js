@@ -51,6 +51,20 @@ import TeamForm from "./admin/TeamForm";
 import HeroAccommodations from "./HeroAccommodations";
 import CallToActionAccommodations from "./CallToActionAccommodations";
 import HowItWorksCard from "./HowItWorksCard";
+import HeroLSATTutoring from "./HeroLSATTutoring";
+import LSATTutors from "./LSATTutors";
+import CallToActionLSATTutoring from "./CallToActionLSATTutoring";
+import TutorForm from "./admin/TutorForm";
+import TutorRegForm from "./TutorRegForm";
+import TutorLogForm from "./TutorLogForm";
+import TutorForgotPasswordForm from "./TutorForgotPasswordForm";
+import TutorAuth from "./TutorAuth";
+import TutorHeader from "./tutor/TutorHeader";
+import TutorSidebar from "./tutor/TutorSidebar";
+import TutorContainer from "./tutor/TutorContainer";
+import LSATPackageCard from "./LSATPackageCard";
+import AddLSATPackageForm from "./admin/AddLSATPackageForm";
+import ClassPricingForm from "./admin/ClassPricingForm";
 
 export {
     Header,
@@ -106,4 +120,18 @@ export {
     HeroAccommodations,
     CallToActionAccommodations,
     HowItWorksCard,
+    HeroLSATTutoring,
+    LSATTutors,
+    CallToActionLSATTutoring,
+    TutorForm,
+    TutorRegForm,
+    TutorLogForm,
+    TutorForgotPasswordForm,
+    TutorAuth,
+    TutorHeader,
+    TutorSidebar,
+    TutorContainer,
+    LSATPackageCard,
+    AddLSATPackageForm,
+    ClassPricingForm,
 }

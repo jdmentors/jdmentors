@@ -2,6 +2,8 @@ import { Link, NavLink } from "react-router";
 import Container from "./Container";
 import { logo } from "../assets";
 import { Instagram, Mail, Phone } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { showAuthForm } from "../features/forms/UserAuthSlice";
 
 
 function Footer() {
@@ -30,6 +32,10 @@ function Footer() {
         { name: 'Accommodations', href: '/accommodations' },
     ];
 
+    const dispatch = useDispatch();
+
+    const user = useSelector(state => state.user.user);
+
     return (
         <footer className="bg-gray-900 text-gray-200 font-light py-12">
             <Container className=' px-6 md:px-16 lg:px-24 xl:px-32'>
@@ -42,10 +48,10 @@ function Footer() {
                             JD Mentors provides specialized law school application consulting for non-T14 schools. Personalized 1-on-1 sessions to craft compelling personal statements and effective addendums.
                         </p>
                         <div className='flex items-center gap-3 mt-4'>
-                                {/* Instagram */}
-                                <Link to="https://www.instagram.com/jd.mentors" target="_blank">
-                                    <Instagram strokeWidth={1.25} />
-                                </Link>
+                            {/* Instagram */}
+                            <Link to="https://www.instagram.com/jd.mentors" target="_blank">
+                                <Instagram strokeWidth={1.25} />
+                            </Link>
                         </div>
                     </div>
 
@@ -60,6 +66,13 @@ function Footer() {
                                         <NavLink className={({ isActive }) => `text-white after:bg-white`} to={link.href}>{link.name}</NavLink>
                                     </li>
                                 ))
+                            }
+                            {
+                                (!user || Object.keys(user).length < 1)
+                                &&
+                                <li className="relative py-1">
+                                    <button className="cursor-pointer hover:underline" onClick={() => dispatch(showAuthForm('tutor'))} >Tutor Login</button>
+                                </li>
                             }
                         </ul>
                     </div>
@@ -120,8 +133,8 @@ function Footer() {
                     {/* <p>© {new Date().getFullYear()} &nbsp; */}
                     <p>
                         <Link to="/">
-                        JD Mentors
-                        </Link> 
+                            JD Mentors
+                        </Link>
                         {/* &nbsp; All rights reserved. &nbsp; */}
                     </p>
                     <div className="flex flex-row gap-2 items-center">
