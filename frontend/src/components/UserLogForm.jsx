@@ -46,7 +46,7 @@ function UserLogForm({ isLoginActive, setIsLoginActive, isForgotPasswordActive, 
     return (
         <section className={`w-1/2 my-5 ${!isLoginActive && '-translate-x-10'} ${isForgotPasswordActive && 'translate-x-10'}`}>
             <form onSubmit={handleSubmit(loginHandler)}>
-                <h3 className="text-2xl text-center text-blue-950 mb-3">Login</h3>
+                <h3 className="text-2xl text-center text-blue-950 mb-3">User Login</h3>
 
                 <div className="text-gray-600 grid grid-cols-1 my-2">
                     <label className="flex items-center gap-1" htmlFor='logEmail'><Mail size={18} /> <span>Email</span></label>

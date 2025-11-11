@@ -18,6 +18,7 @@ const Extras = lazy(() => import('./pages/Extras'));
 const Packages = lazy(() => import('./pages/Packages'));
 const AboutUs = lazy(() => import('./pages/AboutUs'));
 const Blogs = lazy(() => import('./pages/Blogs'));
+const LSATTutoring = lazy(() => import('./pages/LSATTutoring'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const TermsAndConditions = lazy(() => import('./pages/TermsAndConditions'));
 const SingleBlog = lazy(() => import('./pages/SingleBlog'));
@@ -27,6 +28,8 @@ const PageNotFound = lazy(() => import('./pages/PageNotFound'));
 const Checkout = lazy(() => import('./pages/Checkout'));
 const CheckoutAccommodations = lazy(() => import('./pages/CheckoutAccommodations'));
 const CheckOutAccommodationSuccess = lazy(() => import('./pages/CheckoutAccommodationSuccess'));
+const CheckoutLSATPackageSuccess = lazy(() => import('./pages/LSATPackageSuccess'));
+const CheckOutLsatPackage = lazy(() => import('./pages/LsatPackageCheckout'));
 const CheckOutSuccess = lazy(() => import('./pages/CheckOutSuccess'));
 const SessionStatus = lazy(() => import('./pages/SessionStatus'));
 const CheckOutCancel = lazy(() => import('./pages/CheckOutCancel'));
@@ -57,8 +60,26 @@ const UserDashboard = lazy(() => import('./pages/user/UserDashboard'));
 const Profile = lazy(() => import('./components/Profile'));
 const CreateAdmin = lazy(() => import('./components/admin/CreateAdmin'));
 const AddTeam = lazy(() => import('./pages/admin/AddTeam'));
+const AddTutor = lazy(() => import('./pages/admin/AddTutor'));
 const AllTeam = lazy(() => import('./pages/admin/AllTeam'));
+const AllTutors = lazy(() => import('./pages/admin/AllTutors'));
+const LSATTutoringAdmin = lazy(() => import('./pages/admin/LSATTutoring'));
 const UpdateTeam = lazy(() => import('./pages/admin/UpdateTeam'));
+const UpdateTutor = lazy(() => import('./pages/admin/UpdateTutor'));
+const TutorDashboard = lazy(() => import('./pages/tutor/TutorDashboard'));
+const TutorProfile = lazy(() => import('./pages/tutor/TutorProfile'));
+const TutorLayout = lazy(() => import('./pages/tutor/TutorLayout'));
+const TutorResetPassword = lazy(() => import('./pages/TutorResetPassword'));
+const LSATPackageSuccess = lazy(() => import('./pages/LSATPackageSuccess'));
+const CheckoutLSATSession = lazy(() => import('./pages/CheckoutLSATSession'));
+const AddLSATPackage = lazy(() => import('./pages/admin/AddLSATPackage'));
+const EditLSATPackage = lazy(() => import('./pages/admin/EditLSATPackage'));
+const AllLSATPackages = lazy(() => import('./pages/admin/AllLSATPackages'));
+const LSATSessionSuccess = lazy(() => import('./pages/LSATSessionSuccess'));
+const AllLSATSessions = lazy(() => import('./pages/admin/AllLSATSessions'));
+const AllAdmissionSessions = lazy(() => import('./pages/user/AllAdmissionSessions'));
+const AllAccommodationSessions = lazy(() => import('./pages/user/AllAccommodationSessions'));
+const AllLSATSessionsUser = lazy(() => import('./pages/user/AllLSATSessions'));
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>
@@ -72,6 +93,8 @@ createRoot(document.getElementById('root')).render(
 
                             <Route path='/checkout-accommodation-success/:accommodationId' element={<Suspense fallback={<LoadingSpinner height={'850px'} />}><CheckOutAccommodationSuccess /></Suspense>} />
 
+                            <Route path='/checkout-lsat-package-success/:purchaseId' element={<Suspense fallback={<LoadingSpinner height={'850px'} />}><CheckoutLSATPackageSuccess /></Suspense>} />
+
                             <Route path='/session-status' element={<Suspense fallback={<LoadingSpinner height={'850px'} />}><SessionStatus /></Suspense>} />
 
                             <Route path='/checkout-cancel' element={<Suspense fallback={<LoadingSpinner height={'850px'} />}><CheckOutCancel /></Suspense>} />
@@ -79,6 +102,14 @@ createRoot(document.getElementById('root')).render(
                             <Route path='/checkout/:serviceType/:serviceId' element={<Suspense fallback={<LoadingSpinner height={'850px'} />}><Checkout /></Suspense>} />
 
                             <Route path='/checkout/accommodations' element={<Suspense fallback={<LoadingSpinner height={'850px'} />}><CheckoutAccommodations /></Suspense>} />
+
+                            <Route path='/checkout/lsat-session' element={<Suspense fallback={<LoadingSpinner height={'850px'} />}><CheckoutLSATSession /></Suspense>} />
+
+                            <Route path='/checkout/lsat-package/:packageId' element={<Suspense fallback={<LoadingSpinner height={'850px'} />}><CheckOutLsatPackage /></Suspense>} />
+
+                            <Route path="/checkout-lsat-package-success/:purchaseId" element={<LSATPackageSuccess />} />
+
+                            <Route path="/checkout-lsat-session-success/:sessionId" element={<LSATSessionSuccess />} />
 
                             <Route path='/contact' element={<Suspense fallback={<LoadingSpinner height={'850px'} />}><Contact /></Suspense>} />
 
@@ -108,13 +139,45 @@ createRoot(document.getElementById('root')).render(
 
                             <Route path='/blogs/:slug' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><SingleBlog /></Suspense>} />
 
+                            <Route path='/lsat-tutoring' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><LSATTutoring /></Suspense>} />
+
                             <Route path='/secure/auth/login/admin' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><AdminLogin /></Suspense>} />
+
+                            <Route path='/tutor-reset-password' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><TutorResetPassword /></Suspense>} />
                         </Route>
 
                         <Route path='/user' element={<UserLayout />}>
                             <Route path='/user/dashboard' element={<Protected authetication={true}>
                                 <Suspense fallback={<LoadingSpinner height={'750px'} />}>
                                     <UserDashboard />
+                                </Suspense>
+                            </Protected>} />
+                            <Route path='/user/admissions' element={<Protected authetication={true}>
+                                <Suspense fallback={<LoadingSpinner height={'750px'} />}>
+                                    <AllAdmissionSessions />
+                                </Suspense>
+                            </Protected>} />
+                            <Route path='/user/accommodations' element={<Protected authetication={true}>
+                                <Suspense fallback={<LoadingSpinner height={'750px'} />}>
+                                    <AllAccommodationSessions />
+                                </Suspense>
+                            </Protected>} />
+                            <Route path='/user/lsat' element={<Protected authetication={true}>
+                                <Suspense fallback={<LoadingSpinner height={'750px'} />}>
+                                    <AllLSATSessionsUser />
+                                </Suspense>
+                            </Protected>} />
+                        </Route>
+
+                        <Route path='/tutor' element={<TutorLayout />}>
+                            <Route path='/tutor/dashboard' element={<Protected authetication={true}>
+                                <Suspense fallback={<LoadingSpinner height={'750px'} />}>
+                                    <TutorDashboard />
+                                </Suspense>
+                            </Protected>} />
+                            <Route path='/tutor/profile' element={<Protected authetication={true}>
+                                <Suspense fallback={<LoadingSpinner height={'750px'} />}>
+                                    <TutorProfile />
                                 </Suspense>
                             </Protected>} />
                         </Route>
@@ -169,10 +232,26 @@ createRoot(document.getElementById('root')).render(
                             <Route path='/admin/create' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><CreateAdmin /></Suspense>} />
 
                             <Route path='/admin/team/all' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><AllTeam /></Suspense>} />
-                            
+
+                            <Route path='/admin/lsat-tutoring' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><LSATTutoringAdmin /></Suspense>} />
+
+                            <Route path='/admin/tutors/all' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><AllTutors /></Suspense>} />
+
                             <Route path='/admin/team/add' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><AddTeam /></Suspense>} />
 
+                            <Route path='/admin/tutors/add' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><AddTutor /></Suspense>} />
+
                             <Route path='/admin/team/update/:id' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><UpdateTeam /></Suspense>} />
+
+                            <Route path='/admin/tutors/update/:id' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><UpdateTutor /></Suspense>} />
+
+                            <Route path='/admin/lsat-packages/add' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><AddLSATPackage /></Suspense>} />
+
+                            <Route path='/admin/lsat-packages/edit/:packageId' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><EditLSATPackage /></Suspense>} />
+
+                            <Route path='/admin/lsat-packages' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><AllLSATPackages /></Suspense>} />
+
+                            <Route path='/admin/lsat-sessions' element={<Suspense fallback={<LoadingSpinner height={'750px'} />}><AllLSATSessions /></Suspense>} />
                         </Route>
                     </Routes>
                 </BrowserRouter>

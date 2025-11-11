@@ -48,6 +48,24 @@ import Accommodations from "./Accommodations";
 import CheckoutAccommodations from "./CheckoutAccommodations";
 import CheckOutAccommodationSuccess from "./CheckoutAccommodationSuccess";
 import AllSessionsAccommodations from "./admin/AllSessionsAccommodations";
+import LSATTutoring from "./LSATTutoring";
+import AddTutor from "./admin/AddTutor";
+import UpdateTutor from "./admin/UpdateTutor";
+import TutorLayout from "./tutor/TutorLayout";
+import TutorDashboard from "./tutor/TutorDashboard";
+import TutorProfile from "./tutor/TutorProfile";
+import TutorResetPassword from "./TutorResetPassword";
+import LSATPackageCheckout from "./LSATPackageCheckout";
+import LSATPackageSuccess from "./LSATPackageSuccess";
+import AllLSATPackages from "./admin/AllLSATPackages";
+import EditLSATPackage from "./admin/EditLSATPackage";
+import AllTutors from "./admin/AllTutors";
+import CheckoutLSATSession from "./CheckoutLSATSession";
+import LSATSessionSuccess from "./LSATSessionSuccess";
+import AllLSATSessions from "./admin/AllLSATSessions";
+import AllAdmissionSessions from "./user/AllAdmissionSessions";
+import AllAccommodationSessions from "./user/AllAccommodationSessions";
+import AllLSATSessionsUser from "./user/AllLSATSessions";
 
 export {
     Home,
@@ -100,4 +118,22 @@ export {
     CheckoutAccommodations,
     CheckOutAccommodationSuccess,
     AllSessionsAccommodations,
+    LSATTutoring,
+    AddTutor,
+    UpdateTutor,
+    TutorLayout,
+    TutorDashboard,
+    TutorProfile,
+    TutorResetPassword,
+    LSATPackageCheckout,
+    LSATPackageSuccess,
+    AllLSATPackages,
+    EditLSATPackage,
+    AllTutors,
+    CheckoutLSATSession,
+    LSATSessionSuccess,
+    AllLSATSessions,
+    AllAdmissionSessions,
+    AllAccommodationSessions,
+    AllLSATSessionsUser,
 }
