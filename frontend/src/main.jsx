@@ -29,7 +29,7 @@ const Checkout = lazy(() => import('./pages/Checkout'));
 const CheckoutAccommodations = lazy(() => import('./pages/CheckoutAccommodations'));
 const CheckOutAccommodationSuccess = lazy(() => import('./pages/CheckoutAccommodationSuccess'));
 const CheckoutLSATPackageSuccess = lazy(() => import('./pages/LSATPackageSuccess'));
-const CheckOutLsatPackage = lazy(() => import('./pages/LsatPackageCheckout'));
+const CheckOutLsatPackage = lazy(() => import('./pages/LSATPackageCheckout'));
 const CheckOutSuccess = lazy(() => import('./pages/CheckOutSuccess'));
 const SessionStatus = lazy(() => import('./pages/SessionStatus'));
 const CheckOutCancel = lazy(() => import('./pages/CheckOutCancel'));
