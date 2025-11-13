@@ -1,5 +1,5 @@
 import { CalendarDays, Clock, File, LockKeyholeIcon, Mail, Phone, User, UserCheck2, BookOpen, Target, GraduationCap, Users, UserCircle } from "lucide-react";
-import { Container, FileInput } from "../components";
+import { Container, FileInput, LSATPackagesModal } from "../components";
 import { Link, useLocation } from "react-router";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -46,8 +46,11 @@ function CheckoutLSATSession() {
         }
     });
 
+    const email = watch('email');
+
     const refreshAccessToken = useRefreshToken();
     const dispatch = useDispatch();
+    const [isPackagesModalOpen, setIsPackagesModalOpen] = useState(false);
 
     // Fetch all tutors
     useEffect(() => {
@@ -78,9 +81,9 @@ function CheckoutLSATSession() {
     // Fetch user's active packages
     useEffect(() => {
         const fetchUserPackages = async () => {
-            if (user?.email && sessionType === 'one-on-one') {
+            if ((user?.email || email) && sessionType === 'one-on-one') {
                 try {
-                    const { data } = await axios.get(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/lsat-packages/user/${user.email}`);
+                    const { data } = await axios.get(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/lsat-packages/user/${user.email || email}`);
                     if (data && data.success) {
                         setUserPackages(data.data);
 
@@ -98,7 +101,7 @@ function CheckoutLSATSession() {
             }
         };
         fetchUserPackages();
-    }, [user, sessionType, selectedPackage]);
+    }, [user, sessionType, selectedPackage, email]);
 
     useEffect(() => {
         const fetchPricing = async () => {
@@ -335,6 +338,12 @@ function CheckoutLSATSession() {
 
     return (
         <section className="min-h-[70vh] pt-24 md:pt-32 relative">
+            {/* Modal */}
+            <LSATPackagesModal 
+                isOpen={isPackagesModalOpen}
+                onClose={() => setIsPackagesModalOpen(false)}
+            />
+
             <Container className="grid md:grid-cols-2 gap-5 lg:gap-14 xl:gap-20 divide-blue-100">
                 {/* Customer Information */}
                 <section>
@@ -497,12 +506,12 @@ function CheckoutLSATSession() {
                                             <p className="text-orange-700 text-sm mt-1">
                                                 You need to purchase an LSAT package before booking 1-on-1 sessions.
                                             </p>
-                                            <Link
-                                                to="/lsat-tutoring"
-                                                className="text-blue-600 hover:text-blue-800 text-sm font-medium mt-2 inline-block"
+                                            <button
+                                                onClick={() => setIsPackagesModalOpen(true)}
+                                                className="text-blue-600 hover:text-blue-800 text-sm font-medium mt-2 inline-block cursor-pointer hover:underline"
                                             >
                                                 View Packages →
-                                            </Link>
+                                            </button>
                                         </div>
                                     )}
                                 </div>

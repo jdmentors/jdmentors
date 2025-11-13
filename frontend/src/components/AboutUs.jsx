@@ -22,7 +22,7 @@ function AboutUs() {
                         <h2 className="text-3xl font-bold text-blue-950 mb-6">
                             About Our Expertise
                         </h2>
-                        <p className="text-gray-600 mb-8 leading-relaxed">With years of experience in law school admissions consulting, We specialize in helping students craft compelling applications for non-T14 schools.</p>
+                        <p className="text-gray-600 mb-8 leading-relaxed">With years of experience in law school admissions consulting, We specialize in helping students craft compelling applications.</p>
                         <div className="space-y-6">
                             <div className="flex items-start gap-4">
                                 <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">

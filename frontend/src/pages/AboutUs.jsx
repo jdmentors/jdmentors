@@ -88,7 +88,7 @@ function AboutUs() {
                         <li className="flex items-center gap-1"><Verified size={18} className="text-blue-600" /> 1-on-1 Personalized Guidance</li>
                         <li className="flex items-center gap-1"><Verified size={18} className="text-blue-600" />Expert Review of Personal Statements</li>
                         <li className="flex items-center gap-1"><Verified size={18} className="text-blue-600" />Higher Acceptance Rates</li>
-                        <li className="flex items-center gap-1"><Verified size={18} className="text-blue-600" />Support for Non-T14 Applicants</li>
+                        <li className="flex items-center gap-1"><Verified size={18} className="text-blue-600" />Support for all Applicants</li>
                         <li className="flex items-center gap-1"><Verified size={18} className="text-blue-600" />Fast Response Times & Flexible Scheduling</li>
                     </ul>
                 </div>

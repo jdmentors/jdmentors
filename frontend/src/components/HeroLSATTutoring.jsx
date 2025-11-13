@@ -1,9 +1,7 @@
 import { CalendarCheck, Phone, Star } from "lucide-react";
 import { Link, useNavigate } from "react-router";
-import { AccommodationBanner, lsatTutoring } from "../assets";
+import { lsatTutoring } from "../assets";
 import { Container } from "../components";
-import { useEffect, useState } from "react";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleShowUserAuthForm } from "../features/forms/UserAuthSlice";
 
@@ -34,7 +32,7 @@ function HeroLSATTutoring() {
                         <p className={`inline-flex items-center gap-1 bg-white text-blue-950 px-4 py-2 rounded-full text-sm font-medium`}>
                             <Star size={20} strokeWidth={1.5} />
 
-                            With JD Mentors, You're In.
+                            Your LSAT Success Starts Here
                         </p>
                         <h1 className="text-3xl md:text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">Earn Your Highest Possible <span className="text-blue-600 text-shadow-sm">LSAT Score</span></h1>
 
@@ -53,7 +51,7 @@ function HeroLSATTutoring() {
                             </Link>
                         </div>
 
-                        <p className="text-white z-40 leading-relaxed text-sm">* Don't just take the LSAT—conquer it. Join the thousands of future lawyers who've unlocked their full potential with personalized, 1-on-1 LSAT tutoring from JD Mentors.</p>
+                        <p className="text-white z-40 leading-relaxed text-sm">* Don't just take the LSAT—conquer it. Join all the future lawyers who've unlocked their full potential with personalized, 1-on-1 LSAT tutoring from JD Mentors.</p>
                     </div>
                 </div>
 

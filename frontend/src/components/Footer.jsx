@@ -1,7 +1,7 @@
 import { Link, NavLink } from "react-router";
 import Container from "./Container";
 import { logo } from "../assets";
-import { Instagram, Mail, Phone } from "lucide-react";
+import { Instagram, Linkedin, Mail, Phone } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { showAuthForm } from "../features/forms/UserAuthSlice";
 
@@ -45,12 +45,16 @@ function Footer() {
                             <img src={logo} alt="logo" className="h-12" />
                         </Link>
                         <p className=''>
-                            JD Mentors provides specialized law school application consulting for non-T14 schools. Personalized 1-on-1 sessions to craft compelling personal statements and effective addendums.
+                            JD Mentors provides specialized law school application consulting. Personalized 1-on-1 sessions to craft compelling personal statements and effective addendums.
                         </p>
                         <div className='flex items-center gap-3 mt-4'>
                             {/* Instagram */}
                             <Link to="https://www.instagram.com/jd.mentors" target="_blank">
                                 <Instagram strokeWidth={1.25} />
+                            </Link>
+                            {/* LinkedIn */}
+                            <Link to="https://www.linkedin.com/company/jd-mentors" target="_blank">
+                                <Linkedin strokeWidth={1.25} />
                             </Link>
                         </div>
                     </div>
