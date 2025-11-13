@@ -65,6 +65,7 @@ import TutorContainer from "./tutor/TutorContainer";
 import LSATPackageCard from "./LSATPackageCard";
 import AddLSATPackageForm from "./admin/AddLSATPackageForm";
 import ClassPricingForm from "./admin/ClassPricingForm";
+import LSATPackagesModal from "./LSATPackagesModal";
 
 export {
     Header,
@@ -134,4 +135,5 @@ export {
     LSATPackageCard,
     AddLSATPackageForm,
     ClassPricingForm,
+    LSATPackagesModal,
 }

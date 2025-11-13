@@ -15,10 +15,10 @@ const faqs = [
         question: "How early should I start working on my application?",
         answer: "We suggest starting about 3-4 months before your application deadlines. That gives us plenty of time to work through multiple drafts and make sure everything is polished. If you’re on a tighter schedule, we can still help. Just reach out to us regarding rush options and developing application strategies."
     },
-    {
-        question: "What makes applying to non-T14 schools different?",
-        answer: "Non-T14 schools evaluate applicants differently than the most elite programs. They tend to place greater weight on your potential to succeed in their environment. This includes things like your practical experience, the clarity of your career goals, and how well you align with the school’s mission, values, and strengths. Our role is to help you present a compelling case that speaks directly to what each program cares about most and increase your value to them."
-    },
+    // {
+    //     question: "What makes applying to non-T14 schools different?",
+    //     answer: "Non-T14 schools evaluate applicants differently than the most elite programs. They tend to place greater weight on your potential to succeed in their environment. This includes things like your practical experience, the clarity of your career goals, and how well you align with the school’s mission, values, and strengths. Our role is to help you present a compelling case that speaks directly to what each program cares about most and increase your value to them."
+    // },
     {
         question: "Can I get more scholarship money from a school that already sent me an offer?",
         answer: "Yes! A lot of applicants don’t realize that scholarship offers aren’t always set in stone. Even after you’ve been admitted, schools will sometimes reconsider and bump up their initial offer. We’ll help you navigate that process so you have the best chance of getting more rewards."

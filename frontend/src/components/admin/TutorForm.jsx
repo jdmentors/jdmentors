@@ -47,14 +47,13 @@ function TutorForm({ tutor }) {
             formData.append('isActive', tutorData.isActive);
             formData.append('password', 'tempPassword123'); // Required field
 
-            // Process classes from comma-separated string to array
+            // Process classes from comma-separated string to array and send as JSON string
             const classesArray = tutorData.classes.split(',')
                 .map(cls => cls.trim())
                 .filter(cls => cls.length > 0);
-            
-            classesArray.forEach(cls => {
-                formData.append('classes', cls);
-            });
+
+            // Send as JSON string instead of multiple form fields
+            formData.append('classes', JSON.stringify(classesArray));
 
             if (tutorData.image[0] instanceof File) {
                 formData.append('image', tutorData.image[0]);
@@ -63,8 +62,8 @@ function TutorForm({ tutor }) {
             }
 
             const { data } = await axios.post(
-                `${import.meta.env.VITE_DOMAIN_URL}/api/v1/tutors/register`, 
-                formData, 
+                `${import.meta.env.VITE_DOMAIN_URL}/api/v1/tutors/register`,
+                formData,
                 {
                     headers: {
                         Authorization: `Bearer ${user.accessToken}`,
@@ -98,18 +97,17 @@ function TutorForm({ tutor }) {
                     const classesArray = tutorData.classes.split(',')
                         .map(cls => cls.trim())
                         .filter(cls => cls.length > 0);
-                    
-                    classesArray.forEach(cls => {
-                        formData.append('classes', cls);
-                    });
+
+                    // Send as JSON string instead of multiple form fields
+                    formData.append('classes', JSON.stringify(classesArray));
 
                     if (tutorData.image[0] instanceof File) {
                         formData.append('image', tutorData.image[0]);
                     }
 
                     const { data } = await axios.post(
-                        `${import.meta.env.VITE_DOMAIN_URL}/api/v1/tutors/register`, 
-                        formData, 
+                        `${import.meta.env.VITE_DOMAIN_URL}/api/v1/tutors/register`,
+                        formData,
                         {
                             headers: {
                                 Authorization: `Bearer ${newAccessToken}`,
@@ -149,11 +147,11 @@ function TutorForm({ tutor }) {
             formData.append('isVerified', tutorData.isVerified);
             formData.append('isActive', tutorData.isActive);
 
-            // Process classes from comma-separated string to array
+            // Process classes from comma-separated string to array and send as JSON string
             const classesArray = tutorData.classes.split(',')
                 .map(cls => cls.trim())
                 .filter(cls => cls.length > 0);
-            
+
             formData.append('classes', JSON.stringify(classesArray));
 
             if (tutorData.image[0] instanceof File) {
@@ -163,8 +161,8 @@ function TutorForm({ tutor }) {
             }
 
             const { data } = await axios.patch(
-                `${import.meta.env.VITE_DOMAIN_URL}/api/v1/tutors/update/${tutor._id}`, 
-                formData, 
+                `${import.meta.env.VITE_DOMAIN_URL}/api/v1/tutors/update/${tutor._id}`,
+                formData,
                 {
                     headers: {
                         Authorization: `Bearer ${user.accessToken}`,
@@ -197,7 +195,7 @@ function TutorForm({ tutor }) {
                     const classesArray = tutorData.classes.split(',')
                         .map(cls => cls.trim())
                         .filter(cls => cls.length > 0);
-                    
+
                     formData.append('classes', JSON.stringify(classesArray));
 
                     if (tutorData.image[0] instanceof File) {
@@ -205,8 +203,8 @@ function TutorForm({ tutor }) {
                     }
 
                     const { data } = await axios.patch(
-                        `${import.meta.env.VITE_DOMAIN_URL}/api/v1/tutors/update/${tutor._id}`, 
-                        formData, 
+                        `${import.meta.env.VITE_DOMAIN_URL}/api/v1/tutors/update/${tutor._id}`,
+                        formData,
                         {
                             headers: {
                                 Authorization: `Bearer ${newAccessToken}`,

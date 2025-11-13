@@ -6,47 +6,6 @@ import mongoose from "mongoose";
 import { resetPasswordEmail } from "../utils/nodemailer.js";
 import crypto from "crypto";
 
-// const registerTutor = async (req, res) => {
-//     try {
-//         const { fullName, email, phone = '', classes, school, grades, description, password } = req.body;
-
-//         if (!fullName || !email || !password || !classes || !school || !grades || !description) {
-//             return res.status(400).json({ success: false, message: 'All fields are required.' });
-//         }
-
-//         const existingTutor = await tutorExists(email);
-
-//         if (existingTutor) {
-//             return res.status(400).json({ success: false, message: 'Email already exists.' });
-//         }
-
-//         let image_url = '';
-//         if (req.files && req.files.length > 0) {
-//             image_url = await uploadOnCloudinary(req.files[0]?.buffer);
-//         }
-
-//         const createdTutor = await Tutor.create({ 
-//             fullName, 
-//             email, 
-//             phone, 
-//             password, 
-//             image: image_url,
-//             classes,
-//             school,
-//             grades,
-//             description
-//         });
-
-//         if (!createdTutor) {
-//             return res.status(500).json({ success: false, message: 'Could not create tutor account.' });
-//         }
-
-//         await loginTutor(req, res);
-//     } catch (error) {
-//         return res.status(500).json({ success: false, message: error.message });
-//     }
-// }
-
 const registerTutor = async (req, res) => {
     try {
         const { fullName, email, phone = '', classes, school, grades, description, password } = req.body;
@@ -55,10 +14,32 @@ const registerTutor = async (req, res) => {
             return res.status(400).json({ success: false, message: 'All fields are required.' });
         }
 
-        // Process classes string into array (trim and remove empty values)
-        const classesArray = classes.split(',')
-            .map(cls => cls.trim())
-            .filter(cls => cls.length > 0);
+        // Process classes - handle both array and string formats
+        let classesArray = [];
+
+        if (Array.isArray(classes)) {
+            // If classes is already an array (from FormData with multiple fields)
+            classesArray = classes.map(cls => cls.toString().trim()).filter(cls => cls.length > 0);
+        } else if (typeof classes === 'string') {
+            // If classes is a string (comma-separated or JSON string)
+            try {
+                // Try to parse as JSON first
+                const parsedClasses = JSON.parse(classes);
+                if (Array.isArray(parsedClasses)) {
+                    classesArray = parsedClasses.map(cls => cls.toString().trim()).filter(cls => cls.length > 0);
+                } else {
+                    // Fallback to comma separation
+                    classesArray = classes.split(',')
+                        .map(cls => cls.trim())
+                        .filter(cls => cls.length > 0);
+                }
+            } catch (error) {
+                // If JSON parsing fails, use comma separation
+                classesArray = classes.split(',')
+                    .map(cls => cls.trim())
+                    .filter(cls => cls.length > 0);
+            }
+        }
 
         if (classesArray.length === 0) {
             return res.status(400).json({ success: false, message: 'Please enter at least one class.' });
@@ -75,11 +56,11 @@ const registerTutor = async (req, res) => {
             image_url = await uploadOnCloudinary(req.files[0]?.buffer);
         }
 
-        const createdTutor = await Tutor.create({ 
-            fullName, 
-            email, 
-            phone, 
-            password, 
+        const createdTutor = await Tutor.create({
+            fullName,
+            email,
+            phone,
+            password,
             image: image_url,
             classes: classesArray, // Store as array
             school,
@@ -133,15 +114,15 @@ const loginTutor = async (req, res) => {
 
         return res.status(200)
             .cookie('accessToken', accessToken, cookieOptions)
-            .json({ 
-                success: true, 
-                message: 'Logged In Successfully', 
-                data: { 
-                    tutor: { 
-                        id: tutor._id, 
-                        fullName: tutor.fullName, 
-                        email, 
-                        phone: tutor.phone || '', 
+            .json({
+                success: true,
+                message: 'Logged In Successfully',
+                data: {
+                    tutor: {
+                        id: tutor._id,
+                        fullName: tutor.fullName,
+                        email,
+                        phone: tutor.phone || '',
                         image: tutor.image || '',
                         classes: tutor.classes,
                         school: tutor.school,
@@ -149,11 +130,11 @@ const loginTutor = async (req, res) => {
                         description: tutor.description,
                         isVerified: tutor.isVerified,
                         isActive: tutor.isActive,
-                        userType: tutor.userType 
-                    }, 
-                    accessToken, 
-                    refreshToken 
-                } 
+                        userType: tutor.userType
+                    },
+                    accessToken,
+                    refreshToken
+                }
             });
     } catch (error) {
         return res.status(500).json({ success: false, message: error.message });
@@ -225,17 +206,17 @@ const getAllTutors = async (req, res) => {
             return res.status(404).json({ success: false, message: 'No Tutors found' });
         }
 
-        return res.status(200).json({ 
-            success: true, 
-            message: 'Tutors found', 
-            data: allTutors 
+        return res.status(200).json({
+            success: true,
+            message: 'Tutors found',
+            data: allTutors
         });
     } catch (error) {
         console.error('Error in getAllTutors:', error);
-        return res.status(500).json({ 
-            success: false, 
+        return res.status(500).json({
+            success: false,
             message: 'Failed to get Tutors',
-            error: error.message 
+            error: error.message
         });
     }
 }
@@ -284,7 +265,7 @@ const deleteTutor = async (req, res) => {
 //     try {
 //         const tutor = req.tutor;
 //         const { fullName, email, phone, classes, school, grades, description, password } = req.body;
-        
+
 //         if (!fullName || !email || !phone || !classes || !school || !grades || !description) {
 //             return res.status(400).json({ success: false, message: 'All fields are required.' });
 //         }
@@ -344,15 +325,37 @@ const updateTutor = async (req, res) => {
     try {
         const tutor = req.tutor;
         const { fullName, email, phone, classes, school, grades, description, password } = req.body;
-        
+
         if (!fullName || !email || !phone || !classes || !school || !grades || !description) {
             return res.status(400).json({ success: false, message: 'All fields are required.' });
         }
 
-        // Process classes string into array
-        const classesArray = classes.split(',')
-            .map(cls => cls.trim())
-            .filter(cls => cls.length > 0);
+        // Process classes - handle both JSON string and array formats
+        let classesArray = [];
+
+        if (Array.isArray(classes)) {
+            // If classes is already an array
+            classesArray = classes.map(cls => cls.toString().trim()).filter(cls => cls.length > 0);
+        } else if (typeof classes === 'string') {
+            // If classes is a string (JSON string or comma-separated)
+            try {
+                // Try to parse as JSON first
+                const parsedClasses = JSON.parse(classes);
+                if (Array.isArray(parsedClasses)) {
+                    classesArray = parsedClasses.map(cls => cls.toString().trim()).filter(cls => cls.length > 0);
+                } else {
+                    // Fallback to comma separation
+                    classesArray = classes.split(',')
+                        .map(cls => cls.trim())
+                        .filter(cls => cls.length > 0);
+                }
+            } catch (error) {
+                // If JSON parsing fails, use comma separation
+                classesArray = classes.split(',')
+                    .map(cls => cls.trim())
+                    .filter(cls => cls.length > 0);
+            }
+        }
 
         if (classesArray.length === 0) {
             return res.status(400).json({ success: false, message: 'Please enter at least one class.' });
@@ -382,10 +385,10 @@ const updateTutor = async (req, res) => {
         const accessToken = req?.headers?.authorization.split(' ')[1];
         const refreshToken = tutor.refreshToken;
 
-        res.status(200).json({ 
-            success: true, 
-            message: 'Profile updated', 
-            data: { 
+        res.status(200).json({
+            success: true,
+            message: 'Profile updated',
+            data: {
                 tutor: {
                     id: tutor._id,
                     fullName: tutor.fullName,
@@ -399,10 +402,10 @@ const updateTutor = async (req, res) => {
                     isVerified: tutor.isVerified,
                     isActive: tutor.isActive,
                     userType: tutor.userType
-                }, 
-                accessToken, 
-                refreshToken 
-            } 
+                },
+                accessToken,
+                refreshToken
+            }
         });
     } catch (error) {
         return res.status(500).json({ success: false, message: error.message });
@@ -418,8 +421,8 @@ const verifyTutor = async (req, res) => {
         }
 
         const tutor = await Tutor.findByIdAndUpdate(
-            tutorId, 
-            { isVerified: true }, 
+            tutorId,
+            { isVerified: true },
             { new: true }
         ).select('-password -refreshToken');
 
@@ -450,10 +453,10 @@ const toggleTutorStatus = async (req, res) => {
         tutor.isActive = !tutor.isActive;
         await tutor.save();
 
-        return res.status(200).json({ 
-            success: true, 
-            message: `Tutor ${tutor.isActive ? 'activated' : 'deactivated'} successfully`, 
-            data: tutor 
+        return res.status(200).json({
+            success: true,
+            message: `Tutor ${tutor.isActive ? 'activated' : 'deactivated'} successfully`,
+            data: tutor
         });
     } catch (error) {
         return res.status(500).json({ success: false, message: error.message });
@@ -475,14 +478,14 @@ const forgotPassword = async (req, res) => {
         }
 
         const resetToken = await tutor.generateResetPasswordToken();
-        await tutor.save({validateBeforeSave: false});
+        await tutor.save({ validateBeforeSave: false });
 
         const emailSent = await resetPasswordEmail(tutor.email, `${process.env.FRONTEND_URL}/tutor-reset-password?token=${resetToken}`);
 
-        if(!emailSent){
+        if (!emailSent) {
             tutor.resetPasswordToken = null;
             tutor.resetPasswordTokenExpiry = null;
-            await tutor.save({validateBeforeSave: false});
+            await tutor.save({ validateBeforeSave: false });
             return res.status(500).json({ success: false, message: 'Could not send email' });
         }
 
@@ -504,8 +507,8 @@ const resetPassword = async (req, res) => {
         const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
 
         const tutor = await Tutor.findOne({
-            resetPasswordToken: hashedToken, 
-            resetPasswordTokenExpiry: {$gt: Date.now()}
+            resetPasswordToken: hashedToken,
+            resetPasswordTokenExpiry: { $gt: Date.now() }
         })
 
         if (!tutor) {
@@ -534,27 +537,43 @@ const updateTutorByAdmin = async (req, res) => {
         }
 
         const tutor = await Tutor.findById(tutorId);
-        
+
         if (!tutor) {
             return res.status(404).json({ success: false, message: 'Tutor not found' });
         }
 
-        // Process classes if provided as string
-        let classesArray = tutor.classes;
-        if (classes) {
-            if (typeof classes === 'string') {
-                try {
-                    // Try to parse as JSON first (if sent as stringified array)
-                    classesArray = JSON.parse(classes);
-                } catch {
-                    // If not JSON, treat as comma-separated string
+        // Process classes - handle both JSON string and array formats
+        let classesArray = [];
+
+        if (Array.isArray(classes)) {
+            // If classes is already an array
+            classesArray = classes.map(cls => cls.toString().trim()).filter(cls => cls.length > 0);
+        } else if (typeof classes === 'string') {
+            // If classes is a string (JSON string or comma-separated)
+            try {
+                // Try to parse as JSON first
+                const parsedClasses = JSON.parse(classes);
+                if (Array.isArray(parsedClasses)) {
+                    classesArray = parsedClasses.map(cls => cls.toString().trim()).filter(cls => cls.length > 0);
+                } else {
+                    // Fallback to comma separation
                     classesArray = classes.split(',')
                         .map(cls => cls.trim())
                         .filter(cls => cls.length > 0);
                 }
-            } else if (Array.isArray(classes)) {
-                classesArray = classes;
+            } catch (error) {
+                // If JSON parsing fails, use comma separation
+                classesArray = classes.split(',')
+                    .map(cls => cls.trim())
+                    .filter(cls => cls.length > 0);
             }
+        } else {
+            // If classes is not provided, keep existing classes
+            classesArray = tutor.classes;
+        }
+
+        if (classesArray.length === 0) {
+            return res.status(400).json({ success: false, message: 'Please enter at least one class.' });
         }
 
         let image_url = tutor.image;
@@ -571,7 +590,7 @@ const updateTutorByAdmin = async (req, res) => {
         tutor.grades = grades;
         tutor.description = description;
         tutor.image = image_url;
-        
+
         // Admin-only fields
         if (typeof isVerified !== 'undefined') {
             tutor.isVerified = isVerified;
@@ -582,10 +601,10 @@ const updateTutorByAdmin = async (req, res) => {
 
         await tutor.save({ validateBeforeSave: false });
 
-        return res.status(200).json({ 
-            success: true, 
-            message: 'Tutor updated successfully', 
-            data: { 
+        return res.status(200).json({
+            success: true,
+            message: 'Tutor updated successfully',
+            data: {
                 tutor: {
                     id: tutor._id,
                     fullName: tutor.fullName,
@@ -600,7 +619,7 @@ const updateTutorByAdmin = async (req, res) => {
                     isActive: tutor.isActive,
                     userType: tutor.userType
                 }
-            } 
+            }
         });
     } catch (error) {
         console.error('Admin update tutor error:', error);

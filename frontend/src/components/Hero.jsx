@@ -18,7 +18,7 @@ function Hero() {
                             Trusted by Law Applicants
                         </p>
                         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">Craft Your Path to <span className="text-blue-600 text-shadow-sm">Law School Success</span></h1>
-                        <p className="text-lg text-white z-40 leading-relaxed">Personalized 1-on-1 consultations to strengthen your law school applications for non-T14 schools. Expert guidance on personal statements and addendums to make your application stand out.</p>
+                        <p className="text-lg text-white z-40 leading-relaxed">Personalized 1-on-1 consultations to strengthen your law school applications. Expert guidance on personal statements and addendums to make your application stand out.</p>
 
                         <div className="flex gap-4 flex-wrap">
                             <Link to='/services' className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700">

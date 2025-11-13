@@ -20,8 +20,8 @@ const testimonials = [
         school: 'A 22-Point Increase That Changed My Future!',
     },
     {
-        name: 'Priya S.',
-        review: `I was stuck in the mid-160s and needed to break into the 170s. jdmentors helped me identify the subtle patterns I was missing. Their focused approach on my specific weaknesses was the key. Final score: 175!`,
+        name: 'Daniel M.',
+        review: `Thanks to the tutors at JD Mentors I have been able to see drastic improvements in my problem solving abilities aswell as my time management. Not only is my tutor helpful but he is charismatic and funny making every lesson with him super enjoyable. I don’t know who else to better recommend when it comes to improving on the LSATs.`,
         school: 'More Than a Tutor—A Strategic Partner.',
     },
     {
@@ -205,29 +205,14 @@ function LSATTutoring() {
                         </p>
                     </div>
 
-                    <AllLSATPackages />
+                    <Suspense fallback={<LoadingSpinner />}>
+                        <AllLSATPackages />
+                    </Suspense>
                 </Container>
             </section>
 
-            <Container className={`my-16`}>
-                <section className="bg-white">
-                    <h5 className="font-semibold text-blue-600">Clear Options, Maximum Flexibility.</h5>
-                    <h2 className="text-2xl md:text-3xl font-semibold my-5 text-blue-950">Designed For Your Convenience</h2>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 xl:gap-8">
-                        {
-                            HowItWorks && HowItWorks.map(howItWork => {
-                                return (
-                                    <HowItWorksCard key={howItWork.title} icon={howItWork.icon} title={howItWork.title} description={howItWork.description} />
-                                )
-                            })
-                        }
-                    </div>
-                </section>
-            </Container>
-
             {/* Testimonials section */}
-            <section className="mt-12 md:mt-16">
+            <section className="mt-12 md:mt-16 mb-8">
                 <Container>
                     <div>
 
@@ -254,6 +239,23 @@ function LSATTutoring() {
             <Suspense fallback={<LoadingSpinner />}>
                 <LSATTutors />
             </Suspense>
+
+            <Container className={`my-16`}>
+                <section className="bg-white">
+                    <h5 className="font-semibold text-blue-600">Clear Options, Maximum Flexibility.</h5>
+                    <h2 className="text-2xl md:text-3xl font-semibold my-5 text-blue-950">Designed For Your Convenience</h2>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 xl:gap-8">
+                        {
+                            HowItWorks && HowItWorks.map(howItWork => {
+                                return (
+                                    <HowItWorksCard key={howItWork.title} icon={howItWork.icon} title={howItWork.title} description={howItWork.description} />
+                                )
+                            })
+                        }
+                    </div>
+                </section>
+            </Container>
 
             <CallToActionLSATTutoring />
         </div>
