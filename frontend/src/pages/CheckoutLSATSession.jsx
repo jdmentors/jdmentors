@@ -18,8 +18,14 @@ function CheckoutLSATSession() {
     const [userPackages, setUserPackages] = useState([]);
     const [selectedPackage, setSelectedPackage] = useState('');
     const { search } = useLocation();
-    const sessionType = search.split('=')[1];
-    const [numberOfStudents, setNumberOfStudents] = useState(2);
+    const urlParams = new URLSearchParams(search);
+    const sessionType = urlParams.get('type');
+    const studentsFromUrl = urlParams.get('students');
+
+    // Set initial number of students from URL or default to 2
+    const [numberOfStudents, setNumberOfStudents] = useState(
+        studentsFromUrl && sessionType === 'class' ? parseInt(studentsFromUrl) : 2
+    );
     const [tutors, setTutors] = useState([]);
     const [selectedTutor, setSelectedTutor] = useState('');
     const [loadingTutors, setLoadingTutors] = useState(true);
@@ -103,6 +109,7 @@ function CheckoutLSATSession() {
         fetchUserPackages();
     }, [user, sessionType, selectedPackage, email]);
 
+    // Fetch pricing
     useEffect(() => {
         const fetchPricing = async () => {
             try {
@@ -126,6 +133,15 @@ function CheckoutLSATSession() {
         };
         fetchPricing();
     }, []);
+
+    useEffect(() => {
+        if (sessionType === 'class' && studentsFromUrl) {
+            const students = parseInt(studentsFromUrl);
+            if (students >= 2 && students <= 5) {
+                setNumberOfStudents(students);
+            }
+        }
+    }, [sessionType, studentsFromUrl]);
 
     // Calculate pricing based on number of students
     const calculatePricing = (students) => {
@@ -339,7 +355,7 @@ function CheckoutLSATSession() {
     return (
         <section className="min-h-[70vh] pt-24 md:pt-32 relative">
             {/* Modal */}
-            <LSATPackagesModal 
+            <LSATPackagesModal
                 isOpen={isPackagesModalOpen}
                 onClose={() => setIsPackagesModalOpen(false)}
             />
