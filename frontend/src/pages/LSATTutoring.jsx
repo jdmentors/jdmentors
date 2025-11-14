@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router";
 import { CallToActionLSATTutoring, Container, HeroLSATTutoring, HowItWorksCard, LoadingSpinner } from "../components";
-import { BadgeDollarSignIcon, CalendarCheck, Handshake, LaptopMinimalCheck, TrendingUp } from "lucide-react";
+import { BadgeDollarSignIcon, BookOpen, CalendarCheck, Clock, Handshake, LaptopMinimalCheck, TrendingUp, Users } from "lucide-react";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,8 +26,8 @@ const testimonials = [
     },
     {
         name: 'David L.',
-        review: `As a full-time student, I needed a flexible and efficient study plan. jdmentors crafted a perfect schedule around my classes. The 1-on-1 Zoom sessions were so focused; we achieved in an hour what would have taken me weeks on my own. Jumped from a 155 to a 171!`,
-        school: 'Maximum Efficiency for a Busy Student.',
+        review: `I really like my tutor, Ronnie. He knows and understand how to break down the problems. He explains each question type and makes it very easy to understand. He's patient, he helps you until you truly understand what you're learning. Thank you JD Mentors!!`,
+        school: 'Thank you JD Mentors!!',
     },
     {
         name: 'Chloe K.',
@@ -66,6 +66,9 @@ const HowItWorks = [
 
 function LSATTutoring() {
     const [price, setPrice] = useState(null);
+    const [selectedGroupSize, setSelectedGroupSize] = useState(4);
+    const [pricing, setPricing] = useState(null);
+    const [loadingPricing, setLoadingPricing] = useState(true);
 
     const timer = useRef();
 
@@ -142,6 +145,43 @@ function LSATTutoring() {
             console.error(error);
         }
     }
+
+    // Fetch pricing
+    useEffect(() => {
+        const fetchPricing = async () => {
+            try {
+                const { data } = await axios.get(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/others/pricing`);
+                if (data && data.success) {
+                    setPricing(data.data);
+                }
+            } catch (error) {
+                console.error('Error fetching pricing:', error);
+                // Fallback to default pricing
+                const defaultPricing = {
+                    2: { perPerson: 70, total: 140 },
+                    3: { perPerson: 65, total: 195 },
+                    4: { perPerson: 60, total: 240 },
+                    5: { perPerson: 55, total: 275 }
+                };
+                setPricing(defaultPricing);
+            } finally {
+                setLoadingPricing(false);
+            }
+        };
+        fetchPricing();
+    }, []);
+
+    const groupSizeOptions = pricing ? [2, 3, 4, 5].map(size => ({
+        size,
+        price: pricing[size]?.perPerson || 0,
+        total: pricing[size]?.total || 0,
+        popular: size === 4 // Keep 4 as most popular, or adjust logic as needed
+    })) : [
+        { size: 2, price: 70, total: 140, popular: false },
+        { size: 3, price: 65, total: 195, popular: false },
+        { size: 4, price: 60, total: 240, popular: true },
+        { size: 5, price: 55, total: 275, popular: false }
+    ];
 
     return (
         <div className="min-h-[70vh]">
@@ -232,6 +272,173 @@ function LSATTutoring() {
                             </div>
                         </Suspense>
 
+                    </div>
+                </Container>
+            </section>
+
+            {/* Book group class session section */}
+            <section className="my-16">
+                <Container>
+                    <div className="grid lg:grid-cols-2 gap-12 items-start">
+                        {/* Left Side - Class Session Information */}
+                        <div className="bg-white rounded-2xl p-8 shadow-lg border border-blue-100">
+                            <div className="space-y-6">
+                                <div>
+                                    <h3 className="text-2xl font-bold text-blue-950 mb-4">
+                                        Group LSAT Class Sessions
+                                    </h3>
+                                    <p className="text-gray-600 leading-relaxed mb-4">
+                                        Experience the power of collaborative learning with our group LSAT sessions.
+                                        Study alongside peers while receiving expert guidance from our top-scoring tutors
+                                        in an interactive, engaging environment.
+                                    </p>
+                                    <p className="text-gray-600 leading-relaxed">
+                                        Perfect for students who thrive in social learning settings and want to benefit
+                                        from diverse perspectives while preparing for the LSAT.
+                                    </p>
+                                </div>
+
+                                <div className="space-y-4">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                            <Users className="text-green-600" size={20} />
+                                        </div>
+                                        <div>
+                                            <h4 className="font-semibold text-gray-800">Collaborative Learning</h4>
+                                            <p className="text-gray-600 text-sm">Learn from peers and share insights</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                            <BookOpen className="text-blue-600" size={20} />
+                                        </div>
+                                        <div>
+                                            <h4 className="font-semibold text-gray-800">Cost-Effective</h4>
+                                            <p className="text-gray-600 text-sm">Save with group pricing discounts</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                                            <Clock className="text-purple-600" size={20} />
+                                        </div>
+                                        <div>
+                                            <h4 className="font-semibold text-gray-800">Interactive Sessions</h4>
+                                            <p className="text-gray-600 text-sm">Engaging group discussions and activities</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="bg-blue-50 rounded-lg p-4">
+                                    <h4 className="font-semibold text-blue-900 mb-2">How it works:</h4>
+                                    <ul className="text-sm text-gray-600 space-y-1">
+                                        <li>• Choose your group size (2-5 students)</li>
+                                        <li>• Get to learn with your peers</li>
+                                        <li>• Schedule sessions at convenient times</li>
+                                        <li>• Learn together with expert tutor guidance</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Right Side - Group Size Selection & Booking */}
+                        <div>
+                            {/* <div className="mb-8">
+                                <h2 className="text-3xl md:text-4xl font-bold text-blue-950 mb-4">
+                                    Book Group Session
+                                </h2>
+                                <p className="text-gray-600 text-lg">
+                                    Choose your group size and start learning together
+                                </p>
+                            </div> */}
+
+                            <div className="bg-white rounded-2xl p-8 shadow-lg border border-blue-100">
+                                <div className="space-y-6">
+                                    {/* Group Size Selection */}
+                                    <div>
+                                        <h4 className="font-semibold text-gray-800 mb-4 text-lg">Select Group Size</h4>
+                                        {loadingPricing ? (
+                                            <div className="flex justify-center items-center py-8">
+                                                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                                            </div>
+                                        ) : (
+                                            <div className="grid grid-cols-2 gap-4">
+                                                {groupSizeOptions.map((option) => (
+                                                    <label
+                                                        key={option.size}
+                                                        className={`relative border-2 rounded-xl p-4 cursor-pointer transition-all duration-200 ${selectedGroupSize === option.size
+                                                                ? 'border-blue-500 bg-blue-50 ring-2 ring-blue-200'
+                                                                : option.popular && selectedGroupSize !== option.size
+                                                                    ? 'border-blue-300 bg-blue-25'
+                                                                    : 'border-gray-200 hover:border-blue-300 hover:bg-blue-25'
+                                                            }`}
+                                                        onClick={() => setSelectedGroupSize(option.size)}
+                                                    >
+                                                        <input
+                                                            type="radio"
+                                                            name="groupSize"
+                                                            value={option.size}
+                                                            className="sr-only"
+                                                            checked={selectedGroupSize === option.size}
+                                                            onChange={() => setSelectedGroupSize(option.size)}
+                                                        />
+                                                        <div className="text-center">
+                                                            <div className="flex items-center justify-center gap-1 mb-2">
+                                                                <Users size={20} className="text-blue-600" />
+                                                                <span className="font-bold text-lg text-blue-950">
+                                                                    {option.size} Students
+                                                                </span>
+                                                            </div>
+                                                            <div className="space-y-1">
+                                                                <p className="text-sm text-gray-600">
+                                                                    ${option.price} per person
+                                                                </p>
+                                                                <p className="font-semibold text-green-600 text-lg">
+                                                                    ${option.total} total
+                                                                </p>
+                                                            </div>
+                                                            {option.popular && (
+                                                                <span className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white text-xs px-2 py-1 rounded-full">
+                                                                    Most Popular
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                    </label>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Pricing Summary */}
+                                    <div className="bg-gray-50 rounded-lg p-4">
+                                        <h5 className="font-semibold text-gray-800 mb-2">Session Includes:</h5>
+                                        <ul className="text-sm text-gray-600 space-y-1">
+                                            <li>✓ 1-hour group tutoring session</li>
+                                            <li>✓ Expert LSAT tutor guidance</li>
+                                            {/* <li>✓ Interactive group activities</li> */}
+                                            <li>✓ Study materials and resources</li>
+                                            <li>✓ Flexible scheduling options</li>
+                                        </ul>
+                                    </div>
+
+                                    {/* Book Now Button */}
+                                    <Link
+                                        to={`/checkout/lsat-session?type=class&students=${selectedGroupSize}`}
+                                        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl text-lg"
+                                    >
+                                        <CalendarCheck size={24} />
+                                        <span>Book Group Session Now</span>
+                                    </Link>
+
+                                    <div className="text-center">
+                                        <p className="text-gray-500 text-sm">
+                                            You'll select your exact date and time during checkout
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </Container>
             </section>
