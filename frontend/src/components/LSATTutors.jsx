@@ -118,10 +118,10 @@ function LSATTutors() {
                                     Personalized LSAT Tutoring
                                 </h3>
                                 <p className="text-gray-600 leading-relaxed mb-4">
-                                    At JD Mentors, we've assembled an elite team of instructors who haven't just aced the LSAT—they've mastered how to teach it. Every mentor has scored in the 99th percentile, with many achieving a perfect 180.
+                                    At JD Mentors, we've assembled an elite team of instructors who haven't just aced the LSAT—they've mastered how to teach it. Every mentor has scored in the 96th percentile and is ready to lift you into the next tier of LSAT performance. We're here to create students who are proud of their scores, the schools they’re admitted to, and the scholarships they secure.
                                 </p>
                                 <p className="text-gray-600 leading-relaxed">
-                                    But what truly sets us apart is our commitment to a personalized partnership. We retain a close-knit, "mentor-first" culture. We don't just assign a tutor; we ensure you get the chance to choose the ideal mentor based on your goals and learning style.
+                                    What truly sets us apart is our commitment to a personalized partnership. Whether you pick your tutor or let us match you with someone who fits your style, we make sure your goals are met in a way that feels natural and effective for you.
                                 </p>
                             </div>
 
@@ -131,8 +131,8 @@ function LSATTutors() {
                                         <Target className="text-green-600" size={20} />
                                     </div>
                                     <div>
-                                        <h4 className="font-semibold text-gray-800">99th Percentile Scorers</h4>
-                                        <p className="text-gray-600 text-sm">All tutors are top performers</p>
+                                        <h4 className="font-semibold text-gray-800">96th Percentile Scorers</h4>
+                                        <p className="text-gray-600 text-sm">Find your ideal mentor with us</p>
                                     </div>
                                 </div>
 
@@ -151,8 +151,8 @@ function LSATTutors() {
                                         <Clock className="text-purple-600" size={20} />
                                     </div>
                                     <div>
-                                        <h4 className="font-semibold text-gray-800">Proven Strategies</h4>
-                                        <p className="text-gray-600 text-sm">Tested tips and techniques</p>
+                                        <h4 className="font-semibold text-gray-800">Elite Scoring Methodology</h4>
+                                        <p className="text-gray-600 text-sm">The same mental frameworks used by top percentile test takers</p>
                                     </div>
                                 </div>
                             </div>

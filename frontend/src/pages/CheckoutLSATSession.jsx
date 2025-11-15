@@ -70,8 +70,8 @@ function CheckoutLSATSession() {
 
                     // Auto-select first tutor if available
                     if (activeTutors.length > 0 && !selectedTutor) {
-                        setSelectedTutor(activeTutors[0]._id);
-                        setValue('tutor', activeTutors[0]._id);
+                        setSelectedTutor('691808b0f8541dd55cc4a080');
+                        setValue('tutor', '691808b0f8541dd55cc4a080');
                     }
                 }
             } catch (error) {
