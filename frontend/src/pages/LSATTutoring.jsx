@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router";
 import { CallToActionLSATTutoring, Container, HeroLSATTutoring, HowItWorksCard, LoadingSpinner } from "../components";
-import { BadgeDollarSignIcon, BookOpen, CalendarCheck, Clock, Handshake, LaptopMinimalCheck, TrendingUp, Users } from "lucide-react";
+import { BadgeDollarSignIcon, BookOpen, Brain, CalendarCheck, Clock, Handshake, LaptopMinimalCheck, TrendingUp, Users } from "lucide-react";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,7 +25,7 @@ const testimonials = [
         school: 'More Than a Tutor—A Strategic Partner.',
     },
     {
-        name: 'David L.',
+        name: 'Daniel Y.',
         review: `I really like my tutor, Ronnie. He knows and understand how to break down the problems. He explains each question type and makes it very easy to understand. He's patient, he helps you until you truly understand what you're learning. Thank you JD Mentors!!`,
         school: 'Thank you JD Mentors!!',
     },
@@ -45,7 +45,7 @@ const HowItWorks = [
     {
         icon: <LaptopMinimalCheck />,
         title: 'Flexible Learning Formats',
-        description: 'Choose the style that fits you best: intensive 1-on-1 private tutoring for a custom pace, or collaborative small-group sessions (2-5 students) to learn with peers and split the cost.'
+        description: 'Choose the style that fits you best: intensive 1-on-1 private tutoring for a custom pace, or collaborative small-group sessions (2-5 students) to learn with peers.'
     },
     {
         icon: <TrendingUp />,
@@ -55,12 +55,12 @@ const HowItWorks = [
     {
         icon: <BadgeDollarSignIcon />,
         title: 'Stress-Free Payment Options',
-        description: 'We offer pay-as-you-go flexibility and discounted package deals. We also provide payment plans and need-based scholarships to make elite preparation accessible.'
+        description: 'We offer pay-as-you-go flexibility and discounted package deals. We also provide payment plan options to make elite preparation accessible.'
     },
     {
         icon: <Handshake />,
-        title: 'Hand Matched To Your Tutor',
-        description: `We don't just assign you a tutor. We allow you to select your preferred mentor and the exact date and time that works for you—all during checkout.`
+        title: 'Your Perfect Tutor Match',
+        description: `You can choose your own tutor or let us pick the best match for you. Every plan comes with flexible scheduling and a setup built around how you learn and when you're available.`
     }
 ];
 
@@ -187,28 +187,28 @@ function LSATTutoring() {
         <div className="min-h-[70vh]">
             <HeroLSATTutoring />
 
-            {/* Why JD Mentors is different */}
+            {/* What to Expect in Your Lessons */}
             <section className="my-16">
                 <Container className={`grid md:grid-cols-4 items-center gap-8 lg:gap-10 xl:gap-14`}>
                     <div className="md:col-span-2 flex flex-col gap-5">
                         <div className="flex flex-col gap-2">
-                            <h2 className="text-3xl md:text-4xl font-bold text-blue-600">What Makes JD Mentors Different?</h2>
-                            <p className="font-semibold text-blue-950">The JD Mentors Advantage: Tailored Tutoring for Transformative Results.</p>
+                            <h2 className="text-3xl md:text-4xl font-bold text-blue-600">What to Expect in Your Lessons</h2>
+                            <p className="font-semibold text-blue-950">The JD Mentors advantage is simple: tutoring that fits you and moves your score.</p>
                         </div>
 
                         <ul className="flex flex-col gap-2 list-disc list-inside">
-                            <li> <span className="font-medium">Your Plan, Your Pace</span> -
-                                Whether you have six months or six weeks, we build a flexible study schedule that fits your life, with lessons available days, nights, and weekends.</li>
+                            <li> <span className="font-medium">A plan that matches your timeline</span> -
+                                Whether you’ve got a year or a few weeks, we build a schedule around your life. Sessions are flexible, so you see steady progress at your pace.</li>
 
-                            <li> <span className="font-medium">True One-on-One Attention</span> -
-                                Every Zoom session is a dedicated partnership. Our tutors don't just teach a curriculum; they teach you, adapting to your unique learning style.</li>
+                            <li> <span className="font-medium">Live lessons that actually feel personal</span> -
+                                Your tutor pays attention to how you learn, gives you questions that target your weak spots, and breaks down the logic in a way that clicks. Study 1-on-1 or with a small group, whichever method helps you learn best.</li>
 
-                            <li> <span className="font-medium">Master Every Section</span> -
-                                Gain confidence and mastery in Logical Reasoning, Reading Comprehension, and Analytical Reasoning with strategies that work for you.
+                            <li> <span className="font-medium">Targeted training in every LSAT section</span> -
+                                We cover Logical Reasoning, Reading Comprehension, and the LSAT Essay with clear strategies that help you spot patterns and avoid the traps that slow most students down.
                             </li>
 
-                            <li> <span className="font-medium">Learn from the Best</span> -
-                                Every jdmentors tutor is a top-scorer (175+) who is not only a test expert but also a trained mentor, equipped with the latest teaching methods.
+                            <li> <span className="font-medium">Guidance from a tutor in the 96th percentile who knows how to teach</span> -
+                                You get the habits, shortcuts, and test day tactics strong scorers use, taught by someone who’s been in your shoes and knows how to guide you up the same hills.
                             </li>
                         </ul>
 
@@ -241,7 +241,6 @@ function LSATTutoring() {
                         </h1>
                         <p className="text-gray-600">
                             Choose the perfect package for your LSAT preparation journey.
-                            All packages include expert tutoring and flexible scheduling.
                         </p>
                     </div>
 
@@ -288,13 +287,10 @@ function LSATTutoring() {
                                         Group LSAT Class Sessions
                                     </h3>
                                     <p className="text-gray-600 leading-relaxed mb-4">
-                                        Experience the power of collaborative learning with our group LSAT sessions.
-                                        Study alongside peers while receiving expert guidance from our top-scoring tutors
-                                        in an interactive, engaging environment.
+                                        Study alongside a small group of your peers while a high-scoring tutor walks you through the LSAT step by step. You’ll learn from each other’s questions, swap strategies, and pick up new ways of approaching the logic and question types.
                                     </p>
                                     <p className="text-gray-600 leading-relaxed">
-                                        Perfect for students who thrive in social learning settings and want to benefit
-                                        from diverse perspectives while preparing for the LSAT.
+                                        Perfect for students who thrive in social learning settings and want to benefit from diverse perspectives while preparing for the LSAT.
                                     </p>
                                 </div>
 
@@ -314,14 +310,14 @@ function LSATTutoring() {
                                             <BookOpen className="text-blue-600" size={20} />
                                         </div>
                                         <div>
-                                            <h4 className="font-semibold text-gray-800">Cost-Effective</h4>
-                                            <p className="text-gray-600 text-sm">Save with group pricing discounts</p>
+                                            <h4 className="font-semibold text-gray-800">Diverse Perspectives</h4>
+                                            <p className="text-gray-600 text-sm">Exposure to different reasoning styles</p>
                                         </div>
                                     </div>
 
                                     <div className="flex items-center gap-3">
                                         <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                                            <Clock className="text-purple-600" size={20} />
+                                            <Brain className="text-purple-600" size={20} />
                                         </div>
                                         <div>
                                             <h4 className="font-semibold text-gray-800">Interactive Sessions</h4>
@@ -354,7 +350,7 @@ function LSATTutoring() {
                             </div> */}
 
                             <div className="bg-white rounded-2xl p-8 shadow-lg border border-blue-100">
-                                <div className="space-y-6">
+                                <div className="space-y-5">
                                     {/* Group Size Selection */}
                                     <div>
                                         <h4 className="font-semibold text-gray-800 mb-4 text-lg">Select Group Size</h4>
@@ -414,11 +410,11 @@ function LSATTutoring() {
                                     <div className="bg-gray-50 rounded-lg p-4">
                                         <h5 className="font-semibold text-gray-800 mb-2">Session Includes:</h5>
                                         <ul className="text-sm text-gray-600 space-y-1">
-                                            <li>✓ 1-hour group tutoring session</li>
-                                            <li>✓ Expert LSAT tutor guidance</li>
-                                            {/* <li>✓ Interactive group activities</li> */}
-                                            <li>✓ Study materials and resources</li>
-                                            <li>✓ Flexible scheduling options</li>
+                                            <li>✓ A focused 90-minute group lesson built around mastering LSAT topics and questions</li>
+                                            <li>✓ Guidance from a 96th-percentile+ tutors who knows how to teach</li>
+                                            <li>✓ Targeted drills and walkthroughs that hit common weak spots</li>
+                                            <li>✓ Clear takeaways and homework so you keep improving between sessions</li>
+                                            <li>✓ Flexible scheduling and easy rescheduling</li>
                                         </ul>
                                     </div>
 
@@ -431,11 +427,11 @@ function LSATTutoring() {
                                         <span>Book Group Session Now</span>
                                     </Link>
 
-                                    <div className="text-center">
+                                    {/* <div className="text-center">
                                         <p className="text-gray-500 text-sm">
                                             You'll select your exact date and time during checkout
                                         </p>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>

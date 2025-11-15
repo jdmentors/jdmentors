@@ -36,7 +36,7 @@ function HeroLSATTutoring() {
                         </p>
                         <h1 className="text-3xl md:text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">Earn Your Highest Possible <span className="text-blue-600 text-shadow-sm">LSAT Score</span></h1>
 
-                        <p className="text-lg md:text-xl text-white z-40 leading-relaxed">Your dream law school is within reach. JD Mentors provides the expert guidance, proven strategies, and unwavering support you need to succeed, through live, online tutoring designed entirely for you.</p>
+                        <p className="text-lg md:text-xl text-white z-40 leading-relaxed">Work with a tutor who understands how you think and shows you exactly what you need to master the LSAT.</p>
 
                         <div className="flex gap-4 flex-wrap">
                             <button onClick={handleClick} className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700 cursor-pointer">
