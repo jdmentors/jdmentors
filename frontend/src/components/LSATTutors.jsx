@@ -21,7 +21,9 @@ function LSATTutors() {
     const tutorsPerPage = 4;
     const totalPages = Math.ceil(tutors.length / tutorsPerPage);
     const startIndex = currentPage * tutorsPerPage;
-    const currentTutors = tutors.slice(startIndex, startIndex + tutorsPerPage);
+    // const currentTutors = tutors.slice(startIndex, startIndex + tutorsPerPage);
+    const filteredTutors = tutors.filter(tutor => tutor._id.toString() !== '691808b0f8541dd55cc4a080');
+    const currentTutors = filteredTutors.slice(startIndex, startIndex + tutorsPerPage);
 
     const nextPage = () => {
         setCurrentPage((prev) => (prev + 1) % totalPages);
@@ -93,11 +95,11 @@ function LSATTutors() {
                                     >
                                         <ChevronLeft size={20} />
                                     </button>
-                                    
+
                                     <span className="text-sm text-gray-600">
                                         {currentPage + 1} / {totalPages}
                                     </span>
-                                    
+
                                     <button
                                         onClick={nextPage}
                                         className="p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors cursor-pointer"
@@ -159,15 +161,15 @@ function LSATTutors() {
 
                             {/* Action Buttons */}
                             <div className="space-y-4 pt-4">
-                                <Link 
+                                <Link
                                     to="/checkout/lsat-session?type=free"
                                     className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl"
                                 >
                                     <Users size={20} />
                                     <span>Start with Free Consultation</span>
                                 </Link>
-                                
-                                <Link 
+
+                                <Link
                                     to="/checkout/lsat-session?type=one-on-one"
                                     className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl"
                                 >

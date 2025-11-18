@@ -414,7 +414,7 @@ function LSATTutoring() {
                                             <li>✓ Guidance from a 96th-percentile+ tutors who knows how to teach</li>
                                             <li>✓ Targeted drills and walkthroughs that hit common weak spots</li>
                                             <li>✓ Clear takeaways and homework so you keep improving between sessions</li>
-                                            <li>✓ Flexible scheduling and easy rescheduling</li>
+                                            {/* <li>✓ Flexible scheduling and easy rescheduling</li> */}
                                         </ul>
                                     </div>
 
