@@ -40,13 +40,13 @@ function UserHeader() {
     }
 
     useEffect(() => {
-    const hideIsOpen = () => {
-        setIsOpen(false);
-    }
+        const hideIsOpen = () => {
+            setIsOpen(false);
+        }
 
-    window.addEventListener('click', hideIsOpen);
-    return () => window.removeEventListener('click', hideIsOpen);
-}, [])
+        window.addEventListener('click', hideIsOpen);
+        return () => window.removeEventListener('click', hideIsOpen);
+    }, [])
 
     const handleIsOpen = (e) => {
         e.stopPropagation();
@@ -91,13 +91,12 @@ function UserHeader() {
                                 {services.map((service) => (
                                     <li
                                         key={service.name}
-                                        className="px-4 py-2 hover:bg-blue-600 hover:text-white cursor-pointer"
-                                        onClick={(e) => {
-                                            e.stopPropagation(); // Prevent event bubbling
-                                            setIsOpen(false);
-                                        }}
+                                        className="hover:bg-blue-600 hover:text-white cursor-pointer"
+                                        onClick={() => setIsOpen(false)}
                                     >
-                                        <Link className="block" to={service.href}>{service.name}</Link>
+                                        <Link className="px-4 py-2 block w-full h-full" to={service.href}>
+                                            {service.name}
+                                        </Link>
                                     </li>
                                 ))}
                             </ul>
