@@ -33,13 +33,13 @@ function Header() {
 
     const bookConsultationHandler = () => {
         try {
-            if(pathname === '/'){
+            if (pathname === '/') {
                 navigate('/services');
             }
-            else if(pathname === '/lsat-tutoring'){
+            else if (pathname === '/lsat-tutoring') {
                 navigate('/checkout/lsat-session?type=free')
             }
-            else if(pathname === '/accommodations'){
+            else if (pathname === '/accommodations') {
                 navigate('/checkout/accommodations')
             }
             setIsMenuOpen(false);
@@ -115,10 +115,16 @@ function Header() {
                             </svg>
 
                             {isOpen && (
-                                <ul onClick={() => setIsOpen(false)} className="w-40 bg-white border border-white rounded shadow-md mt-2 absolute top-7">
+                                <ul className="w-40 bg-white border border-white rounded shadow-md mt-2 absolute top-7">
                                     {services.map((service) => (
-                                        <li key={service.name} className="px-4 py-2 hover:bg-blue-600 hover:text-white cursor-pointer" >
-                                            <Link className="block" to={service.href}>{service.name}</Link>
+                                        <li
+                                            key={service.name}
+                                            className="hover:bg-blue-600 hover:text-white cursor-pointer"
+                                            onClick={() => setIsOpen(false)}
+                                        >
+                                            <Link className="px-4 py-2 block w-full h-full" to={service.href}>
+                                                {service.name}
+                                            </Link>
                                         </li>
                                     ))}
                                 </ul>
