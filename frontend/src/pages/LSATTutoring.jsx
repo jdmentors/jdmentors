@@ -15,8 +15,8 @@ const AllLSATPackages = lazy(() => import('../components/AllLSATPackages'));
 
 const testimonials = [
     {
-        name: 'Mark T.',
-        review: `My diagnostic was a 148, and I was feeling hopeless. jdmentors didn't just give me strategies; they gave me confidence. My tutor, Sarah, broke down complex concepts into manageable steps. On test day, I scored a 170! I truly couldn't have done it without them.`,
+        name: 'Allan A.',
+        review: `JD Mentors has amazing tutors. Working with Ronnie has genuinely been one of the best academic decisions I’ve made. From day one, he broke down concepts in a way that actually clicked with me. My score jumped more than I ever thought possible, and I owe a lot of it to him. If you want a tutor who gets results and explains things clearly, couldn’t recommend him more. Thank you Ronnie and JD Mentors!`,
         school: 'A 22-Point Increase That Changed My Future!',
     },
     {
@@ -35,8 +35,8 @@ const testimonials = [
         school: 'Conquered My Biggest Fear on the LSAT.',
     },
     {
-        name: 'Jordan M.',
-        review: `I tried self-studying with books and felt completely lost. Signing up with jdmentors was the best decision. Having an expert to answer my questions in real-time and keep me accountable made all the difference. My score improved by 15 points!`,
+        name: 'Gabriel A.',
+        review: `I had an amazing experience with JD Mentors.  Ronald, my tutor, really helped me break down all the question types and helped me understand the questions better. Also the prices for the classes were very affordable and I just couldn’t thank you enough Ronald. Ronald is the best out there!`,
         school: 'The Accountability and Guidance I Needed.',
     }
 ];
