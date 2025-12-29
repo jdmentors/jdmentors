@@ -7,8 +7,8 @@ import useGetAllTeam from "../hooks/useGetAllTeam";
 
 const stats = [
     {
-        name: 'Track Record of Success',
-        data: 'Proven'
+        name: 'Students Helped',
+        data: '100+'
     },
     {
         name: 'Acceptance Rate',

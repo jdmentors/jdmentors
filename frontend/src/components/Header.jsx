@@ -21,7 +21,6 @@ function Header() {
         { name: 'Home', href: '/' },
         { name: 'About', href: '/about' },
         { name: 'Blogs', href: '/blogs' },
-        // { name: 'Testimonials', href: '/testimonials' },
         { name: 'Contact', href: '/contact' },
     ];
 

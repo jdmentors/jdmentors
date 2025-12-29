@@ -125,6 +125,8 @@ function Accommodations() {
                 </Container>
             </section>
 
+            
+
             <CallToActionAccommodations />
         </div>
     );

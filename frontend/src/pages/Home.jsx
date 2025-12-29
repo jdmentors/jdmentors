@@ -64,8 +64,8 @@ const testimonials = [
 
 const stats = [
     {
-        name: 'Track Record of Success',
-        data: 'Proven'
+        name: 'Applicants Helped',
+        data: '100+'
     },
     {
         name: 'Acceptance Rate',
@@ -130,6 +130,47 @@ function Home() {
     return (
         <div className="min-h-[70vh]">
             <Hero />
+
+            <Container>
+                <section className="my-12">
+                    <h2 className="text-3xl font-bold text-blue-950">Student's Experience</h2>
+                    <p className="md:text-lg text-blue-950 mt-3 mb-5">Here is what our students say who achieved their law school dreams</p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <div className="aspect-video mb-2">
+                                <iframe
+                                    className="w-full h-full rounded-2xl"
+                                    src="https://www.youtube.com/embed/WMWEu6JKjUE?si=CXCH1g0LTRpu3aNd"
+                                    title="YouTube video player"
+                                    frameBorder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                ></iframe>
+                            </div>
+                            <p className="text-center font-medium text-blue-950">
+                                Camila
+                            </p>
+                        </div>
+
+                        <div>
+                            <div className="aspect-video mb-2">
+                                <iframe
+                                    className="w-full h-full rounded-2xl"
+                                    src="https://www.youtube.com/embed/e1rpMD3vz-E?si=zVsh2VAbcASDdiRq"
+                                    title="YouTube video player"
+                                    frameBorder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                ></iframe>
+                            </div>
+                            <p className="text-center font-medium text-blue-950">
+                                Reed
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            </Container>
 
             {/* Stats section */}
             <section className="mt-12">

@@ -2,6 +2,7 @@ import { CallToAction, Container, Stat, TweetCard } from "../components";
 import 'keen-slider/keen-slider.min.css'
 import { useKeenSlider } from 'keen-slider/react'
 import { useRef } from "react";
+import useGoogleReviews from "../hooks/useGoogleReviews";
 
 const testimonials = [
     {
@@ -68,26 +69,30 @@ const testimonials = [
 
 const stats = [
     {
-        name: 'Students Helped',
-        data: '50+'
+        name: 'Applicants Helped',
+        data: '100+'
     },
     {
         name: 'Acceptance Rate',
         data: '100%'
     },
     {
-        name: 'Scholarships Obtained',
-        data: '6 Figures+'
+        name: 'Exceeded Aid Expectations',
+        data: '99%'
     },
     {
         name: 'Average Rating',
-        data: `5.0`
+        data: `5/5`
     }
 ];
 
 function Testimonials() {
     const timer1 = useRef();
     const timer2 = useRef();
+
+    const placeId = 'ChIJ4RJDdwBhwokRiztE6o7hV_w';
+
+    const { reviews, loading, error } = useGoogleReviews(placeId);
 
     const [sliderRef1] = useKeenSlider({
         loop: true,
@@ -162,10 +167,46 @@ function Testimonials() {
     return (
         <section className="mt-32">
             <Container>
-                <h2 className="text-3xl font-bold text-blue-950">Hear From Students Like You</h2>
+                <h2 className="text-3xl font-bold text-blue-950">Student's Experience</h2>
                 <p className="md:text-lg text-blue-950 my-3">Here is what our students say who achieved their law school dreams</p>
 
                 <section className="my-12">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <div className="aspect-video mb-2">
+                                <iframe
+                                    className="w-full h-full rounded-2xl"
+                                    src="https://www.youtube.com/embed/WMWEu6JKjUE?si=CXCH1g0LTRpu3aNd"
+                                    title="YouTube video player"
+                                    frameBorder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                ></iframe>
+                            </div>
+                            <p className="text-center font-medium text-blue-950">
+                                Sarah J. - Accepted to Boston College Law
+                            </p>
+                        </div>
+
+                        <div>
+                            <div className="aspect-video mb-2">
+                                <iframe
+                                    className="w-full h-full rounded-2xl"
+                                    src="https://www.youtube.com/embed/e1rpMD3vz-E?si=zVsh2VAbcASDdiRq"
+                                    title="YouTube video player"
+                                    frameBorder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                ></iframe>
+                            </div>
+                            <p className="text-center font-medium text-blue-950">
+                                Michael T. - Accepted to UC Hastings
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section className="mb-12">
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 text-center">
                         {
                             stats.map(stat => (
@@ -175,7 +216,57 @@ function Testimonials() {
                     </div>
                 </section>
 
-                <section className="grid grid-cols-1 gap-6 my-10">
+                {/* --- NEW: Google Reviews Section --- */}
+                <section className="my-12">
+                    <h3 className="text-2xl font-bold text-blue-950 mb-8 text-center">What Students Say on Google</h3>
+
+                    {loading && <p className="text-center text-gray-600">Loading genuine reviews...</p>}
+                    {error && <p className="text-center text-red-500">{error}</p>}
+
+                    {!loading && !error && reviews.length > 0 && (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {reviews.map((review, index) => (
+                                <div key={index} className="bg-white p-5 rounded-xl shadow-md border border-gray-100">
+                                    {/* Review Rating */}
+                                    <div className="flex items-center mb-3">
+                                        {[...Array(5)].map((_, i) => (
+                                            <svg
+                                                key={i}
+                                                className={`w-5 h-5 ${i < review.rating ? 'text-yellow-400' : 'text-gray-300'}`}
+                                                fill="currentColor"
+                                                viewBox="0 0 20 20"
+                                            >
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                        ))}
+                                        <span className="ml-2 font-semibold text-gray-800">{review.rating}.0</span>
+                                    </div>
+                                    {/* Review Text */}
+                                    <p className="text-gray-700 text-sm mb-4 line-clamp-4">"{review.text}"</p>
+                                    {/* Reviewer Info */}
+                                    <div className="flex items-center border-t pt-4">
+                                        <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                                            <span className="font-bold text-blue-600 text-sm">
+                                                {review.author_name ? review.author_name.charAt(0).toUpperCase() : 'U'}
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <p className="font-semibold text-blue-950 text-sm">
+                                                {review.author_name || 'Google User'}
+                                            </p>
+                                            <p className="text-xs text-gray-500">
+                                                {review.relative_time_description || 'Google Review'}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </section>
+                {/* --- End of Google Reviews Section --- */}
+
+                {/* <section className="grid grid-cols-1 gap-6 my-10">
                     <div ref={sliderRef1} className="keen-slider py-4">
                         {
                             testimonials.slice(0, 6).map(testimonial => (
@@ -191,7 +282,7 @@ function Testimonials() {
                             ))
                         }
                     </div>
-                </section>
+                </section> */}
             </Container>
             <CallToAction />
         </section>
