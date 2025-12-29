@@ -12,7 +12,6 @@ function TutorHeader() {
         { name: 'About', href: '/about' },
         { name: 'Blogs', href: '/blogs' },
         { name: 'Contact', href: '/contact' },
-        // { name: 'Testimonials', href: '/testimonials' },
     ];
 
     // const services = [

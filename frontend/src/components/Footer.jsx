@@ -11,7 +11,6 @@ function Footer() {
         { name: 'Home', href: '/' },
         { name: 'About', href: '/about' },
         { name: 'Blogs', href: '/blogs' },
-        // { name: 'Testimonials', href: '/testimonials' },
         { name: 'Check Session Status', href: '/session-status' },
     ];
 
