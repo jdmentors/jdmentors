@@ -133,8 +133,8 @@ function Home() {
 
             <Container>
                 <section className="my-12">
-                    <h2 className="text-3xl font-bold text-blue-950">Student's Experience</h2>
-                    <p className="md:text-lg text-blue-950 mt-3 mb-5">Here is what our students say who achieved their law school dreams</p>
+                    <h2 className="text-3xl font-bold text-blue-950">Student Experiences</h2>
+                    <p className="md:text-lg text-blue-950 mt-3 mb-5">Listen to students reflect on their experience preparing law school applications with JD Mentors.</p>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
