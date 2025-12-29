@@ -149,7 +149,7 @@ function Home() {
                                 ></iframe>
                             </div>
                             <p className="text-center font-medium text-blue-950">
-                                Camila
+                                Camila - Fall 2026 Applicant
                             </p>
                         </div>
 
@@ -165,7 +165,7 @@ function Home() {
                                 ></iframe>
                             </div>
                             <p className="text-center font-medium text-blue-950">
-                                Reed
+                                Reed - Fall 2026 Applicant
                             </p>
                         </div>
                     </div>
