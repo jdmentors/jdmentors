@@ -201,7 +201,7 @@ function Accommodations() {
                             </div>
                         </div>
                         <p className="text-gray-700 bg-blue-50 py-4 px-6 font-light rounded-b-2xl">
-                            Only applicants who meet these criteria and provide valid documentation of a qualifying disability are eligible for accommodation services.
+                            LSAC ultimately determines eligibility based on these criteria and the documentation submitted.
                         </p>
                     </div>
                 </div>
@@ -228,7 +228,7 @@ function Accommodations() {
                                     <img
                                         src={unsupportIcon}
                                         alt="Your Provider"
-                                        className="h-36 mix-blend-multiply absolute -top-8"
+                                        className="h-28 mix-blend-multiply absolute -top-8"
                                     />
                                     <h3 className="text-2xl font-semibold text-gray-800 mt-12">
                                         Your Provider
@@ -292,7 +292,7 @@ function Accommodations() {
                                     <li className="flex items-start gap-3">
                                         <Check className="text-blue-600 text-xl min-w-min" />
                                         <span className="text-gray-700">
-                                            Prevents denials based on technicalities
+                                            Reduces the risk of denial due to procedural or technical issues
                                         </span>
                                     </li>
                                     <li className="flex items-start gap-3">
