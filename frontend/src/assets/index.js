@@ -10,6 +10,14 @@ import user from './user.webp';
 import AccommodationBanner from "./AccommodationBanner.webp";
 import lsatClass from "./lsatClass.webp";
 import lsatTutoring from "./lsatTutoring.webp";
+import clipboardIcon from "./clipboardIcon.webp";
+import supportIcon from "./supportIcon.webp";
+import unsupportIcon from "./unsupportIcon.webp";
+import strategyCall from "./strategyCall.webp";
+import accommodationMapping from "./accommodationMapping.webp";
+import documentationCoordination from "./documentationCoordination.webp";
+import applicationReview from "./applicationReview.webp";
+import submissionFollowThrough from "./submissionFollowThrough.webp";
 
 export {
     closeMenu,
@@ -24,4 +32,12 @@ export {
     ultimate,
     lsatClass,
     lsatTutoring,
+    clipboardIcon,
+    supportIcon,
+    unsupportIcon,
+    strategyCall,
+    accommodationMapping,
+    applicationReview,
+    documentationCoordination,
+    submissionFollowThrough,
 }
