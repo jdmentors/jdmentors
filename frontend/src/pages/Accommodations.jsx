@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleShowUserAuthForm } from "../features/forms/UserAuthSlice";
-import { accommodationMapping, applicationReview, clipboardIcon, documentationCoordination, strategyCall, submissionFollowThrough, supportIcon, unsupportIcon } from "../assets";
+import { accommodationMapping, applicationReview, autismSpectrum, clipboardIcon, documentationCoordination, hearingImpairment, learningDisabilities, physicalMobility, speechCommunication, strategyCall, submissionFollowThrough, supportIcon, traumaticBrainInjury, unsupportIcon, visualImpairment } from "../assets";
 
 const steps = [
     {
@@ -82,7 +82,7 @@ function Accommodations() {
             {/* Accommodations eligibility */}
             {/* <section className="my-16">
                 <Container className={`grid md:grid-cols-3 items-center gap-8 lg:gap-10 xl:gap-14`}>
-                    <div className="bg-blue-600 text-white md:col-span-1 rounded-2xl px-5 py-8 lg:p-8 drop-shadow-xl drop-shadow-blue-200">
+                    <div className="bg-blue-800 text-white md:col-span-1 rounded-2xl px-5 py-8 lg:p-8 drop-shadow-xl drop-shadow-blue-200">
                         <h2 className="text-3xl md:text-4xl underline mb-5 font-semibold">
                             Eligibility
                         </h2>
@@ -131,7 +131,7 @@ function Accommodations() {
                             </li>
                         </ul>
 
-                        <button onClick={handleClick} className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700 md:self-start self-center cursor-pointer">
+                        <button onClick={handleClick} className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md font-medium h-10 px-4 py-2 bg-blue-800 hover:bg-blue-700 md:self-start self-center cursor-pointer">
                             <CalendarCheck size={24} strokeWidth={1.5} />
 
                             <span>Schedule A Consultation</span>
@@ -160,12 +160,12 @@ function Accommodations() {
                         <div className="space-y- p-6">
                             {/* Criteria 1 */}
                             <div className="flex items-start bg-blue-100 p-3 rounded-xl">
-                                <div className="flex-shrink-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center mr-4 mt-1">
+                                <div className="flex-shrink-0 w-8 h-8 bg-blue-800 rounded-full flex items-center justify-center mr-4 mt-1">
                                     <span className="text-white font-bold">1</span>
                                 </div>
                                 <div>
                                     <p className="text-gray-800 text-lg leading-relaxed">
-                                        <span className="font-semibold">The student</span> must have a <span className="font-semibold text-blue-600">physical, visual, or mental impairment</span> that substantially limits one or more major life functions.
+                                        <span className="font-semibold">The student</span> must have a <span className="font-semibold text-blue-800">physical, visual, or mental impairment</span> that substantially limits one or more major life functions.
                                     </p>
                                 </div>
                             </div>
@@ -174,19 +174,19 @@ function Accommodations() {
                                 <div>
                                     {/* Criteria 2 */}
                                     <div className="flex items-start p-3">
-                                        <div className="flex-shrink-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center mr-4 mt-1">
+                                        <div className="flex-shrink-0 w-8 h-8 bg-blue-800 rounded-full flex items-center justify-center mr-4 mt-1">
                                             <span className="text-white font-bold">2</span>
                                         </div>
                                         <div>
                                             <p className="text-gray-800 text-lg leading-relaxed">
-                                                The student must <span className="font-semibold">submit</span> <span className="font-semibold text-blue-600">valid documentation</span> of the disability from a qualified professional, such as a licensed healthcare provider.
+                                                The student must <span className="font-semibold">submit</span> <span className="font-semibold text-blue-800">valid documentation</span> of the disability from a qualified professional, such as a licensed healthcare provider.
                                             </p>
                                         </div>
                                     </div>
 
                                     {/* Criteria 3 */}
                                     <div className="flex items-start p-3">
-                                        <div className="flex-shrink-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center mr-4 mt-1">
+                                        <div className="flex-shrink-0 w-8 h-8 bg-blue-800 rounded-full flex items-center justify-center mr-4 mt-1">
                                             <span className="text-white font-bold">3</span>
                                         </div>
                                         <div>
@@ -213,7 +213,7 @@ function Accommodations() {
 
                         {/* Heading */}
                         <h2 className="text-4xl font-bold text-gray-800 mb-4">
-                            What Your <span className="text-blue-600">Provider</span> Does vs. What We Do
+                            What Your <span className="text-blue-800">Provider</span> Does vs. What We Do
                         </h2>
                         <p className="text-gray-600 max-w-2xl mx-auto mb-8">
                             Understanding our distinct roles in the LSAT accommodations process.
@@ -315,7 +315,7 @@ function Accommodations() {
 
                         {/* Heading */}
                         <h2 className="text-4xl font-bold text-gray-800 mb-4">
-                            How <span className="text-blue-600">JD Mentors</span> Gets You Approved
+                            How <span className="text-blue-800">JD Mentors</span> Gets You Approved
                         </h2>
                         <p className="text-gray-600 max-w-3xl mx-auto mb-16">
                             We guide you through every step of the LSAT accommodations process.
@@ -326,11 +326,11 @@ function Accommodations() {
                             {steps.map((step) => (
                                 <div
                                     key={step.id}
-                                    className="relative bg-white rounded-2xl border-2 border-blue-600 px-6 pt-16 pb-10 shadow-lg text-left"
+                                    className="relative bg-white rounded-2xl border-2 border-blue-700 px-6 pt-16 pb-10 shadow-lg text-left"
                                 >
                                     {/* Number Bubble */}
                                     <div className="absolute -top-6 left-1/2 -translate-x-1/2">
-                                        <div className="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-md">
+                                        <div className="w-12 h-12 rounded-full bg-blue-800 flex items-center justify-center text-white font-bold text-lg shadow-md">
                                             {step.id}
                                         </div>
                                     </div>
@@ -367,25 +367,155 @@ function Accommodations() {
                 </section>
             </Container>
 
-            <section className="my-16">
+            <section className="my-20">
                 <Container>
-                    <div className="bg-white border border-blue-50 rounded-2xl p-8 md:p-10 xl:py-10 xl:px-20 [box-shadow:0_10px_40px_-12px_rgba(147,197,253,0.7),0_-10px_40px_-12px_rgba(147,197,253,0.7)]">
-                        <p className="text-blue-950 font-semibold text-lg mb-3">Potential Disabilities That May Require Accommodations:</p>
-                        <ul className="text-blue-600 list-decimal list-inside font-semibold flex flex-col flex-wrap md:max-h-[160px] lg:max-h-[160px] gap-2">
-                            <li>Autism Spectrum Disorder (ASD)</li>
-                            <li>Visual Impairments or Blindness</li>
-                            <li>Hearing Impairments or Deafness</li>
-                            <li>Physical or Mobility Challenges</li>
-                            <li>Chronic Medical Conditions (e.g., Diabetes, Epilepsy)</li>
-                            <li>Traumatic Brain Injuries</li>
-                            <li>Speech or Communication Disorders</li>
-                            <li>Learning Disabilities</li>
-                            <li>Mental Health Conditions (e.g., Bipolar Disorder)</li>
-                            <li>Chronic Pain Conditions</li>
-                        </ul>
+                    <div className="max-w-full text-center">
+
+                        {/* Heading */}
+                        <h2 className="text-4xl font-bold text-gray-800 mb-3">
+                            Conditions Commonly Supported by <span className="text-blue-800">LSAT Accommodations</span>
+                        </h2>
+                        <p className="text-gray-600 mb-10">
+                            These are examples. You don’t need to match a label to qualify.
+                        </p>
+
+                        {/* Cards Grid */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                            {/* Card 1 */}
+                            <div className="bg-white rounded-2xl p-6 shadow-lg shadow-blue-200 hover:scale-105 transition-transform duration-300">
+                                <div className="flex justify-center mb-4">
+                                    {/* ICON PLACEHOLDER */}
+                                    <div className="h-16 w-16 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <img src={autismSpectrum} alt="autism spectrum" />
+                                    </div>
+                                </div>
+                                <h3 className="text-xl font-semibold text-blue-700 mb-2">
+                                    Autism <span className="font-normal text-blue-800">Spectrum</span>
+                                </h3>
+                                <p className="text-gray-600 text-sm">
+                                    Focus, sensory overload, transitions, communication
+                                </p>
+                            </div>
+
+                            {/* Card 2 */}
+                            <div className="bg-white rounded-2xl p-6 shadow-lg shadow-blue-200 hover:scale-105 transition-transform duration-300">
+                                <div className="flex justify-center mb-4">
+                                    <div className="h-16 w-16 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <img src={visualImpairment} alt="visual impairment" />
+                                    </div>
+                                </div>
+                                <h3 className="text-xl font-semibold text-blue-700 mb-2">
+                                    Visual <span className="font-normal text-blue-800">Impairments</span>
+                                </h3>
+                                <p className="text-gray-600 text-sm">
+                                    Low vision, eye strain, screen fatigue
+                                </p>
+                            </div>
+
+                            {/* Card 3 */}
+                            <div className="bg-white rounded-2xl p-6 shadow-lg shadow-blue-200 hover:scale-105 transition-transform duration-300">
+                                <div className="flex justify-center mb-4">
+                                    <div className="h-16 w-16 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <img src={hearingImpairment} alt="hearing impairment" />
+                                    </div>
+                                </div>
+                                <h3 className="text-xl font-semibold text-blue-700 mb-2">
+                                    Hearing <span className="font-normal text-blue-800">Impairments</span>
+                                </h3>
+                                <p className="text-gray-600 text-sm">
+                                    Audio processing, proctor communication
+                                </p>
+                            </div>
+
+                            {/* Card 4 */}
+                            <div className="bg-white rounded-2xl p-6 shadow-lg shadow-blue-200 hover:scale-105 transition-transform duration-300">
+                                <div className="flex justify-center mb-4">
+                                    <div className="h-16 w-16 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <img src={physicalMobility} alt="physical mobility" />
+                                    </div>
+                                </div>
+                                <h3 className="text-xl font-semibold text-blue-700 mb-2">
+                                    Physical / <span className="font-normal text-blue-800">Mobility</span>
+                                </h3>
+                                <p className="text-gray-600 text-sm">
+                                    Pain, movement, positioning, stamina
+                                </p>
+                            </div>
+
+                            {/* Card 5 */}
+                            <div className="bg-white rounded-2xl p-6 shadow-lg shadow-blue-200 hover:scale-105 transition-transform duration-300">
+                                <div className="flex justify-center mb-4">
+                                    <div className="h-16 w-16 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <img src={learningDisabilities} alt="learning disabilities" />
+                                    </div>
+                                </div>
+                                <h3 className="text-xl font-semibold text-blue-700 mb-2">
+                                    Learning <span className="font-normal text-blue-800">Disabilities</span>
+                                </h3>
+                                <p className="text-gray-600 text-sm">
+                                    Reading speed, processing, comprehension, memory
+                                </p>
+                            </div>
+
+                            {/* Card 6 */}
+                            <div className="bg-white rounded-2xl p-6 shadow-lg shadow-blue-200 hover:scale-105 transition-transform duration-300">
+                                <div className="flex justify-center mb-4">
+                                    <div className="h-16 w-16 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <img src={autismSpectrum} alt="autism spectrum" />
+                                    </div>
+                                </div>
+                                <h3 className="text-xl font-semibold text-blue-700 mb-2">
+                                    Mental <span className="font-normal text-blue-800">Health</span>
+                                </h3>
+                                <p className="text-gray-600 text-sm">
+                                    Anxiety, panic, mood instability, focus
+                                </p>
+                            </div>
+
+                            {/* Card 7 */}
+                            <div className="bg-white rounded-2xl p-6 shadow-lg shadow-blue-200 hover:scale-105 transition-transform duration-300">
+                                <div className="flex justify-center mb-4">
+                                    <div className="h-16 w-16 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <img src={traumaticBrainInjury} alt="traumatic brain injury" />
+                                    </div>
+                                </div>
+                                <h3 className="text-xl font-semibold text-blue-700 mb-2">
+                                    Traumatic <span className="font-normal text-blue-800">Brain Injury</span>
+                                </h3>
+                                <p className="text-gray-600 text-sm">
+                                    Processing speed, memory, fatigue
+                                </p>
+                            </div>
+
+                            {/* Card 8 */}
+                            <div className="bg-white rounded-2xl p-6 shadow-lg shadow-blue-200 hover:scale-105 transition-transform duration-300">
+                                <div className="flex justify-center mb-4">
+                                    <div className="h-16 w-16 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <img src={speechCommunication} alt="speech communication" />
+                                    </div>
+                                </div>
+                                <h3 className="text-xl font-semibold text-blue-700 mb-2">
+                                    Speech/<span className="font-normal text-blue-800">Communication</span>
+                                </h3>
+                                <p className="text-gray-600 text-sm">
+                                    Verbal responses, timing, stress
+                                </p>
+                            </div>
+
+                        </div>
+
+                        {/* Bottom Note */}
+                        <div className="mt-12 bg-blue-200/30 rounded-2xl p-8 max-w-full mx-auto shadow-inner text-lg font-light">
+                            <p className="text-gray-700 bg-blue-50 rounded-xl p-6 mx-auto shadow-inner">
+                                You don’t need to see yourself in a box. If something interferes with your ability to test under standard conditions, it’s worth exploring.
+                            </p>
+                        </div>
+
                     </div>
                 </Container>
             </section>
+
 
             <CallToActionAccommodations />
         </div>

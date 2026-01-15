@@ -18,6 +18,14 @@ import accommodationMapping from "./accommodationMapping.webp";
 import documentationCoordination from "./documentationCoordination.webp";
 import applicationReview from "./applicationReview.webp";
 import submissionFollowThrough from "./submissionFollowThrough.webp";
+import learningDisabilities from "./learningDisabilities.webp";
+import traumaticBrainInjury from "./traumaticBrainInjury.webp";
+import physicalMobility from "./physicalMobility.webp";
+import visualImpairment from "./visualImpairment.webp";
+import hearingImpairment from "./hearingImpairment.webp";
+import mentalHealth from "./mentalHealth.webp";
+import speechCommunication from "./speechCommunication.webp";
+import autismSpectrum from "./autismSpectrum.webp";
 
 export {
     closeMenu,
@@ -40,4 +48,12 @@ export {
     applicationReview,
     documentationCoordination,
     submissionFollowThrough,
+    learningDisabilities,
+    traumaticBrainInjury,
+    physicalMobility,
+    visualImpairment,
+    hearingImpairment,
+    mentalHealth,
+    speechCommunication,
+    autismSpectrum,
 }
