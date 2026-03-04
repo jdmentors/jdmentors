@@ -26,6 +26,7 @@ import hearingImpairment from "./hearingImpairment.webp";
 import mentalHealth from "./mentalHealth.webp";
 import speechCommunication from "./speechCommunication.webp";
 import autismSpectrum from "./autismSpectrum.webp";
+import AccommodationsHowItWorks from "./AccommodationsHowItWorks.webp";
 
 export {
     closeMenu,
@@ -56,4 +57,5 @@ export {
     mentalHealth,
     speechCommunication,
     autismSpectrum,
+    AccommodationsHowItWorks,
 }
