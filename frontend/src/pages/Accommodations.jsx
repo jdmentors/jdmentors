@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleShowUserAuthForm } from "../features/forms/UserAuthSlice";
-import { accommodationMapping, applicationReview, autismSpectrum, clipboardIcon, documentationCoordination, hearingImpairment, learningDisabilities, physicalMobility, speechCommunication, strategyCall, submissionFollowThrough, supportIcon, traumaticBrainInjury, unsupportIcon, visualImpairment } from "../assets";
+import { accommodationMapping, AccommodationsHowItWorks, applicationReview, autismSpectrum, clipboardIcon, documentationCoordination, hearingImpairment, learningDisabilities, lsatClass, physicalMobility, speechCommunication, strategyCall, submissionFollowThrough, supportIcon, traumaticBrainInjury, unsupportIcon, visualImpairment } from "../assets";
 
 const steps = [
     {
@@ -139,6 +139,40 @@ function Accommodations() {
                     </div>
                 </Container>
             </section> */}
+
+            {/* What to Expect in Your Lessons */}
+            <section className="my-16">
+                <Container className={`grid md:grid-cols-4 items-center gap-8 lg:gap-10 xl:gap-14`}>
+                    <div className="md:col-span-2 flex flex-col gap-5">
+                        <div className="flex flex-col gap-2">
+                            <h2 className="text-3xl font-bold text-gray-800">How It Works</h2>
+                        </div>
+
+                        <p className="text-lg leading-normal text-gray-700">If something about the LSAT doesn’t work for you the way it should, you shouldn’t have to figure out the system alone. We help translate your real-world struggles into an accommodations request that actually makes sense to LSAC.</p>
+
+                        <p className="text-lg leading-normal text-gray-700">Here’s what that looks like in practice:</p>
+
+                        <ul>
+                            <li className="flex items-start gap-3 text-gray-700">
+                                <Check className="text-blue-600 text-xl min-w-min" />
+                                <span>Identify the accommodations that match your actual test-day challenges.</span>
+                            </li>
+                            <li className="flex items-start gap-3 text-gray-700">
+                                <Check className="text-blue-600 text-xl min-w-min" />
+                                <span>Guide your provider on what LSAC needs to see in your documentation.</span>
+                            </li>
+                            <li className="flex items-start gap-3 text-gray-700">
+                                <Check className="text-blue-600 text-xl min-w-min" />
+                                <span>Review and organize your request before it’s submitted.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div className=" text-white md:col-span-2 rounded-2xl drop-shadow-xl drop-shadow-blue-200">
+                        <img src={AccommodationsHowItWorks} alt="lsat class" className="max-h-[350px] h-[350px] w-full object-cover rounded-2xl" />
+                    </div>
+                </Container>
+            </section>
 
             <Container>
                 <div className="max-w-full mt-16">
