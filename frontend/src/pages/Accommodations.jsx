@@ -148,32 +148,34 @@ function Accommodations() {
                     <h1 className="text-3xl font-bold text-gray-800">How It Works</h1>
                 </Container>
 
-                <Container className={`grid md:grid-cols-4 items-start gap-8 lg:gap-10 xl:gap-14 bg-transparent`}>
-                    <div className="md:col-span-2 flex flex-col gap-5">
+                <Container>
+                    <section className={`grid md:grid-cols-4 items-start gap-8 lg:gap-10 xl:gap-14 bg-white p-6 sm:p-8 md:p-10 rounded-3xl shadow-xl shadow-blue-200`}>
+                        <div className="md:col-span-2 flex flex-col gap-5">
 
-                        <p className="text-lg leading-normal text-gray-700">If something about the LSAT doesn’t work for you the way it should, you shouldn’t have to figure out the system alone. We help translate your real-world struggles into an accommodations request that actually makes sense to LSAC.</p>
+                            <p className="text-lg leading-normal text-gray-700">If something about the LSAT doesn’t work for you the way it should, you shouldn’t have to figure out the system alone. We help translate your real-world struggles into an accommodations request that actually makes sense to LSAC.</p>
 
-                        <p className="text-lg leading-normal text-gray-700">Here’s what that looks like in practice:</p>
+                            <p className="text-lg leading-normal text-gray-700">Here’s what that looks like in practice:</p>
 
-                        <ul className="text-lg">
-                            <li className="flex items-start gap-3 text-gray-700">
-                                <Check className="text-blue-600 text-xl min-w-min" />
-                                <span>Identify the accommodations that match your actual test-day challenges.</span>
-                            </li>
-                            <li className="flex items-start gap-3 text-gray-700">
-                                <Check className="text-blue-600 text-xl min-w-min" />
-                                <span>Guide your provider on what LSAC needs to see in your documentation.</span>
-                            </li>
-                            <li className="flex items-start gap-3 text-gray-700">
-                                <Check className="text-blue-600 text-xl min-w-min" />
-                                <span>Review and organize your request before it’s submitted.</span>
-                            </li>
-                        </ul>
-                    </div>
+                            <ul className="text-lg">
+                                <li className="flex items-start gap-3 text-gray-700">
+                                    <Check className="text-blue-600 text-xl min-w-min" />
+                                    <span>Identify the accommodations that match your actual test-day challenges.</span>
+                                </li>
+                                <li className="flex items-start gap-3 text-gray-700">
+                                    <Check className="text-blue-600 text-xl min-w-min" />
+                                    <span>Guide your provider on what LSAC needs to see in your documentation.</span>
+                                </li>
+                                <li className="flex items-start gap-3 text-gray-700">
+                                    <Check className="text-blue-600 text-xl min-w-min" />
+                                    <span>Review and organize your request before it’s submitted.</span>
+                                </li>
+                            </ul>
+                        </div>
 
-                    <div className=" text-white md:col-span-2 rounded-2xl drop-shadow-xl drop-shadow-blue-200">
-                        <img src={AccommodationsHowItWorks} alt="lsat class" className="max-h-[325px] h-[325px] w-full object-cover rounded-2xl" />
-                    </div>
+                        <div className=" text-white md:col-span-2 rounded-2xl drop-shadow-xl drop-shadow-blue-200">
+                            <img src={AccommodationsHowItWorks} alt="lsat class" className="max-h-[325px] h-[325px] w-full object-cover rounded-2xl" />
+                        </div>
+                    </section>
                 </Container>
             </section>
 
