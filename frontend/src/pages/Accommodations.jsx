@@ -140,19 +140,22 @@ function Accommodations() {
                 </Container>
             </section> */}
 
-            {/* What to Expect in Your Lessons */}
+            {/* How It Works */}
             <section className="my-16">
-                <Container className={`grid md:grid-cols-4 items-center gap-8 lg:gap-10 xl:gap-14`}>
+
+                {/* Header Section */}
+                <Container className="mb-8 bg-transparent">
+                    <h1 className="text-3xl font-bold text-gray-800">How It Works</h1>
+                </Container>
+
+                <Container className={`grid md:grid-cols-4 items-start gap-8 lg:gap-10 xl:gap-14 bg-transparent`}>
                     <div className="md:col-span-2 flex flex-col gap-5">
-                        <div className="flex flex-col gap-2">
-                            <h2 className="text-3xl font-bold text-gray-800">How It Works</h2>
-                        </div>
 
                         <p className="text-lg leading-normal text-gray-700">If something about the LSAT doesn’t work for you the way it should, you shouldn’t have to figure out the system alone. We help translate your real-world struggles into an accommodations request that actually makes sense to LSAC.</p>
 
                         <p className="text-lg leading-normal text-gray-700">Here’s what that looks like in practice:</p>
 
-                        <ul>
+                        <ul className="text-lg">
                             <li className="flex items-start gap-3 text-gray-700">
                                 <Check className="text-blue-600 text-xl min-w-min" />
                                 <span>Identify the accommodations that match your actual test-day challenges.</span>
@@ -169,7 +172,7 @@ function Accommodations() {
                     </div>
 
                     <div className=" text-white md:col-span-2 rounded-2xl drop-shadow-xl drop-shadow-blue-200">
-                        <img src={AccommodationsHowItWorks} alt="lsat class" className="max-h-[350px] h-[350px] w-full object-cover rounded-2xl" />
+                        <img src={AccommodationsHowItWorks} alt="lsat class" className="max-h-[325px] h-[325px] w-full object-cover rounded-2xl" />
                     </div>
                 </Container>
             </section>
