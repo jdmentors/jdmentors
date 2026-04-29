@@ -141,7 +141,7 @@ function Home() {
                             <div className="aspect-video mb-2">
                                 <iframe
                                     className="w-full h-full rounded-2xl"
-                                    src="https://www.youtube.com/embed/WMWEu6JKjUE?si=CXCH1g0LTRpu3aNd"
+                                    src="https://www.youtube.com/watch?v=zFFkkuEhMUM"
                                     title="YouTube video player"
                                     frameBorder="0"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -149,7 +149,7 @@ function Home() {
                                 ></iframe>
                             </div>
                             <p className="text-center font-medium text-blue-950">
-                                Camila - Fall 2026 Applicant
+                                Nathan - Fall 2026 Applicant | Accepted to St. John's Law
                             </p>
                         </div>
 
@@ -165,7 +165,7 @@ function Home() {
                                 ></iframe>
                             </div>
                             <p className="text-center font-medium text-blue-950">
-                                Reed - Fall 2026 Applicant
+                                Reed - Fall 2026 Applicant | Accepted to University of Florida Law
                             </p>
                         </div>
                     </div>
