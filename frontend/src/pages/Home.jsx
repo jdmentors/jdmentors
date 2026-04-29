@@ -141,7 +141,7 @@ function Home() {
                             <div className="aspect-video mb-2">
                                 <iframe
                                     className="w-full h-full rounded-2xl"
-                                    src="https://www.youtube.com/watch?v=zFFkkuEhMUM"
+                                    src="https://www.youtube.com/embed/zFFkkuEhMUM"
                                     title="YouTube video player"
                                     frameBorder="0"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
