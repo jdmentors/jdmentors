@@ -4,7 +4,7 @@ import { DollarSign, TrendingUp, Award } from "lucide-react";
   const defaultBreakdown = [
       {
           icon: <Award size={22} />,
-          value: "$74K",
+          value: "$74K/yr",
           label: "Largest single scholarship secured",
       },
       {
