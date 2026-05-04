@@ -1,4 +1,5 @@
 import { CallToAction, Container, Hero, FAQ, Stat, AboutUs, LoadingSpinner, AllPackages, AllAddons, AllExtras } from "../components";
+import ScholarshipSavings from "../components/ScholarshipSavings";
 import { Link } from "react-router";
 import { ArrowRight } from "lucide-react";
 import { lazy, useRef } from "react";
@@ -171,6 +172,9 @@ function Home() {
                     </div>
                 </section>
             </Container>
+
+            {/* Scholarship dollars block */}
+              <ScholarshipSavings />
 
             {/* Stats section */}
             <section className="mt-12">
