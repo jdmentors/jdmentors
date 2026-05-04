@@ -4,7 +4,7 @@ import { DollarSign, TrendingUp, Award } from "lucide-react";
   const defaultBreakdown = [
       {
           icon: <Award size={22} />,
-          value: "$85K",
+          value: "$74K",
           label: "Largest single scholarship secured",
       },
       {
@@ -14,7 +14,7 @@ import { DollarSign, TrendingUp, Award } from "lucide-react";
       },
       {
           icon: <DollarSign size={22} />,
-          value: "92%",
+          value: "100%",
           label: "Of students received merit aid",
       },
   ];
