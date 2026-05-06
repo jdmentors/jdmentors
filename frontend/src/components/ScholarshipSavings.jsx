@@ -38,7 +38,7 @@ import { DollarSign, TrendingUp, Award } from "lucide-react";
 
   function ScholarshipSavings({
       headline = "Scholarship Dollars Secured",
-      total = "$2.5M+",
+      total = "$1M+",
       description = defaultDescription,
       breakdown = defaultBreakdown,
   }) {
