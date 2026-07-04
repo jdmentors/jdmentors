@@ -1,7 +1,7 @@
 import { banner } from "../assets";
 import { Container } from "./";
 import { Link, useNavigate } from "react-router";
-import { Clock, FileText, Laptop, Phone, Shield, Video } from "lucide-react";
+import { ArrowRight, Clock, FileText, Laptop, Shield, Video } from "lucide-react";
 
 function Hero() {
     const navigate = useNavigate();
@@ -27,9 +27,9 @@ function Hero() {
                                 <span>Book Consultation</span>
                             </Link>
 
-                            <Link to='/contact' className={`inline-flex items-center justify-center gap-1 whitespace-nowrap h-10 bg-white text-blue-600 hover:bg-blue-600 hover:text-white px-4 py-4 font-semibold rounded-md transition-all duration-300 cursor-pointer`}>
-                                <Phone size={18} strokeWidth={1.5} />
-                                Contact Us
+                            <Link to='/services' className={`inline-flex items-center justify-center gap-1 whitespace-nowrap h-10 bg-white text-blue-600 hover:bg-blue-600 hover:text-white px-4 py-4 font-semibold rounded-md transition-all duration-300 cursor-pointer`}>
+                                Our Services
+                            <ArrowRight size={18} strokeWidth={1.5} />
                             </Link>
                         </div>
 
