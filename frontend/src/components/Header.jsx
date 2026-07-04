@@ -33,7 +33,7 @@ function Header() {
 const bookConsultationHandler = () => {
     try {
         if (pathname === '/') {
-            navigate('/services');
+            navigate('/contact');
         }
         else if (pathname === '/lsat-tutoring') {
             navigate('/checkout/lsat-session?type=free')
