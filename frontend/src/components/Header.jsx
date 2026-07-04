@@ -30,23 +30,25 @@ function Header() {
         { name: 'LSAT Tutoring', href: '/lsat-tutoring' },
     ];
 
-    const bookConsultationHandler = () => {
-        try {
-            if (pathname === '/') {
-                navigate('/services');
-            }
-            else if (pathname === '/lsat-tutoring') {
-                navigate('/checkout/lsat-session?type=free')
-            }
-            else if (pathname === '/accommodations') {
-                navigate('/checkout/accommodations')
-            }
-            setIsMenuOpen(false);
-            scrollTo({ top: 500, behavior: 'smooth' });
-        } catch (error) {
-            console.error(error);
+const bookConsultationHandler = () => {
+    try {
+        if (pathname === '/') {
+            navigate('/services');
         }
+        else if (pathname === '/lsat-tutoring') {
+            navigate('/checkout/lsat-session?type=free')
+        }
+        else if (pathname === '/accommodations') {
+            navigate('/checkout/accommodations')
+        }
+        else {
+            navigate('/contact');
+        }
+        setIsMenuOpen(false);
+    } catch (error) {
+        console.error(error);
     }
+}
 
     useEffect(() => {
         const handleScroll = () => {
