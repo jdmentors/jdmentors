@@ -53,7 +53,7 @@ const HowItWorks = [
 ];
 
 function AboutUs() {
-    useSEO({ title: 'About Us', description: 'JD Mentors was built by law students, for law students. Meet the team that's helped over 100+ successful law school applicants and helped save over $1M+ in scholarships.' });
+    useSEO({ title: 'About Us', description: "JD Mentors was built by law students, for law students. Meet the team that's helped over 100+ successful law school applicants and helped save over $1M+ in scholarships." });
     const [members, setMembers] = useState([]);
     const getAllMembers = useGetAllTeam();
 
