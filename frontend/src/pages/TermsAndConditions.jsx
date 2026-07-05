@@ -1,7 +1,9 @@
 import { Link } from "react-router";
 import { Container } from "../components";
+import useSEO from "../hooks/useSEO";
 
 const TermsAndConditions = () => {
+useSEO({ title: "Terms & Conditions" });
   return (
     <section className="my-32 text-gray-800">
       <Container>

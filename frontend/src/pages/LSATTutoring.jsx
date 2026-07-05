@@ -8,6 +8,7 @@ import { toggleShowUserAuthForm } from "../features/forms/UserAuthSlice";
 import { lsatClass } from "../assets";
 import 'keen-slider/keen-slider.min.css'
 import { useKeenSlider } from 'keen-slider/react'
+import useSEO from "../hooks/useSEO";
 
 const Testimonial = lazy(() => import('../components/Testimonial'));
 const LSATTutors = lazy(() => import('../components/LSATTutors'));
@@ -65,6 +66,7 @@ const HowItWorks = [
 ];
 
 function LSATTutoring() {
+    useSEO({ title: "LSAT Tutoring", description: "1-on-1 LSAT tutoring with personalized study plans. Book a free first session with JD Mentors." });
     const [price, setPrice] = useState(null);
     const [selectedGroupSize, setSelectedGroupSize] = useState(4);
     const [pricing, setPricing] = useState(null);
