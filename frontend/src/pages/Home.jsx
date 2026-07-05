@@ -6,6 +6,7 @@ import { lazy, useRef } from "react";
 import { Suspense } from "react";
 import 'keen-slider/keen-slider.min.css'
 import { useKeenSlider } from 'keen-slider/react'
+import useSEO from "../hooks/useSEO";
 
 const AllServices = lazy(() => import('../components/AllServices'));
 const Testimonial = lazy(() => import('../components/Testimonial'));
@@ -83,6 +84,7 @@ const stats = [
 ];
 
 function Home() {
+    useSEO({ title: "JD Mentors | Law School Admissions Consulting", description: "Personalized 1-on-1 law school application help: personal statements, addendums, school lists, and LSAT prep. 100+ students helped, $1M+ saved in scholarships." });
     const timer = useRef();
 
     const [sliderRef] = useKeenSlider({
