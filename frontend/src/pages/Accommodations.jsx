@@ -6,6 +6,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleShowUserAuthForm } from "../features/forms/UserAuthSlice";
 import { accommodationMapping, AccommodationsHowItWorks, applicationReview, autismSpectrum, clipboardIcon, documentationCoordination, hearingImpairment, learningDisabilities, lsatClass, physicalMobility, speechCommunication, strategyCall, submissionFollowThrough, supportIcon, traumaticBrainInjury, unsupportIcon, visualImpairment } from "../assets";
+import useSEO from "../hooks/useSEO";
 
 const steps = [
     {
@@ -42,6 +43,7 @@ const steps = [
 ];
 
 function Accommodations() {
+    useSEO({ title: "LSAT Accommodations Help", description: "Guidance for requesting LSAT testing accommodations: documentation, applications, and follow-through support." });
     const [accommodationPrice, setAccommodationPrice] = useState(null);
 
     useEffect(() => {

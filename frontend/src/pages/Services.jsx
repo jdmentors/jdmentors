@@ -1,6 +1,8 @@
 import { AllExtras, AllPackages, AllServices, Container } from "../components";
+import useSEO from "../hooks/useSEO";
 
 function Services() {
+    useSEO({ title: "Services & Pricing", description: "Law school admissions services: personal statement editing, addendums, resumes, school list strategy, and full application packages." });
     return (
         <div className="mt-32 mb-16 min-h-[70vh]">
             <Container>

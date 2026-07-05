@@ -6,9 +6,11 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import parse from 'html-react-parser';
+import useSEO from "../hooks/useSEO";
 
 function SingleBlog() {
     const [blog, setBlog] = useState(null);
+    useSEO({ title: blog?.title, description: blog?.description });
     const { slug } = useParams();
     const navigate = useNavigate();
 

@@ -1,6 +1,8 @@
 import { AllBlogs, BlogCard, Container } from "../components";
+import useSEO from "../hooks/useSEO";
 
 function Blogs() {
+    useSEO({ title: "Blog Posts", description: "Advice on law school applications, personal statements, LSAT prep, and scholarships from the JD Mentors team." });
     return (
         <section className="my-32">
             <Container>

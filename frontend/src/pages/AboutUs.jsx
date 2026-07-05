@@ -4,6 +4,7 @@ import { CallToAction, Container, HowItWorksCard } from "../components";
 import { useState } from "react";
 import { useEffect } from "react";
 import useGetAllTeam from "../hooks/useGetAllTeam";
+import useSEO from "../hooks/useSEO";
 
 const stats = [
     {
@@ -52,6 +53,7 @@ const HowItWorks = [
 ];
 
 function AboutUs() {
+    useSEO({ title: 'About Us', description: "JD Mentors was built by law students, for law students. Meet the team that's helped over 100+ successful law school applicants and helped save over $1M+ in scholarships." });
     const [members, setMembers] = useState([]);
     const getAllMembers = useGetAllTeam();
 
