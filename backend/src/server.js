@@ -27,6 +27,7 @@ import LSATPackagePurchase from "./models/lsatpackagepurchase.model.js";
 import lsatPackageRouter from "./routes/lsatpackage.route.js";
 import lsatSessionRouter from "./routes/lsatsession.route.js";
 import googleRouter from "./routes/google.route.js";
+import sitemapRouter from "./routes/sitemap.route.js";
 
 const app = express();
 app.use(compression());
@@ -189,6 +190,7 @@ app.use('/api/v1/tutors', tutorRouter);
 app.use('/api/v1/lsat-packages', lsatPackageRouter);
 app.use('/api/v1/lsat-sessions', lsatSessionRouter);
 app.use('/api/v1/google', googleRouter);
+app.use('/sitemap.xml', sitemapRouter);
 
 app.post('/create-checkout-session', async (req, res) => {
   const { sessionId } = req.body;
