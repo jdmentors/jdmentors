@@ -49,9 +49,14 @@ async function prerender() {
             await page.goto(`http://localhost:${PORT}${path}`, { waitUntil: "networkidle2", timeout: 60000 });
             await new Promise((r) => setTimeout(r, 1000));
             const html = await page.content();
-            const outDir = path === "/" ? DIST : join(DIST, path);
-            mkdirSync(outDir, { recursive: true });
-            writeFileSync(join(outDir, "index.html"), html);
+            if (path === "/") {
+                writeFileSync(join(DIST, "index.html"), html);
+            } else {
+                const outDir = join(DIST, path);
+                mkdirSync(outDir, { recursive: true });
+                writeFileSync(join(outDir, "index.html"), html);
+                writeFileSync(join(DIST, `${path}.html`), html);
+            }
             console.log(`OK ${path}`);
         } catch (err) {
             console.error(`FAILED ${path}: ${err.message}`);
