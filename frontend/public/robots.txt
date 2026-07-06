@@ -7,3 +7,4 @@ Disallow: /checkout-success
 Disallow: /checkout-cancel
 Disallow: /terms-conditions
 Disallow: /privacy-policy
+Sitemap: https://www.jdmentors.com/sitemap.xml
