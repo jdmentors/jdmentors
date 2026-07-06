@@ -27,7 +27,7 @@ sitemapRouter.get("/", async (req, res) => {
             .join("\n");
 
         const blogUrls = blogs
-            .map((blog) => `  <url>\n    <loc>${SITE_URL}/blogs/${blog.slug}</loc>\n    <lastmod>${blog.updatedAt.toISOString().split("T")[0]}</lastmod>\n  </url>`)
+            .map((blog) => `  <url>\n    <loc>${SITE_URL}/blogs/${blog.slug}/</loc>\n    <lastmod>${blog.updatedAt.toISOString().split("T")[0]}</lastmod>\n  </url>`)
             .join("\n");
 
         const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${staticUrls}\n${blogUrls}\n</urlset>`;

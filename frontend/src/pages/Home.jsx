@@ -84,7 +84,7 @@ const stats = [
 ];
 
 function Home() {
-    useSEO({ title: "JD Mentors | Law School Admissions Consulting", description: "Personalized 1-on-1 law school application help: personal statements, addendums, school lists, and LSAT prep. 100+ students helped, $1M+ saved in scholarships." });
+    useSEO({ title: "Law School Admissions Consulting", description: "Personalized 1-on-1 law school application help: personal statements, addendums, school lists, and LSAT prep. 100+ students helped, $1M+ saved in scholarships." });
     const timer = useRef();
 
     const [sliderRef] = useKeenSlider({
