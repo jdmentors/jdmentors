@@ -152,7 +152,7 @@ app.post(
 app.use(express.json({ limit: '16kb' }));
 app.use(express.urlencoded({ limit: '16kb' }));
 
-const allowedOrigins = ['https://www.jdmentors.com', 'http://localhost:5173'];
+const allowedOrigins = ['https://www.jdmentors.com', 'https://jdmentors-staging.onrender.com', 'http://localhost:5173', 'http://localhost:4173'];
 
 const corsOptions = {
   origin: function (origin, callback) {
