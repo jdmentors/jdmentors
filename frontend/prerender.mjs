@@ -15,7 +15,7 @@ async function getPaths() {
         const res = await fetch(SITEMAP_URL);
         const xml = await res.text();
         const locs = [...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map((m) => m[1]);
-        const paths = locs.map((u) => new URL(u).pathname);
+        const paths = locs.map((u) => new URL(u).pathname.replace(/\/$/, "") || "/");
         if (paths.length === 0) throw new Error("Sitemap returned no URLs");
         return paths;
     } catch (err) {
