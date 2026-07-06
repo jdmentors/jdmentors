@@ -8,7 +8,7 @@ import puppeteer from "puppeteer";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DIST = join(__dirname, "dist");
 const PORT = 4173;
-const SITEMAP_URL = "https://jdmentors-backend.onrender.com/sitemap.xml";
+const SITEMAP_URL = "https://jd-mentors-backend.onrender.com/sitemap.xml";
 
 async function getPaths() {
     try {
