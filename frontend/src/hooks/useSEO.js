@@ -13,6 +13,16 @@ function setMeta(attr, key, content) {
     el.setAttribute('content', content);
 }
 
+function setCanonical(href) {
+    let el = document.querySelector('link[rel="canonical"]');
+    if (!el) {
+        el = document.createElement('link');
+        el.setAttribute('rel', 'canonical');
+        document.head.appendChild(el);
+    }
+    el.setAttribute('href', href);
+}
+
 function applySEO(title, description) {
     document.title = title;
     setMeta('property', 'og:title', title);
