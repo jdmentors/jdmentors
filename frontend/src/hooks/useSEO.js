@@ -37,6 +37,11 @@ export default function useSEO({ title, description } = {}) {
         const fullTitle = title ? `${title} | ${SITE_NAME}` : SITE_NAME;
         applySEO(fullTitle, description || DEFAULT_DESCRIPTION);
 
+        let path = window.location.pathname;
+        if (path.startsWith('/blogs/') && !path.endsWith('/')) path += '/';
+        if (path !== '/' && path.endsWith('/') && !path.startsWith('/blogs/')) path = path.slice(0, -1);
+        setCanonical(`https://www.jdmentors.com${path}`);
+
         return () => {
             applySEO(SITE_NAME, DEFAULT_DESCRIPTION);
         };
