@@ -33,7 +33,7 @@ function AboutUs() {
                                         Admissions Insight
                                     </h3>
                                     <p className="text-gray-600">
-                                        Having guided over 100 students through the admissions process, our team knows what strengthens an application and what holds it back.
+                                        We regularly communicate with admissions committee members to give you the best and most up-to-date assistance when applying.
                                     </p>
                                 </div>
                             </div>
