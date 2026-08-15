@@ -33,7 +33,7 @@ function AboutUs() {
                                         Admissions Insight
                                     </h3>
                                     <p className="text-gray-600">
-                                        Former experience on admissions committees provides unique perspective on what schools look for in applicants.
+                                        Having guided over 100 students through the admissions process, our team knows what strengthens an application and what holds it back.
                                     </p>
                                 </div>
                             </div>
