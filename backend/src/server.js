@@ -63,7 +63,6 @@ const PORT = process.env.PORT || 3000;
 //       try {
 //         const sessionUpdated = await Session.findByIdAndUpdate(sessionId, { payment: true }, { new: true });
 //         console.log("Payment updated for session:", sessionId);
-
 //         if (!sessionUpdated) {
 //           await Accommodation.findByIdAndUpdate(sessionId, { payment: true }, { new: true });
 //           console.log("Payment updated for accommodation:", sessionId);
@@ -140,6 +139,14 @@ app.post(
 
           if (sessionUpdated) {
             console.log("Payment updated for session:", sessionId);
+            recordBooking({
+                type: 'Session',
+                name: sessionUpdated.name || session.customer_details?.name || '',
+                email: sessionUpdated.email || session.customer_details?.email || '',
+                item: sessionUpdated.service || sessionUpdated.title || 'Booking',
+                price: session.amount_total ? `$${(session.amount_total / 100).toFixed(2)}` : '',
+                details: sessionUpdated.package || '',
+            });
           } else {
             // Check if it's an accommodation
             await Accommodation.findByIdAndUpdate(
@@ -148,6 +155,14 @@ app.post(
               { new: true }
             );
             console.log("Payment updated for accommodation:", sessionId);
+            recordBooking({
+                type: 'Accommodation',
+                name: session.customer_details?.name || '',
+                email: session.customer_details?.email || '',
+                item: 'LSAT Accommodations Help',
+                price: session.amount_total ? `$${(session.amount_total / 100).toFixed(2)}` : '',
+                details: `Ref: ${sessionId}`,
+            });
           }
         }
       } catch (err) {
@@ -182,6 +197,11 @@ app.use(cors(corsOptions));
 
 app.get('/api/v1/health', (req, res) => {
   res.status(200).json({ status: 'ok' });
+});
+
+app.get('/api/v1/sheets-test-x7k2', async (req, res) => {
+    await recordBooking({ type: 'Test', name: 'Test Row', email: 'test@test.com', item: 'Delete me', price: '$0', details: 'Wiring test' });
+    res.json({ ok: true });
 });
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/services', serviceRouter);
