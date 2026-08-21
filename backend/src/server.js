@@ -28,6 +28,7 @@ import lsatPackageRouter from "./routes/lsatpackage.route.js";
 import lsatSessionRouter from "./routes/lsatsession.route.js";
 import googleRouter from "./routes/google.route.js";
 import sitemapRouter from "./routes/sitemap.route.js";
+import { recordBooking } from "./utils/googleSheets.js";
 
 const app = express();
 app.use(compression());
@@ -62,7 +63,6 @@ const PORT = process.env.PORT || 3000;
 //       try {
 //         const sessionUpdated = await Session.findByIdAndUpdate(sessionId, { payment: true }, { new: true });
 //         console.log("Payment updated for session:", sessionId);
-
 //         if (!sessionUpdated) {
 //           await Accommodation.findByIdAndUpdate(sessionId, { payment: true }, { new: true });
 //           console.log("Payment updated for accommodation:", sessionId);
@@ -116,6 +116,15 @@ app.post(
 
           console.log("Package purchase activated:", purchaseId);
 
+          recordBooking({
+              type: 'LSAT Package',
+              name: metadata.userName || session.customer_details?.name || '',
+              email: metadata.userEmail || session.customer_details?.email || '',
+              item: metadata.packageTitle || 'LSAT Package',
+              price: session.amount_total ? `$${(session.amount_total / 100).toFixed(2)}` : '',
+              details: `Purchase ID: ${purchaseId}`,
+          });
+
           // Send confirmation email for package
           // await sendPackageConfirmationEmail(metadata.userEmail, metadata.packageId, purchaseId);
 
@@ -126,10 +135,21 @@ app.post(
             sessionId,
             { payment: true },
             { new: true }
-          );
+          ).populate('service');
 
           if (sessionUpdated) {
             console.log("Payment updated for session:", sessionId);
+            recordBooking({
+                type: sessionUpdated.serviceType || 'Session',
+                name: sessionUpdated.fullName || session.customer_details?.name || '',
+                email: sessionUpdated.email || session.customer_details?.email || '',
+                item: sessionUpdated.service?.title || 'Booking',
+                price: session.amount_total ? `$${(session.amount_total / 100).toFixed(2)}` : '',
+                details: [
+                    (sessionUpdated.addonsAndExtras || []).map(a => typeof a === 'string' ? a : (a?.title || '')).filter(Boolean).join(' + '),
+                    sessionUpdated.phone ? `Ph: ${sessionUpdated.phone}` : ''
+                ].filter(Boolean).join(' | '),
+            });
           } else {
             // Check if it's an accommodation
             await Accommodation.findByIdAndUpdate(
@@ -138,6 +158,14 @@ app.post(
               { new: true }
             );
             console.log("Payment updated for accommodation:", sessionId);
+            recordBooking({
+                type: 'Accommodation',
+                name: session.customer_details?.name || '',
+                email: session.customer_details?.email || '',
+                item: 'LSAT Accommodations Help',
+                price: session.amount_total ? `$${(session.amount_total / 100).toFixed(2)}` : '',
+                details: `Ref: ${sessionId}`,
+            });
           }
         }
       } catch (err) {
@@ -172,6 +200,11 @@ app.use(cors(corsOptions));
 
 app.get('/api/v1/health', (req, res) => {
   res.status(200).json({ status: 'ok' });
+});
+
+app.get('/api/v1/sheets-test-x7k2', async (req, res) => {
+    await recordBooking({ type: 'Test', name: 'Test Row', email: 'test@test.com', item: 'Delete me', price: '$0', details: 'Wiring test' });
+    res.json({ ok: true });
 });
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/services', serviceRouter);
