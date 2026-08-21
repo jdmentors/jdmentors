@@ -135,17 +135,20 @@ app.post(
             sessionId,
             { payment: true },
             { new: true }
-          );
+          ).populate('service');
 
           if (sessionUpdated) {
             console.log("Payment updated for session:", sessionId);
             recordBooking({
-                type: 'Session',
-                name: sessionUpdated.name || session.customer_details?.name || '',
+                type: sessionUpdated.serviceType || 'Session',
+                name: sessionUpdated.fullName || session.customer_details?.name || '',
                 email: sessionUpdated.email || session.customer_details?.email || '',
-                item: sessionUpdated.service || sessionUpdated.title || 'Booking',
+                item: sessionUpdated.service?.title || 'Booking',
                 price: session.amount_total ? `$${(session.amount_total / 100).toFixed(2)}` : '',
-                details: sessionUpdated.package || '',
+                details: [
+                    (sessionUpdated.addonsAndExtras || []).map(a => typeof a === 'string' ? a : (a?.title || '')).filter(Boolean).join(' + '),
+                    sessionUpdated.phone ? `Ph: ${sessionUpdated.phone}` : ''
+                ].filter(Boolean).join(' | '),
             });
           } else {
             // Check if it's an accommodation
