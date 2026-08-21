@@ -202,10 +202,6 @@ app.get('/api/v1/health', (req, res) => {
   res.status(200).json({ status: 'ok' });
 });
 
-app.get('/api/v1/sheets-test-x7k2', async (req, res) => {
-    await recordBooking({ type: 'Test', name: 'Test Row', email: 'test@test.com', item: 'Delete me', price: '$0', details: 'Wiring test' });
-    res.json({ ok: true });
-});
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/services', serviceRouter);
 app.use('/api/v1/addons', addonRouter);
