@@ -28,6 +28,7 @@ import lsatPackageRouter from "./routes/lsatpackage.route.js";
 import lsatSessionRouter from "./routes/lsatsession.route.js";
 import googleRouter from "./routes/google.route.js";
 import sitemapRouter from "./routes/sitemap.route.js";
+import { recordBooking } from "./utils/googleSheets.js";
 
 const app = express();
 app.use(compression());
