@@ -117,6 +117,15 @@ app.post(
 
           console.log("Package purchase activated:", purchaseId);
 
+          recordBooking({
+              type: 'LSAT Package',
+              name: metadata.userName || session.customer_details?.name || '',
+              email: metadata.userEmail || session.customer_details?.email || '',
+              item: metadata.packageTitle || 'LSAT Package',
+              price: session.amount_total ? `$${(session.amount_total / 100).toFixed(2)}` : '',
+              details: `Purchase ID: ${purchaseId}`,
+          });
+
           // Send confirmation email for package
           // await sendPackageConfirmationEmail(metadata.userEmail, metadata.packageId, purchaseId);
 
