@@ -21,11 +21,10 @@ function Hero() {
                         <p className="text-lg text-white z-40 leading-relaxed">Personalized 1-on-1 support to strengthen every part of your law school application, from your personal statement and resume to your school list and LSAT prep.</p>
 
                         <div className="flex gap-4 flex-wrap">
-                            <Link to='/services' className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700">
+                            <a href="https://calendly.com/jdmentors/free-consultation" target="_blank" rel="noopener" className="inline-flex items-center justify-center gap-1 text-white whitespace-nowrap rounded-md font-medium h-10 px-4 py-2 bg-blue-600 hover:bg-blue-700">
                                 <Video size={24} strokeWidth={1.5} />
-
                                 <span>Book Consultation</span>
-                            </Link>
+                            </a>
 
                             <Link to='/services' className={`inline-flex items-center justify-center gap-1 whitespace-nowrap h-10 bg-white text-blue-600 hover:bg-blue-600 hover:text-white px-4 py-4 font-semibold rounded-md transition-all duration-300 cursor-pointer`}>
                                 Our Services
