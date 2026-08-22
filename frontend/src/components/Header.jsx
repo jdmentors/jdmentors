@@ -31,25 +31,22 @@ function Header() {
         { name: 'LSAT Tutoring', href: '/lsat-tutoring' },
     ];
 
-const bookConsultationHandler = () => {
-    try {
-        if (pathname === '/') {
-            navigate('/contact');
+    const bookConsultationHandler = () => {
+        try {
+            if (pathname === '/lsat-tutoring') {
+                navigate('/checkout/lsat-session?type=free')
+            }
+            else if (pathname === '/accommodations') {
+                navigate('/checkout/accommodations')
+            }
+            else {
+                window.open('https://calendly.com/jdmentors/free-consultation', '_blank', 'noopener');
+            }
+            setIsMenuOpen(false);
+        } catch (error) {
+            console.error(error);
         }
-        else if (pathname === '/lsat-tutoring') {
-            navigate('/checkout/lsat-session?type=free')
-        }
-        else if (pathname === '/accommodations') {
-            navigate('/checkout/accommodations')
-        }
-        else {
-            navigate('/contact');
-        }
-        setIsMenuOpen(false);
-    } catch (error) {
-        console.error(error);
     }
-}
 
     useEffect(() => {
         const handleScroll = () => {
