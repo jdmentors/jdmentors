@@ -43,7 +43,7 @@ const bookConsultationHandler = () => {
             navigate('/checkout/accommodations')
         }
         else {
-            navigate('/contact');
+            window.open('https://calendly.com/jdmentors/free-consultation', '_blank', 'noopener');
         }
         setIsMenuOpen(false);
     } catch (error) {
