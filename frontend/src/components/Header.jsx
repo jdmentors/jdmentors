@@ -39,9 +39,13 @@ function Header() {
             else if (pathname === '/accommodations') {
                 navigate('/checkout/accommodations')
             }
-            else {
+        else {
+            if (window.Calendly) {
+                window.Calendly.initPopupWidget({ url: 'https://calendly.com/jdmentors/free-consultation' });
+            } else {
                 window.open('https://calendly.com/jdmentors/free-consultation', '_blank', 'noopener');
             }
+        }
             setIsMenuOpen(false);
         } catch (error) {
             console.error(error);
