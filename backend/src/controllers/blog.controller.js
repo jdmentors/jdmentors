@@ -1,5 +1,6 @@
 import Blog from "../models/blog.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { triggerFrontendDeploy } from "../utils/deployHook.js";
 
 const createBlog = async (req, res) => {
     try {
@@ -34,7 +35,7 @@ const createBlog = async (req, res) => {
         if (!blog) {
             return res.status(500).json({ success: false, message: 'Error occured while creating blog' });
         }
-
+        triggerFrontendDeploy('blog created');
         return res.status(200).json({ success: true, message: 'Blog created' });
     } catch (error) {
         return res.status(500).json({ success: false, message: error.message });
@@ -96,7 +97,7 @@ const updateAvailability = async (req, res) => {
         if (!blog) {
             return res.status(500).json({ success: false, message: 'Error occured while updating blog' });
         }
-
+        triggerFrontendDeploy('availability changed');
         return res.status(200).json({ success: true, message: 'Blog availability updated', data: blog });
     } catch (error) {
         return res.status(500).json({ success: false, message: 'blog updation failed' });
@@ -125,7 +126,7 @@ const editBlog = async (req, res) => {
         if (!blog) {
             return res.status(500).json({ success: false, message: 'Error occured while updating blog' });
         }
-
+        triggerFrontendDeploy('blog edited');
         return res.status(200).json({ success: true, message: 'Blog updated' });
     } catch (error) {
         return res.status(500).json({ success: false, message: error.message });
@@ -145,7 +146,7 @@ const deleteBlog = async (req, res) => {
         if (!blog) {
             return res.status(500).json({ success: false, message: 'No blog found' });
         }
-
+        triggerFrontendDeploy('blog deleted');
         return res.status(200).json({ success: true, message: 'blog deleted' });
     } catch (error) {
         return res.status(500).json({ success: false, message: 'Deletion failed' });

@@ -3,7 +3,7 @@ import { aboutUs, user } from "../assets";
 
 function BlogCard({title, slug, description, content, image, status, author, createdAt}) {
     return (
-        <Link to={`/blogs/${slug}`} className="border border-blue-100 rounded-lg overflow-hidden bg-white hover:shadow-lg hover:shadow-blue-100 hover:-translate-y-1 transition-all duration-200">
+        <Link to={`/blogs/${slug}/`} className="border border-blue-100 rounded-lg overflow-hidden bg-white hover:shadow-lg hover:shadow-blue-100 hover:-translate-y-1 transition-all duration-200">            
             <img src={image || aboutUs} alt="blogImg" loading="lazy" className="h-52 sm:h-65 lg:h-52 xl:h-65 w-full object-cover" />
 
             <div>
